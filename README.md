@@ -9,5 +9,6 @@ docker build --build-arg JAR_FILE=build/libs/*.jar -t user/sample-app:3 .
 
 docker run -d -p 8080:30001 --name sample-app user/sample-app:3
 
-http://172.0.2.32:8080/swagger-ui.html
 ```
+
+Acesse http://172.0.2.32:8080/swagger-ui.html e faça o cadastro de um usuário
