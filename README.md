@@ -57,5 +57,21 @@ docker start sample-app
 
 docker inspect sample-app
 
+-- logs da aplicação
+
+docker logs -f sample-app
+
+-- executando um teste de carga com apache bench
+
+docker inspect sample-app
+
+anote o ip da instancia
+
+curl http://{instance_ip}/hello
+
+-- entrando dentro do container que já esta executando
+
+docker exec -it sample-app /bin/bash
+
 
 
