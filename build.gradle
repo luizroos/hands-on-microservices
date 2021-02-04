@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
@@ -15,7 +15,12 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation ('org.springframework.boot:spring-boot-starter-web') {
+		exclude module: "spring-boot-starter-tomcat"
+		exclude module: "tomcat-embed-websocket"
+		exclude module: "logback-classic"
+	}
+	compileOnly 'org.springframework.boot:spring-boot-starter-undertow'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
