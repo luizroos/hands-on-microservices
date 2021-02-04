@@ -1,26 +1,37 @@
 # Exercicio 1
 
 ### executando a aplicação
+
 -- compilar e gerar o executavel da aplicação
+
+```
 ./gradlew build
+```
 
 -- executando a app dentro da VM
+
+```
 java -jar build/libs/sample-app-0.0.1-SNAPSHOT.jar
+```
 
 acesse http://172.0.2.32:30001/hello
 
 ### criando a imagem e executando a aplicação com docker 
 
 -- opções para o build
+
 docker build --help
 
 -- gera uma imagem, tagueia como user/sample-app
+
 docker build --build-arg JAR_FILE=build/libs/\*.jar -t user/sample-app:1 .
 
 -- executa a aplicação
+
 docker run user/sample-app:1
 
 -- executa a aplicação em segundo plano
+
 docker run -d user/sample-app:1
 
 docker ps
