@@ -1,9 +1,5 @@
-FROM openjdk:11
+FROM jboss/wildfly
 
-ARG JAR_FILE=target/*.jar
+ARG WAR_FILE=target/*.war
 
-COPY ${JAR_FILE} app.jar
-
-EXPOSE 30001
-
-ENTRYPOINT ["java","-jar","/app.jar"]
+ADD ${WAR_FILE} /opt/jboss/wildfly/standalone/deployments/
