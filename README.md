@@ -1,29 +1,32 @@
 # Exercicio 2
 
-# adaptações para rodar no wildfly
+## adaptações para rodar no wildfly
 
 Aplicação: WebApplication.java
 
 E nas dependencias: build.gradle
 
-# gerando o war
+## gerando o war
 
 ./gradlew bootWar
 
 ls build/libs/
 
-### criando a imagem e executando a aplicação com docker 
+## criando a imagem e executando a aplicação com docker 
 
 Veja as alterações em Dockerfile
 
 -- gera uma imagem
+
 docker build --build-arg WAR_FILE=build/libs/\*.war -t user/sample-app:2 .
 
 -- executa a aplicação
+
 docker run user/sample-app:2
 
 -- executa a aplicação em segundo plano
-docker run -d -p 8080:8080 --name sample-app_2 user/sample-app:2
+
+docker run -d -p 8080:8080 --name sample-app user/sample-app:2
 
 docker ps
 
