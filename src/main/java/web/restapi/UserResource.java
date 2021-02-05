@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import web.GlobalExceptionHandler.BadRequestException;
 import web.core.exc.EntityAlreadyExistsException;
+import web.core.exc.UnknownPostalCodeException;
 import web.core.user.UserCreateService;
 import web.core.user.UserEntity;
 
@@ -28,6 +29,9 @@ public class UserResource {
 		} catch (EntityAlreadyExistsException e) {
 			throw new BadRequestException(String.format("Usuario com %s %s ja cadastrado com id %s", e.getSearchField(),
 					e.getSearchValue(), e.getEntityId()));
+		} catch (UnknownPostalCodeException e) {
+			throw new BadRequestException(
+					String.format("Postal code %s não existente no estado de São Paulo", e.getPostalCode()));
 		}
 		return new UserCreateResponse(createdUser);
 	}
