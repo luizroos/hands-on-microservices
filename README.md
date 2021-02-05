@@ -43,7 +43,7 @@ Deixe o log da aplicação aberto, ache o limite de escalabilidade:
 docker logs -f sample-app
 ```
 
-Ache o limite da sua aplicação.
+Ache o limite da sua aplicação. Anote os parâmetros usados e o resultado.
 
 Notaram alguma coisa relacionado ao aumento do paralelismo (c) com o tempo médio de resposta?
 
