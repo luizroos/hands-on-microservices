@@ -19,9 +19,9 @@ Como subir o container conectando no outro container?
 Inicie dois containers:
 
 ```
-docker run -d --name c1 httpd
+docker run -rm -d --name c1 httpd
 
-docker run -d --name c2 httpd
+docker run -rm -d --name c2 httpd
 ```
 
 Veja que eles não se comunicam:
@@ -64,7 +64,7 @@ docker exec -it c1 ping c2
 Iniciando outro container já direto na rede:
 
 ```
-docker run -d --name c3 --net=my-net httpd
+docker run -rm -d --name c3 --net=my-net httpd
 ```
 
 Logue em um container e verifique que um pode chamar o servico do outro:
@@ -78,7 +78,7 @@ ping c3
 Rodando um container na rede do host:
 
 ```
-docker run -d --net=host httpd
+docker run -rm -d --net=host httpd
 
 curl http://localhost
 ```
@@ -86,7 +86,7 @@ curl http://localhost
 Veja o erro se tentar subir um novo:
 
 ```
-docker run --net=host httpd
+docker run -rm --net=host httpd
 ```
 
 ### Conectando a app no banco
