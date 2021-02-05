@@ -1,4 +1,4 @@
-# Exercicio 6
+# Exercicio 6 - teste de carga
 
 Rodando mock server
 
