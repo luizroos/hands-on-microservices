@@ -1,6 +1,6 @@
-# Exercicio 1
+# Exercicio 1 - criando uma imagem + comandos básicos
 
-### Baixando a aplicação
+### Clonando a aplicação
 
 Dentro da vm, faça clone do repositório e checkout desse branch:
 
