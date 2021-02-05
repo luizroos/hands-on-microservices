@@ -117,3 +117,8 @@ docker run -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app user/sample-app:4
 
 Ainda deu erro, o que podemos fazer?
 
+```
+docker start sample-app
+
+docker logs -f sample-app
+```
