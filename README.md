@@ -11,4 +11,6 @@ docker run -d -p 8080:30001 --name sample-app user/sample-app:3
 
 ```
 
+Notem o tipo de ID de UserEntity, por que UUID ao invés de uma sequence? Mais detalhes no exercicio 6.
+
 Acesse http://172.0.2.32:8080/swagger-ui.html e faça o cadastro de um usuário
