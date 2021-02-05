@@ -10,10 +10,23 @@ Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com docker, java
 
 Uma vez o vagrant instalado, entre no diretório vm e execute:
 
+```
 vagrant up
+```
+Aguarde a instalação e configuração da vm e então logue nela:
 
+```
 vagrant ssh
+```
 
-Para remover a vm:
+Para sair da vm, execute
 
+```
+exit
+```
+
+Para remover a vm (dentro do host):
+
+```
 vagrant destroy
+```

@@ -1,0 +1,15 @@
+# vagrant plugin install vagrant-disksize
+
+Vagrant.configure("2") do |config|
+#  config.vm.box = "hashicorp/bionic64"
+#  config.vm.box = "phusion/ubuntu-14.04-amd64"
+   config.vm.box = "ubuntu/xenial64"
+   config.vm.network "private_network", ip: "172.0.2.32"
+   config.vm.provision "file", source: "bashrc", destination: "~/vm_conf_files/bashrc"
+   config.vm.provision :shell, path: "bootstrap.sh"
+   config.vm.provider "virtualbox" do |vb|
+      vb.gui = false
+      vb.name = "16.04-web01"
+      vb.memory = "2048"
+   end
+end
