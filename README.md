@@ -51,5 +51,7 @@ Na classe UserEntity, vamos alterar o tipo da chave primária para um valor núm
 
 Execute novamente o teste de carga.
 
+Os resultados foram os mesmos? o que aconteceu?
+
 
 
