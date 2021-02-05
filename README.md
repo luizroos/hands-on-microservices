@@ -1,4 +1,4 @@
-# Exercicio 6
+# Exercicio 7 - app com dependencia externa
 
 Rodando mock server
 
