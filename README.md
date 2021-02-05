@@ -1,40 +1,55 @@
 # Exercicio 6 - teste de carga
 
-Rodando mock server
+Executa o container da aplicação (não se esqueça do banco de dados)
+
+
+Desde o inicio:
 
 ```
-docker run -d --rm -p 1080:1080 --net=my-net --name mockserver mockserver/mockserver
+docker network create my-net
+
+docker run -p 3306:3306 --name mysql --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
+
+./gradlew build
+
+docker build --build-arg JAR_FILE=build/libs/*.jar -t user/sample-app:6 .
+
+docker run -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-net user/sample-app:6
 ```
 
-* O parametro rm indica que o container pode ser excluido quando for desligado
+Conecte seu cliente mysql no banco e verifique se os containers estão rodando.
 
-
-Vamos configurar o mock server para retornar ter uma resposta com delay de 1 segundo:
-
-```
-curl -v -X PUT "http://localhost:1080/expectation" -d '{
-  "httpRequest" : {
-    "method" : "GET",
-    "path" : "/postalcodes"
-  },
-  "httpResponse" : {
-    "body" : "{\"address\": \"rua mockada\", \"city\": \"Sao Paulo\", \"uf\": \"SP\"}",
-    "statusCode": 200,
-    "headers": [ { "name": "Content-Type", "values": ["application/json; charset=utf-8"] } ],
-    "delay": { "timeUnit": "MILLISECONDS", "value": 200 }
-  }}'
-```
-
-Veja mais opções: https://5-1.mock-server.com/mock_server/creating_expectations.html
-
-Teste nossa resposta mockada
+Apague todos os usuários da tabela
 
 ```
-curl http://localhost:1080/postalcodes
+delete from user
 ```
 
-Veja agora as alterações em UserCreateService
+Executa um teste de carga (n = numero de requests, c = paralelismo, db --help)
 
-Vamos fazer um teste de carga agora
+```
+ab -n 1000 -c 50 http://localhost:8080/users/random
+```
 
-ab -n 10 -c 3 http://localhost:30001/users/random
+Verifique a quantidade de usuários inseridos:
+
+```
+select count(1) from user
+```
+
+Deixe o log da aplicação aberto, ache o limite de escalabilidade:
+
+```
+docker logs -f sample-app
+```
+
+Ache o limite da sua aplicação.
+
+Notaram alguma coisa relacionado ao aumento do paralelismo (c) com o tempo médio de resposta?
+
+Na classe UserEntity, vamos alterar o tipo da chave primária para um valor númerico (além de alterar a aplicação, você tera que recriar a tabela do banco, então faça: drop table user). Gere novamente a aplicação (gradle e docker build) e inicie (docker run).
+
+Execute novamente o teste de carga.
+
+
+

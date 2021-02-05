@@ -31,6 +31,10 @@ public class UserEntity {
 	@GenericGenerator(name = "UserId", strategy = "uuid2")
 	private UUID id;
 
+	// @Id
+	// @GeneratedValue(strategy = GenerationType.AUTO)
+	// private Long id;
+
 	@Column(updatable = false, nullable = false)
 	private String email;
 
