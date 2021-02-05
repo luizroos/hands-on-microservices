@@ -1,4 +1,4 @@
-# Exercicio 5
+# Exercicio 5 - compartilhando diretórios
 
 Remova o container do banco
 
