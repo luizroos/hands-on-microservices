@@ -3,7 +3,7 @@
 Rodando mock server
 
 ```
-docker run -d --rm -p 1080:1080 --net=my-net mockserver/mockserver
+docker run -d --rm -p 1080:1080 --net=my-net --name mockserver mockserver/mockserver
 ```
 
 * O parametro rm indica que o container pode ser excluido quando for desligado
@@ -21,7 +21,7 @@ curl -v -X PUT "http://localhost:1080/expectation" -d '{
     "body" : "{\"address\": \"rua mockada\", \"city\": \"Sao Paulo\", \"uf\": \"SP\"}",
     "statusCode": 200,
     "headers": [ { "name": "Content-Type", "values": ["application/json; charset=utf-8"] } ],
-    "delay": { "timeUnit": "MILLISECONDS", "value": 1000 }
+    "delay": { "timeUnit": "MILLISECONDS", "value": 200 }
   }}'
 ```
 
@@ -34,3 +34,7 @@ curl http://localhost:1080/postalcodes
 ```
 
 Veja agora as alterações em UserCreateService
+
+Vamos fazer um teste de carga agora
+
+ab -n 10 -c 3 http://localhost:30001/users/random

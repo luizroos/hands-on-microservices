@@ -1,6 +1,7 @@
 package web.core.user;
 
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,6 +12,8 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 @Entity(name = UserEntity.ENTITY_NAME)
 @Table(name = UserEntity.TABLE_NAME, //
@@ -23,8 +26,10 @@ public class UserEntity {
 	public static final String TABLE_NAME = "user";
 
 	@Id
+	@Type(type = "uuid-binary")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	@GenericGenerator(name = "UserId", strategy = "uuid2")
+	private UUID id;
 
 	@Column(updatable = false, nullable = false)
 	private String email;
@@ -51,11 +56,11 @@ public class UserEntity {
 		this.addressPostalCode = Objects.requireNonNull(addressPostalCode);
 	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
