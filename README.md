@@ -14,21 +14,31 @@ docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_US
 
 Aqui subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **sample-db** e fazendo bind da porta default do mysql: 3306.
 
-Configure algum client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da vm, que tem ip 172.0.2.32, então como o client vai rodar na sua máquina, o host da conexão é o ip da vm (já que mapeamos também uma porta do container para a vm): [a relative link](dbeaver/conn_conf.png).
+Configure algum client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da vm, que tem ip 172.0.2.32, então como o client vai rodar na sua máquina, [o host da conexão](dbeaver/conn_conf.png) é o ip da vm (já que mapeamos também uma porta do container para a vm).
 
-### docker network
+Mas agora como fazemos a aplicação conectar no banco? Se tivessemos uma aplicação rodando no nosso computador, usariamos o ip da vm (da mesma forma que o client SQL), se a aplicação tivesse rodando dentro da vm (sem docker), usáriamos localhost (já que mapeamos uma porta do container para a vm) ou o ip do do container. Mas queremos na verdade que o container da nossa aplicação conecte no container do MySQL, e para isso vamos usar as funcionálidades do docker networking.
 
-Como subir o container conectando no outro container?
+### Docker network
 
-Inicie dois containers:
+Vamos esquecer por enquanto nosso container MySQL e fazer o seguinte:
 
 ```
-docker run --rm -d --name c1 httpd
+docker run --rm -p 9001:80 -d --name c1 httpd
 
-docker run --rm -d --name c2 httpd
+docker run --rm -p 9002:80 -d --name c2 httpd
 ```
 
-Veja que eles não se comunicam:
+Subimos dois containers da imagem do [Apache HTTP Server](https://hub.docker.com/_/httpd), o serviço em si não nos interessa, mas verifique que eles estão up e respondendo:
+
+```
+docker ps
+
+curl http://localhost:9001
+
+curl http://localhost:9002
+```
+
+O que estamos interessados é que os dois containers (c1 e c2) possam se comunicar entre si, portanto teste o seguinte comando:
 
 ```
 docker exec -it c1 ping c2
