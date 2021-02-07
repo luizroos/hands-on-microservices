@@ -141,3 +141,9 @@ java -jar build/libs/sample-app-0.0.1-SNAPSHOT.jar
 Ocorreu erro dessa vez? Por que não? 
 
 Queremos rodar a aplicação via container, como podemos executar a imagem **user/sample-app:4** para que ela consiga se conectar no banco de dados MySQL?
+
+Depois de subir, acesse http://172.0.2.32:8080/swagger-ui.html e inclua alguns usuários, a aplicação vai criar automaticamente as tabelas necessárias (em uma aplicação real, nunca de para aplicação um usuário com permissão de DDL), verifique no no seu client SQL os usuários inseridos:
+
+```
+select * from user
+```
