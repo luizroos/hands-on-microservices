@@ -1,4 +1,4 @@
-# Exercicio 1 - criando uma imagem + comandos básicos
+# Exercício 1 - criando uma imagem + comandos básicos
 
 ### Clonando a aplicação
 
