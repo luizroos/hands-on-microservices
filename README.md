@@ -1,4 +1,4 @@
-# Exercicio 4 - conectando containers
+# Exercicio 4 - comunicação entre containers
 
 A maioria das aplicações tem dependências externas, podemos criar o container da aplicação aproveitando para subir todas suas dependências junto no mesmo container, ou podemos subir containers separados para cada dependência (o que é mais comum).
 
@@ -140,4 +140,4 @@ java -jar build/libs/sample-app-0.0.1-SNAPSHOT.jar
 
 Ocorreu erro dessa vez? Por que não? 
 
-Queremos rodar o container, como podemos executar a imagem **user/sample-app:4** para que ela consiga se conectar no banco de dados MySQL?
+Queremos rodar a aplicação via container, como podemos executar a imagem **user/sample-app:4** para que ela consiga se conectar no banco de dados MySQL?
