@@ -1,14 +1,20 @@
-# Exercicio 4
+# Exercicio 4 - conectando containers
 
-### configurando um baco
+A maioria das aplicações tem dependências externas, podemos criar o container da aplicação aproveitando para subir todas suas dependências junto no mesmo container, ou podemos subir containers separados para cada dependência (o que é mais comum).
 
-Queremos conectar agora a um banco de dados
+### Criando um container para o banco de dados
 
-Vamos subir um mysql: https://hub.docker.com/_/mysql
+Vamos configurar a aplicação para se conectar a um banco de dados MySQL (ao invés do nossos banco em memória). Existem milhares de imagens dockers para as mais diversas aplicações, visite https://hub.docker.com para buscar por imagens.
+
+Verifique as opções para subir um container com MySQL: https://hub.docker.com/_/mysql
 
 ```
 docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
 ```
+
+Aqui subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **sample-db** e fazendo bind da porta default do mysql: 3306.
+
+Para conectar no noss
 
 Se não tiver, baixe um client sql: https://dbeaver.io/ e conecte no banco
 
