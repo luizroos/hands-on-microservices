@@ -14,9 +14,7 @@ docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_US
 
 Aqui subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **sample-db** e fazendo bind da porta default do mysql: 3306.
 
-Para conectar no noss
-
-Se não tiver, baixe um client sql: https://dbeaver.io/ e conecte no banco
+Configure algum client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da vm, que tem ip 172.0.2.32, então como o client vai rodar na sua máquina, o host da conexão é o ip da vm (já que mapeamos também uma porta do container para a vm): [a relative link](dbeaver/conn_conf.png).
 
 ### docker network
 
