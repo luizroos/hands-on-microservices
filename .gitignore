@@ -1,5 +1,9 @@
 # Created by https://www.gitignore.io
 
+#vagrant
+.vagrant
+*.log
+
 ### Java ###
 *.class
 /classes
