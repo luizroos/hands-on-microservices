@@ -1,6 +1,6 @@
 # Exercicio 6 - teste de carga
 
-Executa o container da aplicação (não se esqueça do banco de dados)
+Execute o container da aplicação (não se esqueça do banco de dados)
 
 
 Desde o inicio:
