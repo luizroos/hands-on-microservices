@@ -1,15 +1,12 @@
-# Exercicio 7 - app com dependencia externa
+# Exercicio 7 - impacto das dependências externas
 
-Rodando mock server
+Vamos subir um [mockserver](https://www.mock-server.com/where/docker.html) para simular uma dependência com outro sistema
 
 ```
 docker run -d --rm -p 1080:1080 --net=my-net --name mockserver mockserver/mockserver
 ```
 
-* O parametro rm indica que o container pode ser excluido quando for desligado
-
-
-Vamos configurar o mock server para retornar ter uma resposta com delay de 1 segundo:
+No mockserver, vamos configurar um endpoint **/postalcodes**, para responder um endereço mockado e demorar 200 ms para dar essa resposra:
 
 ```
 curl -v -X PUT "http://localhost:1080/expectation" -d '{
