@@ -1,7 +1,6 @@
 package web.restapi;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import web.core.user.UserEntity;
 
@@ -13,7 +12,7 @@ public class UserCreateResponse {
 		this.createdUser = Objects.requireNonNull(createdUser);
 	}
 
-	public UUID getId() {
+	public Object getId() {
 		return createdUser.getId();
 	}
 
