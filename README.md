@@ -24,7 +24,7 @@ curl -v -X PUT "http://localhost:1080/expectation" -d '{
 
 Veja mais opções: https://5-1.mock-server.com/mock_server/creating_expectations.html
 
-Teste nossa resposta mockada (subimos o mock server fazendo bind na porta 1080):
+Teste a resposta do mockserver (subimos o mock server fazendo bind na porta 1080, então pode acessar tanto na vm com localhost quando no seu browser via 172.0.2.32):
 
 ```
 curl http://localhost:1080/postalcodes
