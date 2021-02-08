@@ -31,10 +31,12 @@ public class UserEntity {
 	@GenericGenerator(name = "UserId", strategy = "uuid2")
 	private UUID id;
 
-	// @Id
-	// @GeneratedValue(strategy = GenerationType.AUTO)
-	// private Long id;
-
+/*	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+*/
+	
 	@Column(updatable = false, nullable = false)
 	private String email;
 
@@ -67,7 +69,17 @@ public class UserEntity {
 	public void setId(UUID id) {
 		this.id = id;
 	}
+	
+/*	
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}	
+*/
+	
 	public String getEmail() {
 		return email;
 	}
