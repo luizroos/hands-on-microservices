@@ -118,3 +118,5 @@ docker run --rm -p 3307:3306 --name mysql2 --net=my-net -v ~/temp/mysql-data:/va
 
 docker logs -f mysql2
 ```
+
+Qual o problema? Isso mostra por que é dificil escalar bancos.
