@@ -1,15 +1,21 @@
 # vagrant plugin install vagrant-disksize
 
 Vagrant.configure("2") do |config|
-#  config.vm.box = "hashicorp/bionic64"
-#  config.vm.box = "phusion/ubuntu-14.04-amd64"
    config.vm.box = "ubuntu/xenial64"
    config.vm.network "private_network", ip: "172.0.2.32"
+   config.vm.network "forwarded_port", guest: 8001, host: 8001, autocorrect: true
+   config.vm.network "forwarded_port", guest: 40123, host: 40123, autocorrect: true
+   config.vm.network "forwarded_port", guest: 40124, host: 40124, autocorrect: true
+   config.vm.network "forwarded_port", guest: 40125, host: 40125, autocorrect: true
    config.vm.provision "file", source: "bashrc", destination: "~/vm_conf_files/bashrc"
    config.vm.provision :shell, path: "bootstrap.sh"
    config.vm.provider "virtualbox" do |vb|
       vb.gui = false
-      vb.name = "16.04-web01"
-      vb.memory = "2048"
+      vb.name = "ubuntu_test"
+      vb.memory = "4096"
    end
 end
+
+
+
+

@@ -20,7 +20,17 @@ sudo echo "PATH=\$PATH:\$JAVA_HOME/bin" >> /etc/profile.d/jdk.sh
 # modifica .bashrc
 cat /home/vagrant/vm_conf_files/bashrc >> /home/vagrant/.bashrc
 
-# clone da app de exemplo
-# git clone https://github.com/luizroos/sample-app
+# instala minikube
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+sudo dpkg -i minikube_latest_amd64.deb
 
+# instala o kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
+# instala bash completion
+sudo apt-get install bash-completion
+
+# kubectl autocompletion
+echo 'source <(kubectl completion bash)' >>~/.bashrc
+kubectl completion bash >/etc/bash_completion.d/kubectl
