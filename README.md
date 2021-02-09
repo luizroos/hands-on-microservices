@@ -16,7 +16,7 @@ curl -v -X PUT "http://localhost:1080/expectation" -d '{
   },
   "httpResponse" : {
     "body" : "{\"address\": \"rua mockada\", \"city\": \"Sao Paulo\", \"uf\": \"SP\"}",
-    "statusCode": 50,
+    "statusCode": 200,
     "headers": [ { "name": "Content-Type", "values": ["application/json; charset=utf-8"] } ],
     "delay": { "timeUnit": "MILLISECONDS", "value": 200 }
   }}'
