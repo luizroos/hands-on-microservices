@@ -146,7 +146,7 @@ kubectl port-forward -n postalcode-srv-ns service/postalcode-srv-service 40123:1
 
 E acesse no browswer: http://172.0.2.32:40123/postalcodes
 
-E como outros pods acessam o serviço? O k8s tem um serviço DNS interno, é por ele que os pods vão se comunicar. Então vamos executar um novo pod e testar o acesso ao nosso serviço a partir dele: 
+E como outros pods acessam o serviço? O k8s tem um serviço [DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/), é por ele que os pods vão se comunicar. Então vamos executar um novo pod e testar o acesso ao nosso serviço a partir dele: 
 
 ```
 kubectl run -it --tty pingtest --rm --image=busybox --restart=Never -- /bin/sh
