@@ -187,3 +187,7 @@ Agora vamos forçar um autoscaling disparando um teste de carga contra a aplica�
 kubectl port-forward -n postalcode-srv-ns service/postalcode-srv-service 40123:1099 --address 0.0.0.0
 ab -n 10000 -c 200 http://localhost:40123/postalcodes
 ```
+
+### Subindo sample app
+
+O minikube roda num docker na network minikube. Suba a aplicação sample-app no kubernetes, acessando o banco de dados MySQL rodando fora do k8s e o postal code service rodando no k8s.
