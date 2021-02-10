@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postalcode-srv-deployment
+  labels:
+    app: postalcode-srv-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: postalcode-srv-app
+  template:
+    metadata:
+      labels:
+        app: postalcode-srv-app
+    spec:
+      containers:
+      - name: postalcode-srv
+        image: postalcode-srv:1
+        imagePullPolicy: Never
+        env:
+        - name: MOCKSERVER_INITIALIZATION_JSON_PATH
+          value: "config/mockserverInitialization.json"
+        ports:
+        - containerPort: 1080

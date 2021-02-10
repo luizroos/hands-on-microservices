@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postalcode-srv-pod
+spec:
+  containers:
+  - name: postalcode-srv
+    image: postalcode-srv:1
+    imagePullPolicy: Never
+    env:
+    - name: MOCKSERVER_INITIALIZATION_JSON_PATH
+      value: "config/mockserverInitialization.json"
