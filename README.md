@@ -110,7 +110,7 @@ Tente acessar novamente o endpoint do serviço.
 
 Como fazer para que o k8s mantenha os serviços rodando? 
 
-Ao invés de criar um pod, vamos criar um [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) aplicando as configurações do arquivo [postalcode-srv-deployment.yaml](postalcode-svc/deploy/postalcode-srv-deployment.yaml).
+Ao invés de criar um pod, vamos criar um [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) aplicando as configurações do arquivo [postalcode-srv-deployment.yaml](postalcode-srv/deploy/postalcode-srv-deployment.yaml).
 
 Nesse arquivo, nós descrevemos o deploy, nesse caso, criamos o deployment de nome **postalcode-srv-deployment** indicando que devem subir 3 pods.
 
@@ -122,7 +122,7 @@ Verifique no dashboard os 3 pods executando. Agora, se você tentar excluir um p
 
 Mas agora temos 3 pods rodando, criados com nomes aleatórios, como fazemos para acessar? 
 
-Vamos criar um [service](https://kubernetes.io/docs/concepts/services-networking/service/) que vai permitir acessar os pods do nosso deployment. Verifique o arquivo [postalcode-srv-service.yaml](postalcode-svc/deploy/postalcode-srv-service.yaml) e aplique as configurações:
+Vamos criar um [service](https://kubernetes.io/docs/concepts/services-networking/service/) que vai permitir acessar os pods do nosso deployment. Verifique o arquivo [postalcode-srv-service.yaml](postalcode-srv/deploy/postalcode-srv-service.yaml) e aplique as configurações:
 
 ```
 kubectl apply -n postalcode-srv-ns -f postalcode-srv-service.yaml
@@ -167,7 +167,7 @@ Podemos também criar regras de [autoscaling](https://kubernetes.io/docs/tasks/r
 kubectl autoscale -n postalcode-srv-ns deployment/postalcode-srv-deployment --min=1 --max=5 --cpu-percent=5
 ```
 
-E assim como os demais recursos, podemos criar regras para autoscaling definidas em arquivos, verifique [postalcode-srv-hpa.yaml](postalcode-svc/deploy/postalcode-srv-hpa.yaml) e aplique as configurações:
+E assim como os demais recursos, podemos criar regras para autoscaling definidas em arquivos, verifique [postalcode-srv-hpa.yaml](postalcode-srv/deploy/postalcode-srv-hpa.yaml) e aplique as configurações:
 
 ```
 kubectl apply -n postalcode-srv-ns -f postalcode-srv-hpa.yaml
