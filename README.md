@@ -150,7 +150,7 @@ E como outros pods acessam o serviço? O k8s tem um serviço DNS interno, é por
 
 ```
 kubectl run -it --tty pingtest --rm --image=busybox --restart=Never -- /bin/sh
-wget -qO- postalcode-srv-deployment.postalcode-srv-ns.svc.cluster.local:1080/postalcodes
+wget -qO- http://postalcode-srv-service.postalcode-srv-ns.svc.cluster.local:1099/postalcodes
 ```
 
 ##### escalando a aplicação
