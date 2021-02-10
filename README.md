@@ -52,7 +52,7 @@ curl <external_ip>
 Vamos simular o serviço usando mockserver, mas como não podemos depender de subir o serviço e configurar o mock para o endpoint, iremos gerar uma imagem para nosso serviço, extendendo mockserver, já configurando o endpoint mockado:
 
 ```
-cd postalcode-svc/image/
+cd postalcode-srv/image/
 
 docker build -t postalcode-srv:1 .
 ```
