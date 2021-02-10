@@ -170,7 +170,7 @@ kubectl autoscale -n postalcode-srv-ns deployment/postalcode-srv-deployment --mi
 E assim como os demais recursos, podemos criar regras para autoscaling definidas em arquivos, verifique [postalcode-srv-hpa.yaml](postalcode-svc/deploy/postalcode-srv-hpa.yaml) e aplique as configurações:
 
 ```
-kubectl apply -n postalcode-srv-ns -f postalcode-srv-service.yaml
+kubectl apply -n postalcode-srv-ns -f postalcode-srv-hpa.yaml
 ```
 
 Veja detalhes do auto scaling:
@@ -184,6 +184,6 @@ Ou nos detalhes do deployment no dashboard.
 Agora vamos forçar um autoscaling disparando um teste de carga contra a aplicação:
 
 ```
-kubectl port-forward service/postalcode-srv-service 40123:1099 --address 0.0.0.0
+kubectl port-forward -n postalcode-srv-ns service/postalcode-srv-service 40123:1099 --address 0.0.0.0
 ab -n 10000 -c 200 http://localhost:40123/postalcodes
 ```
