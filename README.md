@@ -72,7 +72,7 @@ minikube cache list
 
 ##### deploy da aplicação
 
-Vamos criar uma [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) para nosso serviço:
+Vamos criar uma [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) para nossos serviços:
 
 ```
 kubectl create namespace sample-ns
@@ -192,12 +192,45 @@ ab -n 10000 -c 200 http://localhost:40123/postalcodes
 
 O minikube roda num docker na network minikube. Suba a aplicação sample-app no kubernetes, na namespace **sample-ns**, acessando o banco de dados MySQL rodando fora do k8s e o postal code service rodando no k8s. Exponha o aplicação em um serviço **sample-app-service** na porta **25123**.
 
-### Criando ingress
+### Expondo a aplicação para fora
+
+A forma como damos acesso ao nossos pods é via services, que podem ser desses tipos: ClusterIP (default), NodePort, LoadBalancer, ExternalName.
+
+Mas, ao invés de expor para fora todos seus services, podemos usar o conceito de [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/):
 
 ```
 minikube addons enable ingress
 ```
 
+Ingress permite que criamos regras de roteamento para serviços num cluster.
+
 ```
-kubectl apply -n sample-ns -f sample-ingress.yaml
+kubectl apply -f sample-ingress.yaml
 ```
+
+Veja o IP Address do ingress:
+
+```
+kubectl get -n sample-ns ingress
+```
+
+Tente executar:
+
+```
+curl -i http://{ingress-ip}/postalcode-app/postalcodes
+```
+
+O que apareceu? Veja que na nossa regra de ingress define um host, então:
+
+```
+sudo vim /etc/hosts
+```
+
+Edite incluindo o IP do ingress para o host **sample.info** e tente novamente:
+
+```
+curl -i http://sample.info/postalcode-app/postalcodes
+curl -i http://sample.info/sample-app/swagger-ui.html
+```
+
+Para discutir, dado que ingress é por namespace, qual seria a estratégia para ter um IP para aplicações de vários namespaces?

@@ -2,21 +2,22 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sample-ingress
+  namespace: sample-ns
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
   - host: sample.info
     http:
       paths:
-      - path: /postalcode-app
+      - path: /postalcode-app(/|$)(.*)
         pathType: Prefix
         backend:
           service:
             name: postalcode-app-service
             port:
               number: 1099
-      - path: /sample-app
+      - path: /sample-app(/|$)(.*)
         pathType: Prefix
         backend:
           service:
