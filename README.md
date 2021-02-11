@@ -190,4 +190,14 @@ ab -n 10000 -c 200 http://localhost:40123/postalcodes
 
 ### Subindo sample app
 
-O minikube roda num docker na network minikube. Suba a aplicação sample-app no kubernetes, na namespace **sample-ns**, acessando o banco de dados MySQL rodando fora do k8s e o postal code service rodando no k8s. Exponha o aplicação em um serviço roando na porta 25123.
+O minikube roda num docker na network minikube. Suba a aplicação sample-app no kubernetes, na namespace **sample-ns**, acessando o banco de dados MySQL rodando fora do k8s e o postal code service rodando no k8s. Exponha o aplicação em um serviço **sample-app-service** na porta **25123**.
+
+### Criando ingress
+
+```
+minikube addons enable ingress
+```
+
+```
+kubectl apply -n sample-ns -f sample-ingress.yaml
+```
