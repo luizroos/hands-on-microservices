@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postalcode-srv-deployment
+  name: postalcode-app-deployment
   labels:
-    app: postalcode-srv-app
+    app: postalcode-app
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: postalcode-srv-app
+      app: postalcode-app
   template:
     metadata:
       labels:
-        app: postalcode-srv-app
+        app: postalcode-app
     spec:
       containers:
-      - name: postalcode-srv
-        image: postalcode-srv:1
+      - name: postalcode-app-ctn
+        image: postalcode-app:1
         imagePullPolicy: Never
         env:
         - name: MOCKSERVER_INITIALIZATION_JSON_PATH

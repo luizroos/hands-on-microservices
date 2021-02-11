@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: postalcode-srv-service
+  name: postalcode-app-service
 spec:
   selector:
-    app: postalcode-srv-app
+    app: postalcode-app
   ports:
     - protocol: TCP
       port: 1099
