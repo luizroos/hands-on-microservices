@@ -1,4 +1,4 @@
-# Exercicio 5 - Stateful containers
+# Exercício 5 - Stateful containers
 
 Faça o seguinte teste com o container MySQL criado no exercicio anterior:
 
