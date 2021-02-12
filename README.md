@@ -50,4 +50,4 @@ Veja que agora a porta que você informou, está mapeada para a porta exposta do
 docker ps 
 ```
 
-Como já mapeamos uma porta para o host, podemos acessar através do ip da nossa vm http://172.0.2.32:8080/sample-app-0.0.2-SNAPSHOT/hello
+Como já mapeamos uma porta para o host, podemos acessar através do ip da nossa vm http://172.0.2.32:8080/sample-app/hello
