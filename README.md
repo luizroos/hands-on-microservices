@@ -9,8 +9,7 @@ Você não precisa só executar aplicações standalone. As vezes você já tem 
 Fizemos algumas alterações na aplicação, removemos sua dependência com [tomcat](sample-app/build.gradle) e fizemos alterações dentro do [WebApplication.java](sample-app/src/main/java/web/WebApplication.java). No java, podemos gerar arquivos [war](https://en.wikipedia.org/wiki/WAR_(file_format)), esse formato segue um padrão que é interpretado por servidores de aplicações como wildfly. Então, ao invés de gerar um jar, vamos compilar a aplicação e gerar agora um arquivo war:
 
 ```
-./gradlew bootWar
-
+./gradlew clean bootWar
 ls build/libs/
 ```
 
