@@ -1,4 +1,4 @@
-# Exercicio 7 - impacto das dependências externas
+# Exercício 7 - impacto das dependências externas
 
 Vamos subir um [mockserver](https://www.mock-server.com/where/docker.html) para simular uma dependência com outro sistema
 
@@ -30,20 +30,20 @@ Teste a resposta do mockserver (subimos o mock server fazendo bind na porta 1080
 curl http://localhost:1080/postalcodes
 ```
 
-Veja agora as alterações em UserCreateService
+Veja agora as alterações em [UserCreateService](src/main/java/web/core/user/UserCreateService.java), incluimos uma regra de negócio que valida se o endereço informado do estado de São Paulo, para isso usamos uma chamada a um serviço de postalcode.
 
 ```
 docker network create my-net
 
 docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
 
-./gradlew build
+./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*.jar -t user/sample-app:7 .
+docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:7 .
 
-docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e CORREIOS_HOST=mockserver:1080 --name sample-app --net=my-net user/sample-app:7
+docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=mockserver:1080 --name sample-app --net=my-net sample-app:7
 ```
 
-Execute novamente o teste de carga com os parâmetros encontrados do exercicio 6.
+Execute novamente o teste de carga com os parâmetros encontrados do exerício 6.
 
 O que aconteceu? Por que a aplicação perdeu tanta escalabilidade?
