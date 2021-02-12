@@ -1,4 +1,4 @@
-# Exercicio 8 - orquestrando containers
+# Exercício 8 - orquestrando containers
 
 
 Iniciando o minikube:
@@ -33,6 +33,7 @@ Vamos subir um servidor apache httpd:
 
 ```
 kubectl create deployment apache-httpd --image=httpd
+
 kubectl expose deployment apache-httpd --type=LoadBalancer --port=80
 ```
 
@@ -40,8 +41,11 @@ Acesse: http://172.0.2.32:8001/api/v1/namespaces/default/services/apache-httpd/p
 
 ```
 kubectl get services
+
 minikube tunnel --cleanup
+
 kubectl get services
+
 curl <external_ip>
 ```
 
