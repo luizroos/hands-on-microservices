@@ -1,5 +1,3 @@
-# vagrant plugin install vagrant-disksize
-
 Vagrant.configure("2") do |config|
    config.vm.box = "ubuntu/xenial64"
    config.vm.network "private_network", ip: "172.0.2.32"
@@ -11,11 +9,7 @@ Vagrant.configure("2") do |config|
    config.vm.provision :shell, path: "bootstrap.sh"
    config.vm.provider "virtualbox" do |vb|
       vb.gui = false
-      vb.name = "ubuntu_test"
+      vb.name = "hands-on-microservices"
       vb.memory = "4096"
    end
 end
-
-
-
-
