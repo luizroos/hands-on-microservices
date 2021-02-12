@@ -1,4 +1,4 @@
-# Exercicio 6 - teste de carga
+# Exercício 6 - teste de carga
 
 Remova todas os containers que vocês tem, vamos começar do zero (banco e aplicação)
 
@@ -9,11 +9,11 @@ docker network create my-net
 
 docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
 
-./gradlew build
+./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*.jar -t user/sample-app:6 .
+docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:6 .
 
-docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-net user/sample-app:6
+docker run --rm -d -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-net sample-app:6
 ```
 
 Conecte seu cliente mysql no banco e verifique se os containers estão rodando. Se tiver dados na sua tabela, apague todos:
@@ -48,9 +48,9 @@ E em outra aba as estatisticas do docker (a coluna PIDS indica a quantidade de t
 docker stats
 ```
 
-Variando **n** e principalmente **c** do apache bench, em determinado momento, a aplicação vai começar a degradar a **performance**, porém vai continuar respondendo ok para todos requests, porém vai chegar num limite que ela vai falhar a disponibilidade, começando a responder com erros. Ache esse limite.
+Variando **n** e principalmente **c** do apache bench, em determinado momento, a aplicação vai começar a degradar a **performance**, mas vai continuar respondendo ok para todos requests, porém vai chegar num limite que ela vai falhar a **disponibilidade**, começando a responder com erros. Ache esse limite.
 
-Veja no log e descubra o que fez a aplicação começar a falhar, o que poderiamos mudar na aplicação para aumentar sua escalabilidade?
+Veja no log e descubra o que fez a aplicação começar a falhar, o que poderiamos mudar nos parâmetros da aplicação para aumentar sua escalabilidade?
 
 Sem compilar, rode de novo a aplicação para que ela consiga executar 1000 requests com 200 de concorrência e que tenha um resultado sem falhas:
 
@@ -58,11 +58,11 @@ Sem compilar, rode de novo a aplicação para que ela consiga executar 1000 requ
 ab -n 1000 -c 200 http://localhost:8080/users/random
 ```
 
-Percebam a diferença no docker stats, perceberam algo diferente nos containers?
+Notem no docker stats, perceberam algo diferente nos containers?
 
 #### O problema de sequences
 
-Na classe UserEntity, vamos alterar o tipo da chave primária para um valor númerico:
+Na classe [UserEntity](sample-app/src/main/java/web/core/user/UserEntity.java), vamos alterar o tipo da chave primária para um valor númerico:
 
 ```
 vim src/main/java/web/core/user/UserEntity.java
@@ -104,9 +104,9 @@ public void setId(Long id) {
 Compile a aplicação e gere a nova imagem:
 
 ```
-./gradlew build
+./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*.jar -t user/sample-app:6 .
+docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:6 .
 ```
 
 Como a chave primária da tabela mudou, caso você esteja rodando o mesmo MySQL, execute um drop table user para que a aplicação possa recriar a tabela com novo tipo da PK. Ou então remova o container do MySQL e inicie um novo junto com a aplicação:
@@ -114,7 +114,7 @@ Como a chave primária da tabela mudou, caso você esteja rodando o mesmo MySQL,
 ```
 docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
 
-docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-net user/sample-app:6
+docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-net sample-app:6
 ```
 
 Execute novamente o teste de carga (aquele com os valores que você encontrou). 
