@@ -10,6 +10,7 @@ Fizemos algumas alterações na aplicação, removemos sua dependência com [tom
 
 ```
 ./gradlew clean bootWar
+
 ls build/libs/
 ```
 
