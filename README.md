@@ -6,7 +6,9 @@ Dentro da vm, faça clone do repositório e checkout desse branch:
 
 ```
 git clone https://github.com/luizroos/hands-on-microservices.git
+
 cd hands-on-microservices
+
 git checkout e1
 ```
 ### Aplicação sample-app
