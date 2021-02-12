@@ -1,32 +1,35 @@
-# sample-app
+# hands-on-microservices
 
-Os exercícios estão cada um branch separado e que devem ser feitos na **ordem**:
+Os exercícios estão cada um branch separado e que devem ser feitos na **ordem**, o ideal é fazer em aula, com a explicação:
 
-[exercício 1](https://github.com/luizroos/sample-app/tree/e1)
+[exercício 1](https://github.com/luizroos/hands-on-microservices/tree/e1)
 
-[exercício 2](https://github.com/luizroos/sample-app/tree/e2)
+[exercício 2](https://github.com/luizroos/hands-on-microservices/tree/e2)
 
-[exercício 3](https://github.com/luizroos/sample-app/tree/e3)
+[exercício 3](https://github.com/luizroos/hands-on-microservices/tree/e3)
 
-[exercício 4](https://github.com/luizroos/sample-app/tree/e4)
+[exercício 4](https://github.com/luizroos/hands-on-microservices/tree/e4)
 
-[exercício 5](https://github.com/luizroos/sample-app/tree/e5)
+[exercício 5](https://github.com/luizroos/hands-on-microservices/tree/e5)
 
-[exercício 6](https://github.com/luizroos/sample-app/tree/e6)
+[exercício 6](https://github.com/luizroos/hands-on-microservices/tree/e6)
 
-[exercício 7](https://github.com/luizroos/sample-app/tree/e7)
+[exercício 7](https://github.com/luizroos/hands-on-microservices/tree/e7)
 
-[exercício 8](https://github.com/luizroos/sample-app/tree/e8)
+[exercício 8](https://github.com/luizroos/hands-on-microservices/tree/e8)
 
-[exercício 9](https://github.com/luizroos/sample-app/tree/e9)
+[exercício 9](https://github.com/luizroos/hands-on-microservices/tree/e9)
 
-Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com docker, java, git, apache bench, etc instalados, será mais facil executar cada exericicio.
+### Subindo o ambiente
+
+Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com setup feito: docker, java, git, apache bench, etc já instalados, será mais facil executar cada exericício.
 
 Uma vez o vagrant instalado, entre no diretório vm e execute:
 
 ```
 vagrant up
 ```
+
 Aguarde a instalação e configuração da vm e então logue nela:
 
 ```
