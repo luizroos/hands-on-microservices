@@ -21,7 +21,7 @@ Caso se interesse e queira criar suas próprias aplicações com java e spring, 
 Para compilar a aplicação, dentro do diretório sample-app execute o comando:
 
 ```
-./gradlew build
+./gradlew clean build
 ```
 
 Isso vai baixar o gradle, compilar e gerar o executável (jar) da aplicação. Para ver mais tasks existentes no gradle, execute:
