@@ -1,4 +1,4 @@
-# Exercício 8 - orquestrando containers
+# Exercício 9 - orquestrando containers
 
 
 Iniciando o minikube:
