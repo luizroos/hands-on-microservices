@@ -1,16 +1,19 @@
-# Exercicio 3
+# Exercício 3 - aplicação mais realista
 
-Aumentamos um pouco a aplicação, incluimos um api de cadastro de usuário usando uma base em memoria, vamos gerar o container, subir a aplicação 
+Aumentamos um pouco a aplicação, incluimos um api de cadastro de usuário usando um [banco de dados](https://www.h2database.com/html/main.html) em memória, muito utilizado em ambientes de teste. 
+
+Vamos gerar o container e subir essa aplicação: 
 
 ```
 ./gradlew build
 
 docker build --build-arg JAR_FILE=build/libs/*.jar -t user/sample-app:3 .
 
-docker run -d -p 8080:30001 --name sample-app user/sample-app:3
-
+docker run --rm -d -p 8080:30001 --name sample-app user/sample-app:3
 ```
 
-Notem o tipo de ID de UserEntity, por que UUID ao invés de uma sequence? Mais detalhes no exercicio 6.
+Notem que subimos a aplicação agora já com mapeamento na porta 8080, assim não precisamos ficar checando toda vez qual a porta aleatória que foi feito o mapeamento.
 
-Acesse http://172.0.2.32:8080/swagger-ui.html e faça o cadastro de um usuário
+Discussão: notem o tipo de ID de UserEntity, por que UUID ao invés de um ID númerico? Vamos falar mais detalhes sobre isso no exercício 6.
+
+Acesse http://172.0.2.32:8080/swagger-ui.html e faça o cadastro de um usuário.
