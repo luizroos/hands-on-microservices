@@ -12,11 +12,11 @@ Verifique as opções para subir um container com MySQL: https://hub.docker.com/
 docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
 ```
 
-Aqui subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **sample-db** e fazendo bind da porta default do mysql: 3306.
+Aqui subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **sample-db** e mapeando a porta default do mysql: 3306.
 
-Configure algum client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da vm, que tem ip 172.0.2.32, então como o client vai rodar na sua máquina, [o host da conexão](dbeaver/conn_conf.png) é o ip da vm (já que mapeamos também uma porta do container para a vm).
+Configure algum client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da vm, que tem ip 172.0.2.32, então como o client vai rodar fora da vm, [o host da conexão](dbeaver/conn_conf.png) é o ip da vm (já que mapeamos também uma porta do container para a vm).
 
-Mas agora como fazemos a aplicação conectar no banco? Se tivessemos uma aplicação rodando no nosso computador, usariamos o ip da vm (da mesma forma que o client SQL), se a aplicação tivesse rodando dentro da vm (sem docker), usáriamos localhost (já que mapeamos uma porta do container para a vm) ou o ip do do container. Mas queremos na verdade que o container da nossa aplicação conecte no container do MySQL, e para isso vamos usar as funcionálidades do docker networking.
+Mas agora como fizemos a aplicação conectar no banco? Se tivessemos uma aplicação rodando no nosso computador, usariamos o ip da vm (da mesma forma que o client SQL), se a aplicação tivesse rodando dentro da vm (sem docker), usáriamos localhost (já que mapeamos uma porta do container para a vm) ou o ip do do container. Mas queremos na verdade que o container da nossa aplicação conecte no container do MySQL, e para isso vamos usar as funcionalidades do docker network.
 
 ### Docker network
 
@@ -48,7 +48,8 @@ docker exec c1 ping {c2_ip_address}
 
 Quando criamos containers, a rede default que o container é inserido se chamada bridge, é uma rede de escopo local (apenas os containers rodando no mesmo docker daemon conseguem ver). 
 
-Verifique detalhas das redes
+Verifique detalhes das redes
+
 ```
 docker network ls
 
@@ -96,6 +97,7 @@ Valide a conectividade entre eles:
 
 ```
 docker exec c3 ping c2
+
 docker exec c1 ping c3
 ...
 ```
@@ -108,7 +110,7 @@ docker run --rm -d --net=host httpd
 curl http://localhost
 ```
 
-Veja que não mapeamos nenhuma porta, porque o container está rodando usando a rede do host, então o bind é feito direto na rede do host, e portando, se tentarmos rodar um novo serviço que faz bind na mesma porta, tomaremos erro, por ex:
+Veja que não mapeamos nenhuma porta, porque o container está rodando usando a rede do host, então o bind é feito direto na rede do host (tente acessar http://172.0.2.32/), e portando, se tentarmos rodar um novo serviço que faz bind na mesma porta, tomaremos erro, por ex:
 
 ```
 docker run --rm --net=host httpd
@@ -116,33 +118,33 @@ docker run --rm --net=host httpd
 
 ### Conectando a aplicação no banco MySQL
 
-Alteramos a aplicação para se conectar em um banco de dados MySQL. Veja no arquivo [application.properties](src/main/resources/application.properties) que a conexão já está configurada para os parâmetros que criamos nosso banco MySQL. Só o host que a aplicação conecta, por default está localhost, mas pode ser sobrescrito via uma variável de ambiente chamada **MYSQL_HOST**. 
+Alteramos a aplicação para se conectar em um banco de dados MySQL. Veja no arquivo [application.properties](sample-app/src/main/resources/application.properties) que a conexão já está configurada para os parâmetros que criamos nosso banco MySQL. O host que a aplicação conecta, por default está localhost, mas pode ser sobrescrito via uma variável de ambiente chamada **MYSQL_HOST**. 
 
 Vamos compilar e gerar a imagem da aplicação:
 
 ```
-./gradlew build
+./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*.jar -t user/sample-app:4 .
+docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:4 .
 ```
 
 Agora vamos testar executar a aplicação:
 
 ```
-docker run --rm -p 8080:30001 --name sample-app user/sample-app:4
+docker run --rm -p 8080:30001 --name sample-app sample-app:4
 ```
 
 Tivemos um problema para conectar no banco. Tente executar:
 
 ```
-java -jar build/libs/sample-app-0.0.1-SNAPSHOT.jar
+java -jar build/libs/sample-app-0.0.4-SNAPSHOT.jar
 ```
 
 Ocorreu erro dessa vez? Por que não? 
 
-Queremos rodar a aplicação via container, como podemos executar a imagem **user/sample-app:4** para que ela consiga se conectar no banco de dados MySQL?
+Queremos rodar a aplicação via container, como podemos executar a imagem **sample-app:4** para que ela consiga se conectar no banco de dados MySQL?
 
-Depois de subir, acesse http://172.0.2.32:8080/swagger-ui.html e inclua alguns usuários, a aplicação vai criar automaticamente as tabelas necessárias (em uma aplicação real, nunca de para aplicação um usuário com permissão de DDL), verifique no no seu client SQL os usuários inseridos:
+Depois de subir, acesse http://172.0.2.32:8080/swagger-ui.html e inclua alguns usuários, a aplicação vai criar automaticamente as tabelas necessárias (em uma aplicação real, **nunca** de para aplicação um usuário com permissão de DDL, isso é **muito** perigoso, estamos usando aqui só para facilitar), verifique no seu client SQL os usuários inseridos:
 
 ```
 select * from user
