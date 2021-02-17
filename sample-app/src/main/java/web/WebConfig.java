@@ -31,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
 		session.setPassword("");
 		session.setUsername("");
 		session.setKeyspaceName("sample-cassandra-cluster");
-		session.setContactPoints("172.0.2.32");
+		session.setContactPoints("127.0.0.1");
 		return session;
 	}
 
