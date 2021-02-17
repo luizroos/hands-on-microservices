@@ -103,4 +103,4 @@ Apesar de [CQL](https://cassandra.apache.org/doc/latest/cql/) ter sintaxe pareci
 select * from user where name = 'joao';
 ```
 
-Porque não deixou?
+Por que não deixou?
