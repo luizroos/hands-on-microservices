@@ -105,32 +105,3 @@ select * from user where name = 'joao';
 ```
 
 Por que não deixou?
-
-Removao cluster e crie um novo, com a mesma keyspace e tabela, mas agora só com 3 nós:
-
-```
-ccm remove
-
-ccm create --version 3.11.10 --nodes 3 --start sample-cassandra-cluster
-
-ccm node1 cqlsh
-
-create keyspace sample WITH durable_writes = true and replication = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
-
-use sample;
-
-create table if not exists user  (
- id varchar primary key,
- name varchar,
- email varchar,
- age int,
- addressPostalCode varchar);
-```
-
-Tente então executar a aplicação e inserir um usuário (podemos rodar direto na vm):
-
-```
-./gradlew build
-
-java -jar build/libs/sample-app-0.0.10-SNAPSHOT.jar
-```
