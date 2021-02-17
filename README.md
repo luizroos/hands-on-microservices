@@ -43,5 +43,5 @@ where email is not null
 primary key (email, id);
 ```
 
-A materialied view é uma tabela normal, vai estar particionada então cuidado com hot spots e existe um custo de inserção, então vale sempre uma avaliação de criar uma desnormalização manual vs materialized views.
+A materialized view é uma tabela normal, vai estar particionada então cuidado com hot spots e existe um custo de inserção, então vale sempre uma avaliação de criar uma desnormalização manual vs materialized views.
 
