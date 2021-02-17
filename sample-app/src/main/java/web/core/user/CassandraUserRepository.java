@@ -25,7 +25,7 @@ public class CassandraUserRepository implements UserRepository {
 
 	@Override
 	public Optional<UserEntity> findUserByEmail(String email) {
-		Select select = QueryBuilder.selectFrom(UserEntity.TABLE_NAME).all()//
+		Select select = QueryBuilder.selectFrom("user_by_email").all()//
 				.where(Relation.column("email").isEqualTo(QueryBuilder.literal(email)));
 		UserEntity user = cassandraTemplate.selectOne(select.asCql(), UserEntity.class);
 		return Optional.ofNullable(user);
