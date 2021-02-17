@@ -126,3 +126,11 @@ create table if not exists user  (
  age int,
  addressPostalCode varchar);
 ```
+
+Tente então executar a aplicação e inserir um usuário (podemos rodar direto na vm):
+
+```
+./gradlew build
+
+java -jar build/libs/sample-app-0.0.10-SNAPSHOT.jar
+```
