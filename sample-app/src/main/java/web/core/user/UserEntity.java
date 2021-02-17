@@ -14,7 +14,7 @@ public class UserEntity {
 	public static final String TABLE_NAME = "user";
 
 	@PrimaryKey
-	private UUID id;
+	private String id;
 
 	@Column
 	private String email;
@@ -35,17 +35,18 @@ public class UserEntity {
 		if (age < 0) {
 			throw new IllegalArgumentException();
 		}
+		this.id = UUID.randomUUID().toString();
 		this.name = Objects.requireNonNull(name);
 		this.email = Objects.requireNonNull(email);
 		this.age = Objects.requireNonNull(age);
 		this.addressPostalCode = Objects.requireNonNull(addressPostalCode);
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
