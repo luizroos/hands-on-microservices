@@ -1,240 +1,106 @@
-# Exercício 9 - orquestrando containers
+# Exercício 10 - Usando cassandra
 
-
-Iniciando o minikube:
-
-```
-minikube start
-```
-
-Habilitamos metrics-server
+Usando [ccm](https://www.datastax.com/blog/ccm-development-tool-creating-local-cassandra-clusters), vamos criar um cluster com 5 nós usando a versão 3.11.10 do [cassandra](https://cassandra.apache.org/):
 
 ```
-minikube addons enable metrics-server
+ccm create --version 3.11.10 --nodes 5 --start sample-cassandra-cluster
 ```
 
-Iniciando k8s dashboard
+Verifique o status do cluster (todos nós devem estar UP):
 
 ```
-minikube dashboard
+ccm status
 ```
 
-Proxy para acesso ao dashboard:
+Conecte em um nó do cluster:
 
 ```
-kubectl proxy --address 0.0.0.0 --accept-hosts '.*'
+ccm node1 cqlsh
 ```
 
-Acesse no browser: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/
-
-### Subindo uma imagem simples
-
-Vamos subir um servidor apache httpd:
+Assim como em bancos relacionais nós temos os schemas, no cassandra temos [keyspace](https://docs.datastax.com/en/cql-oss/3.x/cql/cql_reference/cqlCreateKeyspace.html), vamos criar uma keyspace de teste com replication factor de 3 (significa que cada registro vai ser armazenado em 3 nós):
 
 ```
-kubectl create deployment apache-httpd --image=httpd
-
-kubectl expose deployment apache-httpd --type=LoadBalancer --port=80
+create keyspace sample WITH durable_writes = true and replication = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };
+use sample;
 ```
 
-Acesse: http://172.0.2.32:8001/api/v1/namespaces/default/services/apache-httpd/proxy/
+Vamos criar agora nossa tabela de usuários:
 
 ```
-kubectl get services
-
-minikube tunnel --cleanup
-
-kubectl get services
-
-curl <external_ip>
+create table if not exists user  (
+ id varchar primary key,
+ name varchar,
+ email varchar,
+ age int,
+ addressPostalCode varchar);
 ```
 
-### Subindo serviço de postal code
-
-##### Criando a imagem
-
-Vamos simular o serviço usando mockserver, mas como não podemos depender de subir o serviço e configurar o mock para o endpoint, iremos gerar uma imagem para nosso serviço, extendendo mockserver, já configurando o endpoint mockado:
+Verifique a tabela criada:
 
 ```
-cd postalcode-app/image/
-
-docker build -t postalcode-app:1 .
+select * from user;
 ```
 
-Geramos a imagem, porém ela não está em um registry que o minikube usa, então precisamos fazer push da imagem para ele poder usar. Existem várias [formas](https://minikube.sigs.k8s.io/docs/handbook/pushing/) de fazer isso, vamos usar a seguinte:
-
-
-```
-minikube cache add postalcode-app:1
-```
-
-Veja as imagens já disponíveis:
+Temos agora 5 nós de cassandra rodando com uma tabela **user** criada na namespace **sample**. O Cassandra permite que a [consistência](https://docs.datastax.com/en/cassandra-oss/3.0/cassandra/dml/dmlConfigConsistency.html) seja alterada, verifique a consistencia da sessão:
 
 ```
-minikube cache list
+consistency
 ```
 
-##### deploy da aplicação
-
-Vamos criar uma [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) para nossos serviços:
+Se a consistência não for ONE, sete para ONE:
 
 ```
-kubectl create namespace sample-ns
+consistency ONE
 ```
 
-Veja que a namespace já aparece no dashboard: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=sample-ns#/overview?namespace=sample-ns
-
-A forma mais comum para se criar recursos no k8s é usar arquivos que descrevem os recursos que queremos criar. Visualize o arquivo [postalcode-app-pod.yaml](postalcode-svc/deploy/postalcode-app-pod.yaml), ele cria um [pod](https://kubernetes.io/docs/concepts/workloads/pods/) chamado **postalcode-app-pod**, usando a imagem **postalcode-app:1**.
-
-Aplique a configuração do arquivo, usando a namespace criada anteriormente:
+Vamos inserir agora um usuário na nossa tabela:
 
 ```
-kubectl apply -n sample-ns -f postalcode-app-pod.yaml
+insert into user (addresspostalcode, age, email, name, id) values ('01122080', 30, 'Joao', 'joao@teste.com', '1');
 ```
 
-Verifique se o pod foi criado: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=sample-ns#/pod?namespace=sample-ns
-
-Agora, como acessar esse serviço? A API do k8s nos da acesso e podemos usar o mesmo proxy que usamos para acessar o dashboard para acessar um endpoint do nosso pod: http://172.0.2.32:8001/api/v1/namespaces/sample-ns/pods/postalcode-app-pod:1080/proxy/postalcodes
-
-Podemos acompanhar o log do nosso pod via linha de comando:
+Usando ccm, pare um outro nó do cluster (abra uma nova sessão ssh da vm para facilitar):
 
 ```
-kubectl logs -f -n sample-ns postalcode-app-pod
+ccm node2 stop
+
+ccm status
 ```
 
-Ou dashboard: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=sample-ns#/log/sample-ns/postalcode-app-pod/pod?namespace=sample-ns&container=postalcode-app
-
-Mas o que ocorre se nosso serviço parar? Na aba de pods do dashboard, excluia o pod, ou se preferir via linha de comando:
+Mude a consistência da sessão para QUORUM e tente incluir novos usuários (ao menos mais 5 usuários):
 
 ```
-kubectl delete -n sample-ns pod postalcode-app-pod
+consistency QUORUM
+
+insert into user (addresspostalcode, age, email, name, id) values ('01122080', 30, 'Joao', 'joao@teste.com', '2');
+...
 ```
 
-Tente acessar novamente o endpoint do serviço. 
+Algum insert deu erro? 
 
-Como fazer para que o k8s mantenha os serviços rodando? 
-
-Ao invés de criar um pod, vamos criar um [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) aplicando as configurações do arquivo [postalcode-app-deployment.yaml](postalcode-app/deploy/postalcode-app-deployment.yaml).
-
-Nesse arquivo, nós descrevemos o deploy, nesse caso, criamos o deployment de nome **postalcode-app-deployment** indicando que devem subir 3 pods.
+Execute novamente outros inserts, parando outro nó:
 
 ```
-kubectl apply -n sample-ns -f postalcode-app-deployment.yaml
+ccm node3 stop
 ```
 
-Verifique no dashboard os 3 pods executando. Agora, se você tentar excluir um pod, outro ira subir, tente fazer isso
+E agora, algum insert deu erro? Por que?
 
-Mas agora temos 3 pods rodando, criados com nomes aleatórios, como fazemos para acessar? 
-
-Vamos criar um [service](https://kubernetes.io/docs/concepts/services-networking/service/) que vai permitir acessar os pods do nosso deployment. Verifique o arquivo [postalcode-app-service.yaml](postalcode-app/deploy/postalcode-app-service.yaml) e aplique as configurações:
+Tente executar novamente um select: 
 
 ```
-kubectl apply -n sample-ns -f postalcode-app-service.yaml
+select * from user
 ```
 
-Verifique no dashboard que o service foi criado e acesse no seu browser: http://172.0.2.32:8001/api/v1/namespaces/sample-ns/services/postalcode-app-service:1099/proxy/postalcodes
+Também deu erro, por que?
 
-Dentro da VM:
+Altere a consistência de volta para ONE e tente fazer a inserção e a leitura novamente.
 
-```
-kubectl get -n sample-ns service
-minikube tunnel
-curl http://CLUSTER-IP:1099/postalcodes
-```
-
-Ou, execute:
+Apesar de [CQL](https://cassandra.apache.org/doc/latest/cql/) ter sintaxe parecida com SQL, eles não é a mesma coisa, tente fazer executar essa query:
 
 ```
-kubectl port-forward -n sample-ns service/postalcode-app-service 40123:1099 --address 0.0.0.0
+select * from user where name = 'joao';
 ```
 
-E acesse no browswer: http://172.0.2.32:40123/postalcodes
-
-E como outros pods acessam o serviço? O k8s tem um serviço [DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/), é por ele que os pods vão se comunicar. Então vamos executar um novo pod e testar o acesso ao nosso serviço a partir dele: 
-
-```
-kubectl run -it --tty pingtest --rm --image=busybox --restart=Never -- /bin/sh
-wget -qO- http://postalcode-app-service.sample-ns.svc.cluster.local:1099/postalcodes
-```
-
-##### escalando a aplicação
-
-Em algumas momentos, podemos querer ter mais ou menos pods respondendo pelo nosso serviço, para isso utilize: 
-
-```
-kubectl scale -n sample-ns --replicas=1 deployment/postalcode-app-deployment
-```
-
-Podemos também criar regras de [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/):
-
-```
-kubectl autoscale -n sample-ns deployment/postalcode-app-deployment --min=1 --max=5 --cpu-percent=5
-```
-
-E assim como os demais recursos, podemos criar regras para autoscaling definidas em arquivos, verifique [postalcode-app-hpa.yaml](postalcode-app/deploy/postalcode-app-hpa.yaml) e aplique as configurações:
-
-```
-kubectl apply -n sample-ns -f postalcode-app-hpa.yaml
-```
-
-Veja detalhes do auto scaling:
-
-```
-kubectl describe -n sample-ns hpa postalcode-app-hpa
-```
-
-Ou nos detalhes do deployment no dashboard.
-
-Agora vamos forçar um autoscaling disparando um teste de carga contra a aplicação:
-
-```
-kubectl port-forward -n sample-ns service/postalcode-app-service 40123:1099 --address 0.0.0.0
-ab -n 10000 -c 200 http://localhost:40123/postalcodes
-```
-
-### Subindo sample app
-
-O minikube roda num docker na network minikube. Suba a aplicação sample-app no kubernetes, na namespace **sample-ns**, acessando o banco de dados MySQL rodando fora do k8s e o postal code service rodando no k8s. Exponha o aplicação em um serviço **sample-app-service** na porta **25123**.
-
-### Expondo a aplicação para fora
-
-A forma como damos acesso ao nossos pods é via services, que podem ser desses tipos: ClusterIP (default), NodePort, LoadBalancer, ExternalName.
-
-Mas, ao invés de expor para fora todos seus services, podemos usar o conceito de [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/):
-
-```
-minikube addons enable ingress
-```
-
-Ingress permite que criamos regras de roteamento para serviços num cluster.
-
-```
-kubectl apply -f sample-ingress.yaml
-```
-
-Veja o IP Address do ingress:
-
-```
-kubectl get -n sample-ns ingress
-```
-
-Tente executar:
-
-```
-curl -i http://{ingress-ip}/postalcode-app/postalcodes
-```
-
-O que apareceu? Veja que na nossa regra de ingress define um host, então:
-
-```
-sudo vim /etc/hosts
-```
-
-Edite incluindo o IP do ingress para o host **sample.info** e tente novamente:
-
-```
-curl -i http://sample.info/postalcode-app/postalcodes
-curl -i http://sample.info/sample-app/swagger-ui.html
-```
-
-Para discutir, dado que ingress é por namespace, qual seria a estratégia para ter um IP para aplicações de vários namespaces?
+Porque não deixou?

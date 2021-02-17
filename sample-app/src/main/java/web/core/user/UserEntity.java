@@ -3,44 +3,29 @@ package web.core.user;
 import java.util.Objects;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKey;
+import org.springframework.data.cassandra.core.mapping.Table;
 
-import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
-
-@Entity(name = UserEntity.ENTITY_NAME)
-@Table(name = UserEntity.TABLE_NAME, //
-		indexes = { //
-				@Index(name = "user_uk01", columnList = "email", unique = true) })
-@DynamicUpdate
+@Table(value = UserEntity.TABLE_NAME)
 public class UserEntity {
 
 	public static final String ENTITY_NAME = "User";
 	public static final String TABLE_NAME = "user";
 
-	@Id
-	@Type(type = "uuid-binary")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@GenericGenerator(name = "UserId", strategy = "uuid2")
+	@PrimaryKey
 	private UUID id;
 
-	@Column(updatable = false, nullable = false)
+	@Column
 	private String email;
 
-	@Column(nullable = false)
+	@Column
 	private String name;
 
-	@Column(nullable = false)
+	@Column
 	private Integer age;
 
-	@Column(nullable = false)
+	@Column
 	private String addressPostalCode;
 
 	public UserEntity() {

@@ -2,7 +2,10 @@ package web.core.user;
 
 import java.util.Optional;
 
-public interface UserRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface UserRepository // extends CrudRepository<UserEntity, String> 
+{
 	
 	Optional<UserEntity> findUserByEmail(String email);
 
