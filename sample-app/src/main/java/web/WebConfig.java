@@ -45,7 +45,7 @@ public class WebConfig implements WebMvcConfigurer {
 		session.setKeyspaceName(keyspace);
 		session.setContactPoints(contactPoints);
 		session.setPort(Integer.valueOf(port));
-		session.setLocalDatacenter("vm");
+		session.setLocalDatacenter("datacenter1");
 		return session;
 	}
 
