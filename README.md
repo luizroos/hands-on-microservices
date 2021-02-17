@@ -20,6 +20,10 @@ Os exercícios estão cada um branch separado e que devem ser feitos na **ordem*
 
 [exercício 9](https://github.com/luizroos/hands-on-microservices/tree/e9)
 
+[exercício 10](https://github.com/luizroos/hands-on-microservices/tree/e10)
+
+[exercício 11](https://github.com/luizroos/hands-on-microservices/tree/e11)
+
 ### Subindo o ambiente
 
 Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com setup feito: docker, java, git, apache bench, etc já instalados, será mais facil executar cada exericício.
