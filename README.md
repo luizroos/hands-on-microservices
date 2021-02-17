@@ -48,7 +48,7 @@ Temos agora 5 nós de cassandra rodando com uma tabela **user** criada na namesp
 consistency
 ```
 
-Se a consistência não for ONE, sete para ONE:
+Se a consistência não for ONE, altere para ONE:
 
 ```
 consistency ONE
@@ -103,4 +103,4 @@ Apesar de [CQL](https://cassandra.apache.org/doc/latest/cql/) ter sintaxe pareci
 select * from user where name = 'joao';
 ```
 
-Porque não deixou?
+Por que não deixou?
