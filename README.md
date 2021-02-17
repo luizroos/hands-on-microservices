@@ -26,7 +26,7 @@ Tente então executar a aplicação e inserir um usuário (podemos rodar direto 
 ```
 ./gradlew build
 
-java -jar build/libs/sample-app-0.0.10-SNAPSHOT.jar
+java -jar build/libs/sample-app-0.0.11-SNAPSHOT.jar
 ```
 
 Pode usar curl ou acesse http://172.0.2.32:30001/swagger-ui.html.
