@@ -47,3 +47,29 @@ Para remover a vm (dentro do host):
 ```
 vagrant destroy
 ```
+
+### Rodando um container
+
+Dentro da VM, execute:
+
+```
+docker pull alpine
+```
+
+Isso vai baixar uma imagem chamada [alpine](https://hub.docker.com/_/alpine) do Docker Registry e salvar ela no nosso sistema. Você pode ver as imagens salvas no sistema com o comando:
+
+```
+docker images
+```
+
+Agora vamos executar um container baseado nessa imagem:
+
+```
+docker run alpine ls -l
+```
+
+Esse comando criou um container a partir da imagem alpine, e executou o comando 'ls -l' dentro do container, mostrando o output do comando para o client docker. Agora tente:
+
+```
+docker run -it alpine /bin/sh
+```
