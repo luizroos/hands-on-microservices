@@ -1,6 +1,6 @@
 # hands-on-microservices
 
-Os exercícios estão cada um branch separado e que devem ser feitos na **ordem**, o ideal é fazer em aula, com a explicação:
+Os exercícios estão cada um branch separado e que devem ser feitos na **ordem**, o ideal é fazer em aula, junto com a explicação:
 
 [exercício 1](https://github.com/luizroos/hands-on-microservices/tree/e1)
 
@@ -26,9 +26,9 @@ Os exercícios estão cada um branch separado e que devem ser feitos na **ordem*
 
 ### Subindo o ambiente
 
-Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com setup feito: docker, java, git, apache bench, etc já instalados, será mais facil executar cada exericício.
+Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com setup feito: docker, java, git, apache bench, etc já instalados, será mais facil executar cada execício.
 
-Uma vez o vagrant instalado, entre no diretório vm e execute:
+Uma vez o vagrant instalado, entre no diretório **vm** e execute:
 
 ```
 vagrant up
@@ -60,7 +60,7 @@ Dentro da VM, execute:
 docker pull alpine
 ```
 
-Isso vai baixar uma imagem chamada [alpine](https://hub.docker.com/_/alpine) do Docker Registry e salvar ela no nosso sistema. Você pode ver as imagens salvas no sistema com o comando:
+Isso vai baixar uma imagem chamada [alpine](https://hub.docker.com/_/alpine) do Docker Registry e salva-la no nosso sistema. Você pode ver as imagens salvas com o comando:
 
 ```
 docker images
