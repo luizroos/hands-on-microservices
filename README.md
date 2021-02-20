@@ -26,7 +26,7 @@ Os exercícios estão cada um branch separado e que devem ser feitos na **ordem*
 
 ### Subindo o ambiente
 
-Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com setup feito: docker, java, git, apache bench, etc já instalados, será mais facil executar cada execício.
+Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com setup feito ([instalação de vagrant no windows](https://nandovieira.com.br/usando-o-vagrant-como-ambiente-de-desenvolvimento-no-windows)): docker, java, git, apache bench, etc já instalados, será mais facil executar cada execício.
 
 Uma vez o vagrant instalado, entre no diretório **vm** e execute:
 
