@@ -37,7 +37,7 @@ public class UserResource {
 	public UserCreateResponse createUser(@Valid @RequestBody UserCreateForm userCreateForm) throws BadRequestException {
 		final UserEntity createdUser;
 		try {
-			createdUser = userCreateService.createUser(userCreateForm.getEmail(), userCreateForm.getEmail(),
+			createdUser = userCreateService.createUser(userCreateForm.getEmail(), userCreateForm.getName(),
 					userCreateForm.getAge(), userCreateForm.getAddressPostalCode());
 		} catch (EntityAlreadyExistsException e) {
 			throw new BadRequestException(String.format("Usuario com %s %s ja cadastrado com id %s", e.getSearchField(),

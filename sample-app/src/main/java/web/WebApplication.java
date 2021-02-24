@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan
 @EnableJpaRepositories
 @EnableTransactionManagement
-@Import({ WebConfig.class })
+@Import({ WebConfig.class, KafkaConfig.class })
 public class WebApplication {
 
 	public static void main(String[] args) {
