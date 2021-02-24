@@ -1,6 +1,6 @@
-# Exercício 11 - Desnormalização
+# Exercício 11 - Desnormalização de dados
 
-Remova o cluster criado no exercicio 10 e crie um novo, com a mesma keyspace e tabela, mas agora só com 3 nós:
+Ainda sobre a aplicação com cassandra, remova o cluster criado no exercicio 10 e crie um novo, com a mesma keyspace e tabela, mas agora só com 3 nós:
 
 ```
 ccm remove
