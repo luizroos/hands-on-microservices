@@ -39,11 +39,11 @@ public class KafkaConfig {
 
 	@Bean
 	public ProducerFactory<String, Object> producerFactory() {
-		Map<String, Object> configProps = new HashMap<>();
-		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapAddress);
-		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-		return new DefaultKafkaProducerFactory<>(configProps);
+		final Map<String, Object> props = new HashMap<>();
+		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapAddress);
+		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+		return new DefaultKafkaProducerFactory<>(props);
 	}
 
 	@Bean
@@ -53,7 +53,7 @@ public class KafkaConfig {
 
 	@Bean
 	public ConsumerFactory<String, UserChangedMessage> consumerFactory() {
-		Map<String, Object> props = new HashMap<>();
+		final Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapAddress);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaConsumerGroupId);
 		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
