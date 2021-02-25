@@ -125,3 +125,5 @@ docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --gr
 Por que não alterou? Pare a aplicação, execute novamente e suba a aplicação.
 
 Por que esse deve ser a última coisa que você deve fazer para resolver um problema desse tipo?
+
+Agora crie um usuário com nome **create_name_err**, veja no log da aplicação o que ocorreu. Esse é um problema de consistência, como resolver?
