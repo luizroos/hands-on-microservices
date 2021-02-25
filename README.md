@@ -1,240 +1,84 @@
 # Exercício 9 - orquestrando containers
 
+Voltamos ao banco H2, para simplificar subir a aplicação. 
 
-Iniciando o minikube:
 
-```
-minikube start
-```
+O Kafka utiliza o [Zookeeper](https://zookeeper.apache.org/) para sincronizar as configurações entre os nós do cluster, então antes de subir o servidor do Kafka, temos que subir o serviço do Zookeeper.
 
-Habilitamos metrics-server
+A empresa que mantém o Kafka possui uma ferramenta web para gerenciar e monitorar o Kafka chamada [control center](https://docs.confluent.io/platform/current/control-center/index.html). Mantém também outra ferramenta chamada [schema registry](https://docs.confluent.io/platform/current/control-center/index.html) que serve para registrar schemas das mensagens que trafegam no Kafka, garantindo que producers não quebrem a compatibilidade.
 
-```
-minikube addons enable metrics-server
-```
+Por conta disso, ao invés de subir cada container separado, vamos usar o [docker-compose](https://docs.docker.com/compose/) para subir todos os serviços (apesar que para usar o Kafka, só é necessário mesmo o Zookeeper e o Kafka Broker).
 
-Iniciando k8s dashboard
+Veja o arquivo [docker-compose.yam](docker-compose.yml), a estrutura é simples, e uma nova forma para vocês subirem containers. Vamos subir nosso Kafka então:
 
 ```
-minikube dashboard
+docker-compose up -d
 ```
 
-Proxy para acesso ao dashboard:
+Para parar todos serviços e remover todos containers, execute:
 
 ```
-kubectl proxy --address 0.0.0.0 --accept-hosts '.*'
+docker-compose down
 ```
 
-Acesse no browser: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/
+Após todos os serviços subir, acesse o control center a partir de http://localhost:9021/ (TODO ip da VM).
 
-### Subindo uma imagem simples
+### Gerando e consumindo algumas mensagens
 
-Vamos subir um servidor apache httpd:
+Vamos criar um novo tópico chamado **sample.topic**, para isso acesse o menu **Topics** e em seguida selecione **Add a topic**. Pode deixar o número de partições como **1**, selecione **Customize settings**, veja que o control center já nos da algumas configurações pré definidas (faz mais sentido em um ambiente com mais nós no cluster). Selecione **Custom availability settings** com e deixe replication_factor e min_insync_replicas com valor 1. Em **Storage** você configura como será a retenção das mensagens, o Kafka permite rentação por tempo e/ou tamanho. Pode deixar retention time como 1 hora e retention size como 1 Mb. Por fim, pode mandar crir o tópico.
 
-```
-kubectl create deployment apache-httpd --image=httpd
-
-kubectl expose deployment apache-httpd --type=LoadBalancer --port=80
-```
-
-Acesse: http://172.0.2.32:8001/api/v1/namespaces/default/services/apache-httpd/proxy/
+Vamos gerar agora algumas mensagens nesse topico, para isso vamos usar a ferramenta [kafka-console-producer](https://docs.cloudera.com/runtime/7.2.7/kafka-managing/topics/kafka-manage-cli-producer.html) ferramenta do próprio Kafka que permite gerar mensagens texto em um tópico: 
 
 ```
-kubectl get services
-
-minikube tunnel --cleanup
-
-kubectl get services
-
-curl <external_ip>
+docker exec broker bash -c "seq 5 | kafka-console-producer --request-required-acks 1 --broker-list localhost:29092 --topic sample.topic"
 ```
 
-### Subindo serviço de postal code
-
-##### Criando a imagem
-
-Vamos simular o serviço usando mockserver, mas como não podemos depender de subir o serviço e configurar o mock para o endpoint, iremos gerar uma imagem para nosso serviço, extendendo mockserver, já configurando o endpoint mockado:
+Enviamos 5 mensagens para o tópico que criamos. Vamos usar outra ferramenta chamada [kafka-console-consumer](https://docs.cloudera.com/runtime/7.2.7/kafka-managing/topics/kafka-manage-cli-consumer.html) para consumir essas mensagens:
 
 ```
-cd postalcode-app/image/
-
-docker build -t postalcode-app:1 .
+docker exec broker kafka-console-consumer --bootstrap-server localhost:29092 --topic sample.topic --from-beginning --group consumer --timeout-ms 5000
 ```
 
-Geramos a imagem, porém ela não está em um registry que o minikube usa, então precisamos fazer push da imagem para ele poder usar. Existem várias [formas](https://minikube.sigs.k8s.io/docs/handbook/pushing/) de fazer isso, vamos usar a seguinte:
+Marcamos para consumir desde o inicio do tópico, nomeamos o consumidor de "consumer" e setamos um timeout de 5 segundos (significa que se não chegar mensagens em 5 segundos, o consumidor para de consumir, isso é útil para os demais testes). 
 
 
-```
-minikube cache add postalcode-app:1
-```
 
-Veja as imagens já disponíveis:
+Veja no control center os detalhes do tópico e do consumer (menu Consumers). Se você só gerou as 5 mensagens, o end offset deve estar em 5, o current offset do consumer está em 5 e o lag em 0.
 
-```
-minikube cache list
-```
-
-##### deploy da aplicação
-
-Vamos criar uma [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) para nossos serviços:
+Podemos usar a ferramenta [kafka-consumer-groups](https://docs.cloudera.com/runtime/7.2.7/kafka-managing/topics/kafka-manage-cli-cgroups.html) para ver os detalhes do consumer também via linha de comando:
 
 ```
-kubectl create namespace sample-ns
+docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group consumer --describe
 ```
 
-Veja que a namespace já aparece no dashboard: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=sample-ns#/overview?namespace=sample-ns
+Execute novamente o consumer, algo foi exibido? Por que não?
 
-A forma mais comum para se criar recursos no k8s é usar arquivos que descrevem os recursos que queremos criar. Visualize o arquivo [postalcode-app-pod.yaml](postalcode-svc/deploy/postalcode-app-pod.yaml), ele cria um [pod](https://kubernetes.io/docs/concepts/workloads/pods/) chamado **postalcode-app-pod**, usando a imagem **postalcode-app:1**.
-
-Aplique a configuração do arquivo, usando a namespace criada anteriormente:
+Vamos reprocessar as mensagens alterando o current offset do consumer:
 
 ```
-kubectl apply -n sample-ns -f postalcode-app-pod.yaml
+docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group consumer --topic sample.topic --reset-offsets --to-earliest --execute
 ```
 
-Verifique se o pod foi criado: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=sample-ns#/pod?namespace=sample-ns
+Agora sim, execute novamente o consumer.
+ 
 
-Agora, como acessar esse serviço? A API do k8s nos da acesso e podemos usar o mesmo proxy que usamos para acessar o dashboard para acessar um endpoint do nosso pod: http://172.0.2.32:8001/api/v1/namespaces/sample-ns/pods/postalcode-app-pod:1080/proxy/postalcodes
-
-Podemos acompanhar o log do nosso pod via linha de comando:
-
-```
-kubectl logs -f -n sample-ns postalcode-app-pod
-```
-
-Ou dashboard: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=sample-ns#/log/sample-ns/postalcode-app-pod/pod?namespace=sample-ns&container=postalcode-app
-
-Mas o que ocorre se nosso serviço parar? Na aba de pods do dashboard, excluia o pod, ou se preferir via linha de comando:
+Via linha de comando, podemos visutalizar também os detalhes do tópico: 
 
 ```
-kubectl delete -n sample-ns pod postalcode-app-pod
+docker exec broker kafka-topics --bootstrap-server localhost:29092 --topic sample.topic --describe
 ```
 
-Tente acessar novamente o endpoint do serviço. 
+### Integrando com a aplicação
 
-Como fazer para que o k8s mantenha os serviços rodando? 
+Veja as alterações na aplicação, principalmente os arquivos [KafkaConfig.java](sample-app/src/main/java/web/KafkaConfig.java), [OnUserChanged.java](sample-app/src/main/java/web/core/user/OnUserChanged.java) e (UserCreateService.java)[sample-app/src/main/java/web/core/user/UserCreateService.java].
 
-Ao invés de criar um pod, vamos criar um [deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) aplicando as configurações do arquivo [postalcode-app-deployment.yaml](postalcode-app/deploy/postalcode-app-deployment.yaml).
+O Kafka que subimos está habilitado com **auto create topic**, isso significa que se a aplicação enviar uma mensagem para um tópico, ele sera criado pelo servidor. Se quiser, pode criar o tópico **user.changed**, ou então suba a aplicação que o tópico sera criado por ela.
 
-Nesse arquivo, nós descrevemos o deploy, nesse caso, criamos o deployment de nome **postalcode-app-deployment** indicando que devem subir 3 pods.
+Crie alguns usuários para a aplicação (usando o mesmo endpoint que usamos para gerar o teste de carga).
 
-```
-kubectl apply -n sample-ns -f postalcode-app-deployment.yaml
-```
+Veja no log o consumo do evento do usuário gerado. 
 
-Verifique no dashboard os 3 pods executando. Agora, se você tentar excluir um pod, outro ira subir, tente fazer isso
+Agora crie um usuário com nome **consumer_name_err** (na classe OnUserChanged tem um if para que usuários com esse nome, lance uma exceção no consumidor).
 
-Mas agora temos 3 pods rodando, criados com nomes aleatórios, como fazemos para acessar? 
 
-Vamos criar um [service](https://kubernetes.io/docs/concepts/services-networking/service/) que vai permitir acessar os pods do nosso deployment. Verifique o arquivo [postalcode-app-service.yaml](postalcode-app/deploy/postalcode-app-service.yaml) e aplique as configurações:
 
-```
-kubectl apply -n sample-ns -f postalcode-app-service.yaml
-```
-
-Verifique no dashboard que o service foi criado e acesse no seu browser: http://172.0.2.32:8001/api/v1/namespaces/sample-ns/services/postalcode-app-service:1099/proxy/postalcodes
-
-Dentro da VM:
-
-```
-kubectl get -n sample-ns service
-minikube tunnel
-curl http://CLUSTER-IP:1099/postalcodes
-```
-
-Ou, execute:
-
-```
-kubectl port-forward -n sample-ns service/postalcode-app-service 40123:1099 --address 0.0.0.0
-```
-
-E acesse no browswer: http://172.0.2.32:40123/postalcodes
-
-E como outros pods acessam o serviço? O k8s tem um serviço [DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/), é por ele que os pods vão se comunicar. Então vamos executar um novo pod e testar o acesso ao nosso serviço a partir dele: 
-
-```
-kubectl run -it --tty pingtest --rm --image=busybox --restart=Never -- /bin/sh
-wget -qO- http://postalcode-app-service.sample-ns.svc.cluster.local:1099/postalcodes
-```
-
-##### escalando a aplicação
-
-Em algumas momentos, podemos querer ter mais ou menos pods respondendo pelo nosso serviço, para isso utilize: 
-
-```
-kubectl scale -n sample-ns --replicas=1 deployment/postalcode-app-deployment
-```
-
-Podemos também criar regras de [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/):
-
-```
-kubectl autoscale -n sample-ns deployment/postalcode-app-deployment --min=1 --max=5 --cpu-percent=5
-```
-
-E assim como os demais recursos, podemos criar regras para autoscaling definidas em arquivos, verifique [postalcode-app-hpa.yaml](postalcode-app/deploy/postalcode-app-hpa.yaml) e aplique as configurações:
-
-```
-kubectl apply -n sample-ns -f postalcode-app-hpa.yaml
-```
-
-Veja detalhes do auto scaling:
-
-```
-kubectl describe -n sample-ns hpa postalcode-app-hpa
-```
-
-Ou nos detalhes do deployment no dashboard.
-
-Agora vamos forçar um autoscaling disparando um teste de carga contra a aplicação:
-
-```
-kubectl port-forward -n sample-ns service/postalcode-app-service 40123:1099 --address 0.0.0.0
-ab -n 10000 -c 200 http://localhost:40123/postalcodes
-```
-
-### Subindo sample app
-
-O minikube roda num docker na network minikube. Suba a aplicação sample-app no kubernetes, na namespace **sample-ns**, acessando o banco de dados MySQL rodando fora do k8s e o postal code service rodando no k8s. Exponha o aplicação em um serviço **sample-app-service** na porta **25123**.
-
-### Expondo a aplicação para fora
-
-A forma como damos acesso ao nossos pods é via services, que podem ser desses tipos: ClusterIP (default), NodePort, LoadBalancer, ExternalName.
-
-Mas, ao invés de expor para fora todos seus services, podemos usar o conceito de [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/):
-
-```
-minikube addons enable ingress
-```
-
-Ingress permite que criamos regras de roteamento para serviços num cluster.
-
-```
-kubectl apply -f sample-ingress.yaml
-```
-
-Veja o IP Address do ingress:
-
-```
-kubectl get -n sample-ns ingress
-```
-
-Tente executar:
-
-```
-curl -i http://{ingress-ip}/postalcode-app/postalcodes
-```
-
-O que apareceu? Veja que na nossa regra de ingress define um host, então:
-
-```
-sudo vim /etc/hosts
-```
-
-Edite incluindo o IP do ingress para o host **sample.info** e tente novamente:
-
-```
-curl -i http://sample.info/postalcode-app/postalcodes
-curl -i http://sample.info/sample-app/swagger-ui.html
-```
-
-Para discutir, dado que ingress é por namespace, qual seria a estratégia para ter um IP para aplicações de vários namespaces?
