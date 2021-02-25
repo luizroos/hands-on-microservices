@@ -1,4 +1,4 @@
-# Exercício 9 - orquestrando containers
+# Exercício X - Kafka
 
 Voltamos ao banco H2, para simplificar subir a aplicação. 
 
@@ -79,6 +79,3 @@ Crie alguns usuários para a aplicação (usando o mesmo endpoint que usamos par
 Veja no log o consumo do evento do usuário gerado. 
 
 Agora crie um usuário com nome **consumer_name_err** (na classe OnUserChanged tem um if para que usuários com esse nome, lance uma exceção no consumidor).
-
-
-
