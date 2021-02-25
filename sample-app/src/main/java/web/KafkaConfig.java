@@ -18,21 +18,25 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.ContainerProperties.AckMode;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 import org.springframework.retry.RetryPolicy;
 import org.springframework.retry.backoff.BackOffPolicy;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.AlwaysRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
 
-import web.core.user.UserChangedMessage;
+import io.confluent.kafka.serializers.KafkaAvroDeserializer;
+import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig;
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
+import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 
 @EnableKafka
 public class KafkaConfig {
 
 	@Value("${kafka.bootstrapAddress}")
 	private String kafkaBootstrapAddress;
+
+	@Value("${kafka.schemaRegistryUrl}")
+	private String schemaRegistryURL;
 
 	@Value("${kafka.consumer.groupId}")
 	private String kafkaConsumerGroupId;
@@ -42,7 +46,8 @@ public class KafkaConfig {
 		final Map<String, Object> props = new HashMap<>();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapAddress);
 		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+		props.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryURL);
 		return new DefaultKafkaProducerFactory<>(props);
 	}
 
@@ -52,17 +57,20 @@ public class KafkaConfig {
 	}
 
 	@Bean
-	public ConsumerFactory<String, UserChangedMessage> consumerFactory() {
+	public ConsumerFactory<String, Object> consumerFactory() {
 		final Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapAddress);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaConsumerGroupId);
-		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(),
-				new JsonDeserializer<>(UserChangedMessage.class));
+		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, KafkaAvroDeserializer.class);
+		props.put(KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG, "true");
+		props.put(KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryURL);
+		return new DefaultKafkaConsumerFactory<>(props);
 	}
 
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, UserChangedMessage> kafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory<String, UserChangedMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
+	public ConcurrentKafkaListenerContainerFactory<String, Object> kafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
 		factory.setConcurrency(6);
 		factory.setRetryTemplate(retryTemplate());

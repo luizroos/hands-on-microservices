@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import web.core.exc.EntityAlreadyExistsException;
 import web.core.exc.UnknownPostalCodeException;
+import web.core.user.pub.UserChangedMessage;
 
 @Service
 @Transactional(propagation = Propagation.NEVER)
@@ -41,7 +42,10 @@ public class UserCreateService {
 		LOGGER.info("Persistindo usuario {}", email);
 		final UserEntity user = userRepository.createUser(email, name, age, addressPostalCode);
 
-		KafkaTemplate.send(UserChangedMessage.TOPIC_NAME, user.getId().toString(), new UserChangedMessage(user));
+		final UserChangedMessage userChangeMessage = UserChangedMessage.newBuilder()//
+				.setUserName(user.getName()) //
+				.setUserId(user.getId().toString()).build();
+		KafkaTemplate.send(OnUserChanged.TOPIC_NAME, user.getId().toString(), userChangeMessage);
 
 		if (user.getName().equalsIgnoreCase("create_name_err")) {
 			throw new RuntimeException();
