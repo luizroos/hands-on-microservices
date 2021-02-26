@@ -149,3 +149,9 @@ Depois de subir, acesse http://172.0.2.32:8080/swagger-ui.html e inclua alguns u
 ```
 select * from user
 ```
+
+Ou
+
+```
+docker exec -it mysql mysql -u db_user -p sample-db -e "select * from user";
+```
