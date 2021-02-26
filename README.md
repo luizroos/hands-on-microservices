@@ -40,11 +40,11 @@ java -jar build/libs/sample-app-0.0.1-SNAPSHOT.jar
 
 Acesse http://172.0.2.32:30001/hello no seu browser
 
-Quando subimos a vm, dissemos que seu ip é 172.0.2.32 e a aplicação está subindo na porta 30001. 
+Quando subimos a vm, demos o ip 172.0.2.32, a aplicação está subindo na porta 30001. 
 
 Para interromper a aplicação, precione CTRL + C
 
-#### executando a aplicação com docker
+#### Executando a aplicação com docker
 
 O docker é muito bem documentado, veja https://docs.docker.com/, mesmo usando sua ferramenta client, para qualquer comando você pode ver quais opções exitem, por exemplo veja opções para o build
 
@@ -60,9 +60,9 @@ Vamos gerar uma imagem da nossa aplicação, tagueando-a como **sample-app:1**
 docker build --build-arg JAR_FILE=build/libs/\*.jar -t sample-app:1 .
 ```
 
-Quando criamos imagens, essas imagens herdam outras imagens, e assim vai se criando uma hierarquia de imagens. Quando executamos o comando acima, o docker baixou várias imagens intermediárias para poder criar a nossa, já que nossa imagem herda de imagem chamada **openjdk:11**
+Quando criamos imagens, essas imagens herdam outras imagens, e assim vai se criando uma hierarquia de imagens. Quando executamos o comando acima, o docker baixou várias imagens intermediárias para poder criar a nossa, já que nossa imagem herda de uma imagem chamada **openjdk:11**
 
-Agora que geramos nossa imagem, podemos rodar um container dessa imagem:
+Agora que geramos nossa imagem, podemos rodar um container dela:
 
 ```
 docker run sample-app:1
@@ -98,7 +98,7 @@ Ou
 docker rm $(docker ps -q --filter "status=exited")
 ```
 
-#### Acessando sua aplicação
+#### Acessando a aplicação
 
 Tente acessar no seu browser http://172.0.2.32:30001/hello, por que não funciona como antes?
 
@@ -115,7 +115,7 @@ curl -i {container_ip}:30001/hello
 
 Mas como eu acesso de fora da vm?
 
-Vamos rodar um novo container, expondo a porta definida em EXPOSE do Dockerfile
+Vamos rodar um novo container, expondo a porta definida em **EXPOSE** do Dockerfile
 
 ```
 docker run -P -d sample-app:1
@@ -138,6 +138,7 @@ Muitas imagens ou aplicações podem ter um comportamento customizado a partir d
 ```
 docker run -P -d -e HELLO_MESSAGE=ola sample-app:1
 ```
+
 Veja a porta exposta desse novo container e acesse novamente http://172.0.2.32:{PORTA_EXPOSTA}/hello
 
 #### Parando e reexecutando um container
@@ -159,6 +160,7 @@ Veja a lista de todos containers criados:
 ```
 docker ps -a
 ```
+
 Para iniciar o container novamente, utilize o comando **start**:
 
 ```
@@ -173,7 +175,7 @@ docker restart {container_id}
 
 #### Nomeando containers
 
-Ficar executando operações com o id do container, pode ser difícil. Toda vez que você cria um container, ele ganha um id e nome aleatórios. Todas operações que são executadas passando o id do container, podem ser executadas passando o nome.
+Ficar executando operações com o id do container é chato. Toda vez que você cria um container, ele ganha um id e nome aleatórios. Todas operações que são executadas passando o id do container, podem ser executadas passando o nome.
 
 Para iniciar um container dando um nome, use o parâmetro  **--name** quando for rodar seu container:
 
