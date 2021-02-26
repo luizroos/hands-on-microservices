@@ -1,6 +1,6 @@
 # hands-on-microservices
 
-Os exercícios estão cada um branch separado e que devem ser feitos na **ordem**, o ideal é fazer em aula, junto com a explicação:
+Os exercícios estão cada um em um branch separado e que devem ser feitos na **ordem**, o ideal é fazer em aula, junto com a explicação:
 
 [exercício 1](https://github.com/luizroos/hands-on-microservices/tree/e1)
 
