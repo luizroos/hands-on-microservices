@@ -1,6 +1,6 @@
 # Exercício 2 - explorando outras possibilidades
 
-Você não precisa só executar aplicações standalone. As vezes você já tem uma aplicação legada, rodando dentro de algum servidor de aplicação, no caso do java, servidores como jboss, websphere, weblogic, etc.
+Você não precisa só executar aplicações standalones. As vezes você já tem uma aplicação legada, rodando dentro de algum servidor de aplicação, no caso do java, servidores como jboss, websphere, weblogic, etc.
 
 É possível gerar imagens e criar containers de aplicações que não são standalone. Vamos ver como podemos rodar a aplicação do execício 1 dentro de um [Wildfly](https://www.wildfly.org/).
 
@@ -36,7 +36,7 @@ Pare a aplicação e vamos executar em segundo plano, mas dessa vez, ao invés d
 docker run --rm -d -p 8080:8080 --name sample-app sample-app:2
 ```
 
-Caso tenha conflito no nome com outros containers previamente iniciado, você pode remove-los usando:
+Caso tenha conflito no nome com outros containers previamente iniciados, você pode remove-los usando:
 
 ```
 docker rm sample-app
