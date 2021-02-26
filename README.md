@@ -44,6 +44,6 @@ docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:7 .
 docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=mockserver:1080 --name sample-app --net=my-net sample-app:7
 ```
 
-Execute novamente o teste de carga com os parâmetros encontrados do exerício 6.
+Execute novamente o teste de carga com os parâmetros encontrados do exercício 6.
 
 O que aconteceu? Por que a aplicação perdeu tanta escalabilidade?
