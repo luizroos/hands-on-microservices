@@ -43,9 +43,6 @@ public class UserCreateService {
 
 		KafkaTemplate.send(UserChangedMessage.TOPIC_NAME, user.getId().toString(), new UserChangedMessage(user));
 
-		if (user.getName().equalsIgnoreCase("create_name_err")) {
-			throw new RuntimeException();
-		}
 		return user;
 	}
 
