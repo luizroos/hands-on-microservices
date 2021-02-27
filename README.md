@@ -24,6 +24,12 @@ Os exercícios estão cada um em um branch separado e que devem ser feitos na **
 
 [exercício 11](https://github.com/luizroos/hands-on-microservices/tree/e11)
 
+[exercício 12](https://github.com/luizroos/hands-on-microservices/tree/e12)
+
+[exercício 13](https://github.com/luizroos/hands-on-microservices/tree/e13)
+
+[exercício 14](https://github.com/luizroos/hands-on-microservices/tree/e14)
+
 ### Subindo o ambiente
 
 Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com setup feito ([instalação de vagrant no windows](https://nandovieira.com.br/usando-o-vagrant-como-ambiente-de-desenvolvimento-no-windows)): docker, java, git, apache bench, etc já instalados, será mais facil executar cada execício.
