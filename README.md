@@ -1,4 +1,4 @@
-# Exercício X - Kafka
+# Exercício 13 - Kafka
 
 Voltamos ao banco H2, para simplificar subir a aplicação. 
 
@@ -79,7 +79,7 @@ Vamos subir a aplicação na própria vm:
 ```
 ./gradlew clean build
 
-java -jar build/libs/sample-app-0.0.X-SNAPSHOT.jar
+java -jar build/libs/sample-app-0.0.13-SNAPSHOT.jar
 ```
 
 A aplicação vai conectar no kafka via localhost (quando subimos o kafka, fizemos mapeamento da porta do container para uma porta da vm).
