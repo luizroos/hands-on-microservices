@@ -96,7 +96,7 @@ Veja no log o consumo do evento do usuário gerado.
 2021-02-25 19:51:15.630  INFO 19256 --- [ntainer#0-0-C-1] web.core.user.OnUserChanged : user created, id=bcbb92f1-fd07-4e22-8c9d-c40635de369c, name=vYWHzQrI
 ```
 
-Ou seja, enviamos a mensagem para o Kafka na criação do usuário e consumimos esse evento na mesma aplicação.
+Enviamos a mensagem para o Kafka na criação do usuário e consumimos esse evento na mesma aplicação.
 
 Veja no control center o tópico e consumidor criado. Se você deixou a aplicação criar o tópico, verifique nos detalhes do dele que você pode alterar algumas configurações, altere o retenton time para 1 hora por exemplo.
 
