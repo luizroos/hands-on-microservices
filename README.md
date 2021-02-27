@@ -75,7 +75,11 @@ Vai aparecer uma [janela](amazon/p5.png) para gerar chaves de acesso a sua inst�
 
 Pronto, sua instância já está [subindo](amazon/p6.png), clique em **exibir instâncias**, você verá as [instâncias](amazon/p7.png) que tem rodando.
 
-Clique nos [detalhes](amazon/p8.png) da sua instância, lá você vai ver o **DNS IPv4 público**, por ele que você vai acessar os serviços que os exercícios pedem para acessar pelo browser (esse endereço substitui é o respectivo do 172.0.2.32 que é o IP que a VM sobe quando usamos vagrant). Clique em conectar (no menu lá no alto a direita), vai ser então apresentado [formas de conectar](amazon/p9.png) a sua instância. 
+Clique nos [detalhes](amazon/p8.png) da sua instância, lá você vai ver o **DNS IPv4 público** (só que o link aqui esta com https, quando for acessar, use http), por ele que você vai acessar os serviços que os exercícios pedem para acessar pelo browser (esse endereço substitui é o respectivo do 172.0.2.32 que é o IP que a VM sobe quando usamos vagrant). 
+
+Nos detalhes, vá em **segurança** (segunda aba do menu abaixo do resumo), então clique no link **grupos de segurança**, você deve ver uma [tela com os detalhes das regras](amazon/p10.png) de entrada da sua instância. Deve estar habilitada apenas a porta 22 (ssh). Nós vamos executar vários serviços que rodam em portas distintas, para não precisar ficar abrindo uma a uma, clique em **editar regras de entrada** , em sequida **adicionar regra**, escolha tipo **TCP personalizado**, com intervalo de portas **10000-65000** e origem **qualquer lugar**, [dessa forma](amazon/p11.png), nunca faça isso em um ambiente produtivo, acabamos de deixar aberto praticamente todas as portas da instância. Clique em salvar regras e então volte aos detalhes da instância.
+
+Nos detalhes da instância, agora clique em conectar (no menu lá no alto a direita), vai ser então apresentado [formas de conectar](amazon/p9.png) a sua instância, tente conectar. 
 
 Uma vez conectado, execute os comandos a seguir:
 
@@ -88,7 +92,7 @@ chmod +x hands-on-microservices/amazon/bootstrap.sh
 
 ```
 
-Aguarda a instalação de tudo
+Aguarda a instalação de tudo.
 
 Depois de usar, **não esqueça** de dar um stop na sua instância, vá nos detalhes da instância, no menu selecione **estado da instância** e então **interromper instância** (no outro dia basta iniciar ela novamente).
 
