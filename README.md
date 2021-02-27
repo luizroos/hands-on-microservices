@@ -31,7 +31,7 @@ Os exercícios estão cada um em um branch separado e que devem ser feitos na **
 [exercício 14](https://github.com/luizroos/hands-on-microservices/tree/e14)
 
 ### Instalando o ambiente
-
+-----
 
 #### Local com vagrant e virtual box 
 
@@ -63,7 +63,7 @@ vagrant destroy
 
 Se não for instalar o vagrant local, e for subir uma vm na mão, seja local ou em alguma cloud, sugiro subir um ubuntu e veja o aqruivo [bootstrap.sh](vm/bootstrap.sh) os comandos para instalação das dependências.
 
-#### Amazon
+#### Através de uma instância EC2 na Amazon
 
 Acesse o [console da aws](https://console.aws.amazon.com/ec2), se não tiver um usuário na aws, crie um novo (usuários novos tem 12 meses com 750h de alguns EC2 grátis). 
 
@@ -93,6 +93,7 @@ Aguarda a instalação de tudo
 Depois de usar, **não esqueça** de dar um stop na sua instância, vá nos detalhes da instância, no menu selecione **estado da instância** e então **interromper instância** (no outro dia basta iniciar ela novamente).
 
 ### Rodando um container
+-----
 
 Dentro da VM, execute:
 
