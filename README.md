@@ -65,23 +65,25 @@ Se não for instalar o vagrant local, e for subir uma vm na mão, seja local ou 
 
 #### Através de uma instância EC2 na Amazon
 
-Acesse o [console da aws](https://console.aws.amazon.com/ec2), se não tiver um usuário na aws, crie um novo (usuários novos tem 12 meses com 750h de alguns EC2 grátis). 
+Acesse o [console da aws](https://console.aws.amazon.com/ec2), se não tiver um usuário na aws, crie um novo (usuários novos tem 12 meses com 750h de alguns tipos de instância EC2 grátis). 
 
-Ao abrir o console, mude o idioma para português se preferir (lá embaixo na esqueda). Você deve estar vendo [isso](amazon/p1.png), no meio dessa tela, clique em **executar instância**, você deve ver uma [lista de imagens](amazon/p2.png), selecione a imagem **Ubuntu Server 18.04 LTS** (a instalação do ccm usa python e na 20 só tem python3), para achar ela mais fácil, pode selecionar no painel da direita o check de somente nível gratuito.  
+Ao abrir o console, mude o idioma para português se preferir (lá embaixo na esqueda). Você deve estar vendo [o painel EC2](amazon/p1.png), no meio dessa tela, clique em **executar instância**. 
+
+Sera direcionado para a primeira etapa onde devem [selecionar a imagem](amazon/p2.png) que será usada na sua instância EC2, selecione **Ubuntu Server 18.04 LTS** (a instalação do ccm, que vamos usar para um exercício, usa python e na imagem do ubuntu 20 só tem python3). Para achar a imagem mais fácil, pode selecionar no painel da direita o check de somente nível gratuito.  
 
 Depois de selecionar a imagem, você deve escolher o [tipo da instância]((amazon/p3.png)), escolha **t2.micro** (ou aquela mais alta que ainda esteja no nível gratuito). Pode então clicar em verificar e ativar, verifique [se está tudo certo](amazon/p4.png) e então **executar**. 
 
-Vai aparecer uma [janela](amazon/p5.png) para gerar chaves de acesso a sua instância. Selecionar **criar novo par de chaves** e digite um nome para ela, clique **fazer download do par de chaves**, salve esse arquivo, então será habilitado o botão **executar instâncias**, clique nele (se você for criar novas instâncias depois, pode usar a mesma chave criada agora).
+Vai aparecer uma [janela](amazon/p5.png) para gerar chaves de acesso à sua instância. Selecione **criar novo par de chaves** e digite um nome, clique **fazer download do par de chaves**, salve esse arquivo, então será habilitado o botão **executar instâncias**, clique nele (se você for criar novas instâncias depois, pode usar a mesma chave criada agora).
 
 Pronto, sua instância já está [subindo](amazon/p6.png), clique em **exibir instâncias**, você verá as [instâncias](amazon/p7.png) que tem rodando.
 
-Clique nos [detalhes](amazon/p8.png) da sua instância, lá você vai ver o **DNS IPv4 público** (só que o link aqui esta com https, quando for acessar, use http), por ele que você vai acessar os serviços que os exercícios pedem para acessar pelo browser (esse endereço substitui é o respectivo do 172.0.2.32 que é o IP que a VM sobe quando usamos vagrant). 
+Clique nos [detalhes](amazon/p8.png) da instância, veja o **DNS IPv4 público**, por ele que você vai acessar os serviços que os exercícios pedem para acessar pelo browser (use **http**, esse endereço substitui o 172.0.2.32 que usamos quando usamos vagrant). 
 
-Nos detalhes, vá em **segurança** (segunda aba do menu abaixo do resumo), então clique no link **grupos de segurança**, você deve ver uma [tela com os detalhes das regras](amazon/p10.png) de entrada da sua instância. Deve estar habilitada apenas a porta 22 (ssh). Nós vamos executar vários serviços que rodam em portas distintas, para não precisar ficar abrindo uma a uma, clique em **editar regras de entrada** , em sequida **adicionar regra**, escolha tipo **TCP personalizado**, com intervalo de portas **10000-65000** e origem **qualquer lugar**, [dessa forma](amazon/p11.png), nunca faça isso em um ambiente produtivo, acabamos de deixar aberto praticamente todas as portas da instância. Clique em salvar regras e então volte aos detalhes da instância.
+Ainda nos detalhes, clique em **segurança** (segunda aba do menu abaixo do resumo), e então **grupos de segurança**. Você deve ver uma [tela com os detalhes das regras](amazon/p10.png) de entrada da sua instância. Provavelmente vai estar habilitada apenas a porta 22 (ssh). Nós vamos executar vários serviços que rodam em portas distintas, para não precisar ficar abrindo uma a uma, clique em **editar regras de entrada** , em sequida **adicionar regra**, escolha tipo **TCP personalizado**, com intervalo de portas **10000-65000** e origem **qualquer lugar**, [dessa forma](amazon/p11.png) (nunca faça isso em um ambiente produtivo, acabamos de deixar aberto praticamente todas as portas da instância). Clique em salvar regras e então volte aos detalhes da instância.
 
-Nos detalhes da instância, agora clique em conectar (no menu lá no alto a direita), vai ser então apresentado [formas de conectar](amazon/p9.png) a sua instância, tente conectar. 
+De bolta aos detalhes da instância, agora clique em conectar (no menu lá no alto a direita), será apresentado [formas de conectar](amazon/p9.png) a sua instância, tente conectar (use putty ou outro client ssh). 
 
-Uma vez conectado, execute os comandos a seguir:
+Uma vez conectado via ssh, execute os comandos a seguir na home do usuário:
 
 ```
 git clone https://github.com/luizroos/hands-on-microservices.git
@@ -95,6 +97,7 @@ chmod +x hands-on-microservices/amazon/bootstrap.sh
 Aguarde a instalação de tudo e pronto, pode seguir para executar os containers.
 
 **IMPORTANTE**: Depois de usar, **não esqueça** de dar um stop na sua instância, vá nos detalhes da instância, no menu selecione **estado da instância** e então **interromper instância** (no outro dia basta iniciar ela novamente).
+
 
 ### Rodando um container
 -----
