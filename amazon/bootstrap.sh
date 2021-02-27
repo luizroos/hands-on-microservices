@@ -1,7 +1,7 @@
 ## instalação do docker
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
-sudo usermod -aG docker vagrant
+sudo usermod -aG docker ubuntu
 
 ## instalação docker compose
 sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -45,6 +45,7 @@ sudo echo "JAVA8_HOME=/usr/local/java-se-8u41-ri" >> ~/.bashrc
 sudo echo "export JAVA8_HOME" >> ~/.bashrc
 
 ## instalação ccm
+
 sudo apt-get install -y python-pip; sudo pip install cql PyYAML
 git clone https://github.com/pcmanus/ccm.git
 cd ccm; sudo ./setup.py install; cd ..
