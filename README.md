@@ -11,6 +11,9 @@ cd hands-on-microservices
 
 git checkout e1
 ```
+
+Caso esteja rodando dentro de uma instância na aws, você já deve ter feito o git clone antes.
+
 ### Aplicação sample-app
 
 Veja o código da aplicação (se quiser, configure alguma IDE, as mais comuns para java são [eclipse](https://www.eclipse.org/) ou [intellj](https://www.jetbrains.com/pt-br/idea/)). 
