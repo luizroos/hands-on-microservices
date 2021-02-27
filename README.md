@@ -92,9 +92,9 @@ chmod +x hands-on-microservices/amazon/bootstrap.sh
 
 ```
 
-Aguarda a instalação de tudo.
+Aguarde a instalação de tudo e pronto, pode seguir para executar os containers.
 
-Depois de usar, **não esqueça** de dar um stop na sua instância, vá nos detalhes da instância, no menu selecione **estado da instância** e então **interromper instância** (no outro dia basta iniciar ela novamente).
+**IMPORTANTE**: Depois de usar, **não esqueça** de dar um stop na sua instância, vá nos detalhes da instância, no menu selecione **estado da instância** e então **interromper instância** (no outro dia basta iniciar ela novamente).
 
 ### Rodando um container
 -----
