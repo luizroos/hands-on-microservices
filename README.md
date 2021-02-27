@@ -58,6 +58,8 @@ Para remover a vm (dentro do host):
 vagrant destroy
 ```
 
+Se não for instalar o vagrant local, e for subir uma vm na mão, seja local ou em alguma cloud, sugiro subir um ubuntu e veja o aqruivo [bootstrap.sh](vm/bootstrap.sh) os comandos para instalação das dependências.
+
 ### Rodando um container
 
 Dentro da VM, execute:
