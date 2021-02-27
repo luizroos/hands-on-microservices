@@ -1,88 +1,43 @@
-# Exercício X - Kafka
+# Exercício 12 - Rabbit
 
-Voltamos ao banco H2, para simplificar subir a aplicação. 
-
-
-O Kafka utiliza o [Zookeeper](https://zookeeper.apache.org/) para sincronizar as configurações entre os nós do cluster, então antes de subir o servidor do Kafka, temos que subir o serviço do Zookeeper.
-
-A empresa que mantém o Kafka possui uma ferramenta web para gerenciar e monitorar o Kafka chamada [control center](https://docs.confluent.io/platform/current/control-center/index.html). Mantém também outra ferramenta chamada [schema registry](https://docs.confluent.io/platform/current/control-center/index.html) que serve para registrar schemas das mensagens que trafegam no Kafka, garantindo que producers não quebrem a compatibilidade.
-
-Por conta disso, ao invés de subir cada container separado, vamos usar o [docker-compose](https://docs.docker.com/compose/) para subir todos os serviços (apesar que para usar o Kafka, só é necessário mesmo o Zookeeper e o Kafka Broker).
-
-Veja o arquivo [docker-compose.yam](docker-compose.yml), a estrutura é simples, e uma nova forma para vocês subirem containers. Vamos subir nosso Kafka então:
+Inicie um container do [rabbitmq](https://www.rabbitmq.com/):
 
 ```
-docker-compose up -d
+docker run -d --rm -p 5672:5672 -p 15672:15672 --name rabbitmq -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=pass rabbitmq:3-management
 ```
 
-Para parar todos serviços e remover todos containers, execute:
+Usamos a imagem management, que sobe junto uma interface de gerenciamento do rabbit, acesse: http://172.0.2.32:15672/ e logue com usuário user e senha pass (veja que são parâmetros que passamos ao iniciar o rabbit).
 
-```
-docker-compose down
-```
+O rabbit pé composto por [exchanges](http://172.0.2.32:15672/#/exchanges) e [filas](http://172.0.2.32:15672/#/queues). Normalmente, várias aplicações conectam no mesmo rabbit, então temos filas e exchanges de várias aplicações. Para prover algum tipo de separação desses recursos, o rabbit tem [virtual hosts](https://www.rabbitmq.com/vhosts.html), você pode criar um virtual host no menu admin, crie um com nome **sample-vh**.
 
-Após todos os serviços subir, acesse o control center a partir de http://172.0.2.32:9021/.
+Agora crie uma exchange nesse virtual host, do tipo **fanout**. Clique nos detalhes dessa exchange e publique uma mensagem para nela, você deverá ver uma mensagem "Message published, but not routed.". Isso ocorre porque as mensagens não são armazenadas nas exchanges, você envia mensagem para elas, e elas roteiam para filas ligadas a exchange, a mensagem é armazenada na fila.
 
-### Gerando e consumindo algumas mensagens
+Vamos criar então uma fila nesse virtual host. Veja que no momento que você cria a fila, existem uma serie de parâmetros que pode ser informados em args, se quiser, pode adicionar alguns, por exemplo **message-ttl**. A fila sozinha não recebe nenhuma mensagem, va nos detalhes da fila que você criou e adicione um bind dessa fila com a exchange criada anteriormente. 
 
-Vamos criar um novo tópico chamado **sample.topic**, para isso acesse o menu **Topics** e em seguida selecione **Add a topic**. Pode deixar o número de partições como **1**, selecione **Customize settings**, veja que o control center já nos da algumas configurações pré definidas (faz mais sentido em um ambiente com mais nós no cluster). Selecione **Custom availability settings** com e deixe replication_factor e min_insync_replicas com valor 1. Em **Storage** você configura como será a retenção das mensagens, o Kafka permite rentação por tempo e/ou tamanho. Pode deixar retention time como 1 hora e retention size como 1 Mb. Por fim, pode mandar crir o tópico.
+Volte para os detalhes da exchange que você criou, e envie novamente mensagens para ela, depois, volte aos detalhes da sua fila e veja que agora essas mensagens estão lá (se você configurou um ttl curto, pode ser que a fila já esteja vazia).
 
-Vamos gerar agora algumas mensagens nesse topico, para isso vamos usar a ferramenta [kafka-console-producer](https://docs.cloudera.com/documentation/kafka/latest/topics/kafka_command_line.html) ferramenta do próprio Kafka que permite gerar mensagens texto em um tópico: 
+Uma fila pode fazer bind com várias exchanges e uma exchange pode ter bind de diversas filas.
 
-```
-docker exec broker bash -c "seq 5 | kafka-console-producer --request-required-acks 1 --broker-list localhost:29092 --topic sample.topic"
-```
+Crie outras exchanges (direct, topic, headers) e outras filas, crie bind e teste o roteamento.
 
-Enviamos 5 mensagens para o tópico que criamos. Vamos usar outra ferramenta chamada [kafka-console-consumer](https://docs.cloudera.com/documentation/kafka/latest/topics/kafka_command_line.html) para consumir essas mensagens:
+Desafio: temos uma fila e um requisito que, se em 30 segundos a mensagem não for consumida, temos que enviar essa mensagem para outra fila para posterior tratamento. Somente com o rabbit, como implementar esse isso? (dica, verifique os parâmetros para criação da fila).
 
-```
-docker exec broker kafka-console-consumer --bootstrap-server localhost:29092 --topic sample.topic --from-beginning --group consumer --timeout-ms 5000
-```
+### Rabbit na aplicação
 
-Marcamos para consumir desde o inicio do tópico, nomeamos o consumidor de "consumer" e setamos um timeout de 5 segundos (significa que se não chegar mensagens em 5 segundos, o consumidor para de consumir, isso é útil para os demais testes). 
+Voltamos ao banco H2, para simplificar subir a aplicação.
 
-
-
-Veja no control center os detalhes do tópico e do consumer (menu Consumers). Se você só gerou as 5 mensagens, o end offset deve estar em 5, o current offset do consumer está em 5 e o lag em 0.
-
-Podemos usar a ferramenta [kafka-consumer-groups](https://docs.cloudera.com/documentation/kafka/latest/topics/kafka_command_line.html) para ver os detalhes do consumer também via linha de comando:
-
-```
-docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group consumer --describe
-```
-
-Execute novamente o consumer, algo foi exibido? Por que não?
-
-Vamos reprocessar as mensagens alterando o current offset do consumer:
-
-```
-docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group consumer --topic sample.topic --reset-offsets --to-earliest --execute
-```
-
-Agora sim, execute novamente o consumer.
- 
-
-Via linha de comando, podemos visutalizar também os detalhes do tópico: 
-
-```
-docker exec broker kafka-topics --bootstrap-server localhost:29092 --topic sample.topic --describe
-```
-
-### Integrando com a aplicação
-
-Veja as alterações na aplicação, principalmente os arquivos [KafkaConfig.java](sample-app/src/main/java/web/KafkaConfig.java), [OnUserChanged.java](sample-app/src/main/java/web/core/user/OnUserChanged.java) e (UserCreateService.java)[sample-app/src/main/java/web/core/user/UserCreateService.java].
-
-O Kafka que subimos está habilitado com **auto create topic**, isso significa que se a aplicação enviar uma mensagem para um tópico, ele sera criado pelo servidor. Se quiser, pode criar o tópico **user.changed**, ou então suba a aplicação que o tópico sera criado por ela.
+Veja as alterações na aplicação, vamos usar o virtual host criado antes, e agora toda vez que criarmos um usuário, vamos enviar uma mensagem para uma exchange chamada **user_changed.exchange**, criamos duas filas, uma **gmail.user.changed** que faz bind na exchange apenas quando a routing key for gmail.com, e outra **	
+log.user.changed** cuja routing key é *.
 
 Vamos subir a aplicação na própria vm:
 
 ```
 ./gradlew clean build
 
-java -jar build/libs/sample-app-0.0.X-SNAPSHOT.jar
+java -jar build/libs/sample-app-0.0.12-SNAPSHOT.jar
 ```
 
-A aplicação vai conectar no kafka via localhost (quando subimos o kafka, fizemos mapeamento da porta do container para uma porta da vm).
+A aplicação vai conectar no rabbit via localhost (quando subimos o rabbit, fizemos mapeamento da porta do container para uma porta da vm).
 
 Acesse http://172.0.2.32:30001/swagger-ui.html e crie uns usuários (pode usar o mesmo endpoint que usamos para o teste de carga), fique vendo o log da aplicação enquanto cria usuários. Pode criar usando curl também:
 
@@ -90,38 +45,18 @@ Acesse http://172.0.2.32:30001/swagger-ui.html e crie uns usuários (pode usar o
 curl localhost:30001/users/random
 ```
 
-Veja no log o consumo do evento do usuário gerado. 
+Crie alguns usuários com email do gmail e veja que tem um consumidor a mais para esse tipo de usuário.
+
+Veja no log o consumo do evento do usuário gerado (dois consumidores).
 
 ```
-2021-02-25 19:51:15.630  INFO 19256 --- [ntainer#0-0-C-1] web.core.user.OnUserChanged : user created, id=bcbb92f1-fd07-4e22-8c9d-c40635de369c, name=vYWHzQrI
+2021-02-26 21:32:26.516  INFO 1229 --- [ntContainer#1-1] web.core.user.OnUsersChanged : usuario alterado, id=2f4fe6db-b259-4feb-876f-d00c11bac660, name=Joao
+2021-02-26 21:33:15.751  INFO 1229 --- [ntContainer#0-4] web.core.user.OnUsersChanged : usuario com email do gmail alterado, id=73e1b95d-2e7d-4fc8-bb01-07a481bd9cf6, name=Jose
 ```
 
-Ou seja, enviamos a mensagem para o Kafka na criação do usuário e consumimos esse evento na mesma aplicação.
+Enviamos a mensagem para o rabbit na criação do usuário e consumimos esse evento na mesma aplicação.
 
-Veja no control center o tópico e consumidor criado. Se você deixou a aplicação criar o tópico, verifique nos detalhes do dele que você pode alterar algumas configurações, altere o retenton time para 1 hora por exemplo.
+Agora crie um usuário com nome consumer_name_err (na classe OnUserChanged tem um if para que usuários com esse nome, lance uma exceção no consumidor). A aplicação vai ficar retentando consumir o usuário, mas veja no rabbit que a mensagem permanece lá. Crie um novo usuário e veja que a mensagem desse novo usuário será consumida, mesmo sendo roteada para mesma fila, por que? Quais as consequências dessa característica?
 
-Agora crie um usuário com nome **consumer_name_err** (na classe OnUserChanged tem um if para que usuários com esse nome, lance uma exceção no consumidor). Veja que paramos de consumir eventos, por que?
 
-Vamos criar mais partições para nosso tópico. Usando a [kafka-topics](https://docs.cloudera.com/documentation/kafka/latest/topics/kafka_command_line.html) execute o seguinte comando (fique de olho no log da aplicação enquanto executa isso):
 
-```
-docker exec broker kafka-topics --bootstrap-server localhost:29092 --alter --topic user.changed --partitions 6
-```
-
-Perceba que a aplicação comeceu a consumir de outras partições. Se tivermos mais de uma aplicação conectada, cada partição é consumida por apenas uma aplicação (não adianta ter 10 aplicações consumindo um tópico de 6 partições), pois lembre-se que o consumo do kafka é ordenado. Uma mesma aplicação pode consumir mais de uma partição (é o caso aqui). 
-
-Veja no control center como ficou o tópico e o consumidor.
-
-Crie novos usuários, perceba que o consumo "voltou", mas olhe no control center, somente nas partições que não estão com erro de consumo. Como resolver isso? 
-
-Em últimos casos:
-
-```
-docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group sampleApp.onUserChanged --describe
-
-docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group sampleApp.onUserChanged --topic user.changed:0 --reset-offsets --shift-by 1
-```
-
-Por que não alterou? Pare a aplicação, execute novamente e suba a aplicação.
-
-Por que esse deve ser a última coisa que você deve fazer para resolver um problema desse tipo?

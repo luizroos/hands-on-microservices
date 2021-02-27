@@ -10,12 +10,15 @@ public class UserChangedMessage {
 
 	private String userName;
 
+	private String userEmail;
+
 	public UserChangedMessage() {
 	}
 
 	public UserChangedMessage(UserEntity user) {
 		this.userId = user.getId();
 		this.userName = user.getName();
+		this.userEmail = user.getEmail();
 	}
 
 	public String getUserName() {
@@ -24,6 +27,10 @@ public class UserChangedMessage {
 
 	public UUID getUserId() {
 		return userId;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
 	}
 
 }
