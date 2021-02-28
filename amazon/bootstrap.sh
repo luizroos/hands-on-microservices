@@ -50,3 +50,5 @@ sudo echo "export JAVA8_HOME" >> ~/.bashrc
 sudo apt-get install -y python-pip; sudo pip install cql PyYAML
 git clone https://github.com/pcmanus/ccm.git
 cd ccm; sudo ./setup.py install; cd ..
+
+source ~/.bashrc
