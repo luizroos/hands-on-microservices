@@ -6,9 +6,9 @@ Inicie um container do [rabbitmq](https://www.rabbitmq.com/):
 docker run -d --rm -p 5672:5672 -p 15672:15672 --name rabbitmq -e RABBITMQ_DEFAULT_USER=user -e RABBITMQ_DEFAULT_PASS=pass rabbitmq:3-management
 ```
 
-Usamos a imagem management, que sobe junto uma interface de gerenciamento do rabbit, acesse: http://172.0.2.32:15672/ e logue com usuário user e senha pass (veja que são parâmetros que passamos ao iniciar o rabbit).
+Usamos a imagem management, que sobe junto uma interface de gerenciamento do rabbit, acesse: http://172.0.2.32:15672/ e logue com usuário **user** e **senha** pass (veja que são parâmetros que passamos ao iniciar o rabbit).
 
-O rabbit pé composto por [exchanges](http://172.0.2.32:15672/#/exchanges) e [filas](http://172.0.2.32:15672/#/queues). Normalmente, várias aplicações conectam no mesmo rabbit, então temos filas e exchanges de várias aplicações. Para prover algum tipo de separação desses recursos, o rabbit tem [virtual hosts](https://www.rabbitmq.com/vhosts.html), você pode criar um virtual host no menu admin, crie um com nome **sample-vh**.
+O rabbit é composto por [exchanges](http://172.0.2.32:15672/#/exchanges) e [filas](http://172.0.2.32:15672/#/queues). Normalmente, várias aplicações conectam no mesmo rabbit, então temos filas e exchanges de várias aplicações. Para prover algum tipo de separação desses recursos, o rabbit tem [virtual hosts](https://www.rabbitmq.com/vhosts.html), você pode criar um virtual host no menu admin, crie um com nome **sample-vh**.
 
 Agora crie uma exchange nesse virtual host, do tipo **fanout**. Clique nos detalhes dessa exchange e publique uma mensagem para nela, você deverá ver uma mensagem "Message published, but not routed.". Isso ocorre porque as mensagens não são armazenadas nas exchanges, você envia mensagem para elas, e elas roteiam para filas ligadas a exchange, a mensagem é armazenada na fila.
 
