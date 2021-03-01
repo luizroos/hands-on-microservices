@@ -56,7 +56,4 @@ Veja no log o consumo do evento do usuário gerado (dois consumidores).
 
 Enviamos a mensagem para o rabbit na criação do usuário e consumimos esse evento na mesma aplicação.
 
-Agora crie um usuário com nome consumer_name_err (na classe OnUserChanged tem um if para que usuários com esse nome, lance uma exceção no consumidor). A aplicação vai ficar retentando consumir o usuário, mas veja no rabbit que a mensagem permanece lá. Crie um novo usuário e veja que a mensagem desse novo usuário será consumida, mesmo sendo roteada para mesma fila, por que? Quais as consequências dessa característica?
-
-
-
+Agora crie um usuário com nome consumer_name_err (na classe OnUserChanged tem um if para que usuários com esse nome, lance uma exceção no consumidor). A aplicação vai ficar retentando consumir o usuário, mas veja no rabbit que a mensagem permanece na fila como **unacked**, porque a aplicação pegou a mensagem mas ainda não confirmou (a retentativa está sendo feita pela própría aplicação), se você parar a aplicação, essa mensagem volta para o status **ready** (pronta para ser consumida). Crie um novo usuário e veja que, mesmo sem conseguir processar a mensagem anterior dessa fila, a mensagem desse novo usuário será consumida normalmente. Por que? Pense nos impactos dessa característica?
