@@ -30,21 +30,25 @@ Os exercícios estão cada um em um branch separado e que devem ser feitos na **
 
 [exercício 14](https://github.com/luizroos/hands-on-microservices/tree/e14)
 
-### Instalando o ambiente
+## Instalando o ambiente
 -----
 
-#### Local com vagrant e virtual box 
+Nos exercícios, vamos usar [java](https://www.java.com/pt-BR/), [docker](https://www.docker.com/), [git](https://git-scm.com/), [apache bench](https://httpd.apache.org/docs/2.4/programs/ab.html), [ccm](https://www.datastax.com/blog/ccm-development-tool-creating-local-cassandra-clusters), [kubernetes](https://kubernetes.io/pt/), etc. Para isso vamos subir um [ubuntu](https://ubuntu.com) e realizar nossos testes nele.
+
+### Local com vagrant e virtual box 
 -----
 
-Instale [vagrant](https://www.vagrantup.com/) para subir uma vm com setup feito ([instalação de vagrant no windows](https://nandovieira.com.br/usando-o-vagrant-como-ambiente-de-desenvolvimento-no-windows)): docker, java, git, apache bench, etc já instalados, será mais facil executar cada execício.
+Sugiro usar esse modelo, é um modelo que você pode usar até para seu ambiente local de desenvolvimento.
 
-Uma vez o vagrant instalado, entre no diretório **vm** e execute:
+Instale [vagrant](https://www.vagrantup.com/) ([instalação de vagrant no windows](https://nandovieira.com.br/usando-o-vagrant-como-ambiente-de-desenvolvimento-no-windows)) e [virtualbox](https://www.virtualbox.org/).
+
+Uma vez o vagrant instalado, entre no diretório **vm** (ou copie os arquivos do diretório vm desse repositório) e execute:
 
 ```
 vagrant up
 ```
 
-Aguarde a instalação e configuração da vm e então logue nela:
+Aguarde a instalação, configuração da vm e então logue nela com:
 
 ```
 vagrant ssh
@@ -62,9 +66,9 @@ Para remover a vm (dentro do host):
 vagrant destroy
 ```
 
-Se não for instalar o vagrant local, e for subir uma vm na mão, seja local ou em alguma cloud, sugiro subir um ubuntu e veja o aqruivo [bootstrap.sh](vm/bootstrap.sh) os comandos para instalação das dependências.
+Se não for instalar o vagrant e quiser subir um ubuntu direto no virtualbox, veja o aqruivo [bootstrap.sh](vm/bootstrap.sh) com os comandos que você precisa executar para instalar todas dependências.
 
-#### Através de uma instância EC2 na Amazon
+### Através de uma instância EC2 na Amazon
 -----
 
 Acesse o [console da aws](https://console.aws.amazon.com/ec2), se não tiver um usuário na aws, crie um novo (usuários novos tem 12 meses com 750h de alguns tipos de instância EC2 grátis). 
@@ -100,7 +104,7 @@ Aguarde a instalação de tudo e pronto, pode seguir para executar os containers
 
 **IMPORTANTE**: Depois de usar, **não esqueça** de dar um stop na sua instância, vá nos detalhes da instância, no menu selecione **estado da instância** e então **interromper instância** (no outro dia basta iniciar ela novamente).
 
-#### Através de uma instância de VM do Google Cloud
+### Através de uma instância de VM do Google Cloud
 -----
 
 Acesse o [console do google cloud](https://console.cloud.google.com/cloud-resource-manager). Crie uma conta do google ou, se já tiver, adicione o produto google cloud a sua conta. Vocẽ vai precisar ativar o faturamento na conta, o google cloud promete $ 90 em créditos para usar em 3 meses. 
@@ -128,10 +132,10 @@ chmod +x hands-on-microservices/gcloud/bootstrap.sh
 
 **IMPORTANTE**: Depois de usar, **não esqueça** de dar um stop na sua instância, selecione **interromper** no menu '...' da tabela de instâncias.
 
-### Rodando um container
+## Rodando o primeiro container
 -----
 
-Dentro da VM, execute:
+Dentro da vm, execute:
 
 ```
 docker pull alpine
