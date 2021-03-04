@@ -10,7 +10,7 @@ Suba a aplicação novamente:
 java -jar build/libs/sample-app-0.0.14-SNAPSHOT.jar
 ```
 
-Crie alguns usuários via http://172.0.2.32:30001/swagger-ui.html, e verifique a aba schema do tópico no control center, mude a compatibilidade para FORWARD (ou seja, o antigo schema deve poder ler o que for escrito no novo schema).
+Crie alguns usuários via http://172.0.2.32:30001/swagger-ui.html, e verifique a aba schema do tópico no control center, mude a compatibilidade para [FORWARD](https://docs.confluent.io/platform/current/schema-registry/avro.html) (ou seja, o antigo schema deve poder ler o que for escrito no novo schema).
 
 Altere o schema (UserChangedMessage) da mensagem deixando o nome opcional: 
 
