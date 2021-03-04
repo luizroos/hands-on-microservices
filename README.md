@@ -3,13 +3,13 @@
 Faça o seguinte teste com o container MySQL criado no exercicio anterior:
 
 ```
-select count(1) from user
+docker exec -it mysql mysql -u db_user -p sample-db -e "select count(1) from user";
 
 docker stop mysql
 
 docker start mysql
 
-select count(1) from user
+docker exec -it mysql mysql -u db_user -p sample-db -e "select count(1) from user";
 ```
 
 O resultado do select mudou? Por que?
@@ -21,9 +21,9 @@ docker stop mysql
 
 docker rm mysql
 
-docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51 
+docker run -d --rm -p 3306:3306 --net my-net --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db mysql:5.6.51 
 
-select count(1) from user
+docker exec -it mysql mysql -u db_user -p sample-db -e "select count(1) from user";
 ```
 
 O resultado do select mudou? Por que?
@@ -107,14 +107,18 @@ Se tiver removido o container da aplicação:
 docker run -d -p 8080:30001 -e MYSQL_HOST=mysql --net my-net --name sample-app sample-app:4
 ```
 
-Adicione alguns usuários em http://172.0.2.32:8080/swagger-ui.html, verique no banco que eles estão incluidos, e então remova o container do MySQL novamente, recrie-o com o mesmo volume mapeado, veja seus dados agora serão mantidos.
+Adicione alguns usuários em http://172.0.2.32:8080/swagger-ui.html, verique no banco que eles estão incluidos
+
+```
+docker exec -it mysql mysql -u db_user -p sample-db -e "select * from user";
+```
+
+Então remova o container do MySQL novamente, recrie-o com o mesmo volume mapeado, veja que os dados agora serão mantidos.
 
 Como curiosidade, experimente rodar um outro container MySQL apontando para o mesmo dados
 
 ```
-docker run --rm -p 3307:3306 --name mysql2 --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
-
-docker logs -f mysql2
+docker run --rm -p 3307:3306 --name mysql2 --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db mysql:5.6.51
 ```
 
 Qual o problema? Isso mostra por que é dificil escalar bancos.
