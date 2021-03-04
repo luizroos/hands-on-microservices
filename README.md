@@ -6,7 +6,15 @@ Você não precisa só executar aplicações standalones. As vezes você já tem
 
 ### Adaptações na aplicação
 
-Fizemos algumas alterações na aplicação, removemos sua dependência com [tomcat](sample-app/build.gradle) e fizemos alterações dentro do [WebApplication.java](sample-app/src/main/java/web/WebApplication.java). No java, podemos gerar arquivos [war](https://en.wikipedia.org/wiki/WAR_(file_format)), esse formato segue um padrão que é interpretado por servidores de aplicações como wildfly. Então, ao invés de gerar um jar, vamos compilar a aplicação e gerar agora um arquivo war:
+Fizemos algumas alterações na aplicação, removemos sua dependência com [tomcat](sample-app/build.gradle) e fizemos alterações dentro do [WebApplication.java](sample-app/src/main/java/web/WebApplication.java). No java, podemos gerar arquivos [war](https://en.wikipedia.org/wiki/WAR_(file_format)), esse formato segue um padrão que é interpretado por servidores de aplicações como wildfly. 
+
+Entre no diretório do repositório (dentro da vm) e troque o branch para esse:
+
+```
+git checkout e2
+```
+
+Agora compile novamente a aplicação, dessa vez gerando o arquivo war ao invés de jar (o arquivo war pode ser lido por servidores web java, como Wildfly).
 
 ```
 ./gradlew clean bootWar
