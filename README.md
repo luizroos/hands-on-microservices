@@ -4,7 +4,7 @@ Voltamos ao modelo standalone e aumentamos um pouco a aplicação, incluimos uma
 
 Vamos gerar o container e subir essa aplicação: 
 
-```
+```console
 ./gradlew clean build
 
 docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:3 .
