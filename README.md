@@ -4,5 +4,5 @@
 ! teste
 ```
 
-![#1589F0] `xyz`
+`#ffaaf` xyz
 
