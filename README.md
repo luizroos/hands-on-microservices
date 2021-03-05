@@ -86,7 +86,7 @@ Execute novamente outros inserts, parando outro nó:
 ccm node3 stop
 ```
 
-E agora, algum insert deu erro? Por que?
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) E agora, algum insert deu erro? Por que?
 
 Tente executar novamente um select: 
 
