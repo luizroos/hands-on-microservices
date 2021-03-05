@@ -16,4 +16,4 @@ Notem que subimos a aplicação agora já com mapeamento na porta 8080, assim n�
 
 Acesse http://172.0.2.32:8080/swagger-ui.html e faça o cadastro de um usuário.
 
-Para discutir: notem o tipo de ID de UserEntity, por que UUID ao invés de um ID númerico?
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Para discutir: notem o tipo de ID de UserEntity, por que UUID ao invés de um ID númerico?
