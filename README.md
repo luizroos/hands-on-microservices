@@ -12,7 +12,7 @@ docker start mysql
 docker exec -it mysql mysql -u db_user -p sample-db -e "select count(1) from user";
 ```
 
-![#686bd4](https://via.placeholder.com/10/686bd4?text=+) O resultado do select mudou? Por que?
+O resultado do select mudou? Por que?
 
 E se fizermos isso:
 
@@ -46,10 +46,14 @@ docker run --rm -d --name apache -p 80:80 httpd
 
 Acesse no seu browser http://172.0.2.32/
 
-Como mudarmos o html que é exibido? Crie no diretório (pode ser na home da vm), chamado **meu-blog** e junto com um arquivo **index.html** com o conteúdo que deseja. Por exemplo:
+Como mudarmos o html que é exibido? 
+
+Crie no diretório (pode ser na home da vm), chamado **meu-blog** e junto com um arquivo **index.html** com o conteúdo que deseja. Por exemplo:
 
 ```console
-mkdir meu-site && echo "<html><body><h1>Meu site</h1></body></html>" >> meu-site/index.html
+cd 
+
+mkdir ~/meu-site && echo "<html><body><h1>Meu site</h1></body></html>" >> ~/meu-site/index.html
 ```
 
 Agora crie um Dockerfile dessa forma:
