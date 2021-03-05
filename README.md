@@ -33,6 +33,10 @@ curl http://localhost:1080/postalcodes
 Veja agora as alterações em [UserCreateService](src/main/java/web/core/user/UserCreateService.java), incluimos uma regra de negócio que valida se o endereço informado do estado de São Paulo, para isso usamos uma chamada a um serviço de postalcode.
 
 ```console
+cd ~/hands-on-microservices/sample-app/
+
+git checkout e7
+
 docker network create my-net
 
 docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
