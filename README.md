@@ -144,7 +144,7 @@ java -jar build/libs/sample-app-0.0.4-SNAPSHOT.jar
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Ocorreu erro dessa vez? Por que não?
 
-Queremos rodar a aplicação via container, como podemos executar a imagem **sample-app:4** para que ela consiga se conectar no banco de dados MySQL? (existem ao menos 2 formas, sem precisar alterar nada da imagem).
+Queremos rodar a aplicação via container, como podemos executar a imagem **sample-app:4** para que ela consiga se conectar no banco de dados MySQL? (existem ao menos 3 formas, sem precisar alterar nada da imagem).
 
 Depois de subir, acesse http://172.0.2.32:8080/swagger-ui.html e inclua alguns usuários, a aplicação vai criar automaticamente as tabelas necessárias (em uma aplicação real, **nunca** de para aplicação um usuário com permissão de DDL, isso é **muito** perigoso, estamos usando aqui só para facilitar), verifique no seu client SQL os usuários inseridos:
 
