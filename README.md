@@ -8,11 +8,11 @@ Vamos configurar a aplicação para se conectar a um banco de dados MySQL (ao in
 
 Aqui vamos usar para banco de dados um container do MySQL, veja em https://hub.docker.com/_/mysql as opções para subir o container e execute:
 
-```
+```console
 docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
 ```
 
-Aqui subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **sample-db** e mapeando a porta default do mysql: 3306.
+Subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **sample-db** e mapeando a porta default do mysql: **3306**.
 
 Configure algum client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da vm, que tem ip 172.0.2.32, então como o client vai rodar fora da vm, [o host da conexão](dbeaver/conn_conf.png) é o ip da vm (já que mapeamos também uma porta do container para a vm).
 
@@ -22,7 +22,7 @@ Mas agora como faremos a aplicação conectar no banco? Se tivessemos uma aplica
 
 Vamos esquecer por enquanto nosso container MySQL e fazer o seguinte:
 
-```
+```console
 docker run --rm -d --name c1 busybox sleep infinity
 
 docker run --rm -d --name c2 busybox sleep infinity
@@ -32,7 +32,7 @@ Subimos dois containers da imagem do [busybox](https://hub.docker.com/_/busybox/
 
 O que estamos interessados é que os dois containers (c1 e c2) possam se comunicar entre si, portanto teste o seguinte comando:
 
-```
+```console
 docker exec c1 ping c2
 ```
 
@@ -40,7 +40,7 @@ Qual foi o resultado? O host c2 não é visto pelo container c1.
 
 E se tentarmos dar um ping no ip? 
 
-```
+```console
 docker inspect c2
 
 docker exec c1 ping {c2_ip_address}
@@ -50,7 +50,7 @@ Quando criamos containers, a rede default que o container é inserido se chamada
 
 Verifique detalhes das redes
 
-```
+```console
 docker network ls
 
 docker network inspect bridge
@@ -61,19 +61,19 @@ Por default, a rede bridge herda as configurações de DNS do host, então um co
 
 Vamos criar uma rede chamada **my-net**:
 
-```
+```console
 docker network create my-net
 ```
 
 Veja a sua rede (não tem nenhum container conectado):
 
-```
+```console
 docker network inspect my-net
 ```
 
 Agora vamos conectar nossos dois containers na nossa rede:
 
-```
+```console
 docker network connect my-net c1
 
 docker network connect my-net c2 
@@ -83,19 +83,19 @@ docker network inspect my-net
 
 Veja que agora um container consegue se comunicar com o outro via hostname:
 
-```
+```console
 docker exec c1 ping c2
 ```
 
 Podemos iniciar containers conectados direto já na nossa rede através do parametro **--net**:
 
-```
+```console
 docker run --rm -d --net my-net --name c3 busybox sleep infinity 
 ```
 
 Valide a conectividade entre eles:
 
-```
+```console
 docker exec c3 ping c2
 
 docker exec c1 ping c3
@@ -104,7 +104,7 @@ docker exec c1 ping c3
 
 E se quisermos executar o container na rede do host? (ao invés de bridge ou uma do usuário)
 
-```
+```console
 docker run --rm -d --net=host httpd
 
 curl http://localhost
@@ -112,7 +112,7 @@ curl http://localhost
 
 Veja que não mapeamos nenhuma porta, porque o container está rodando usando a rede do host, então o bind é feito direto na rede do host (tente acessar http://172.0.2.32/), e portando, se tentarmos rodar um novo serviço que faz bind na mesma porta, tomaremos erro, por ex:
 
-```
+```console
 docker run --rm --net=host httpd
 ```
 
@@ -124,7 +124,7 @@ Alteramos a aplicação para se conectar em um banco de dados MySQL. Veja no arq
 
 Vamos compilar e gerar a imagem da aplicação:
 
-```
+```console
 git checkout e4
 
 ./gradlew clean build
@@ -134,28 +134,28 @@ docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:4 .
 
 Agora vamos testar executar a aplicação:
 
-```
+```console
 docker run --rm -p 8080:30001 --name sample-app sample-app:4
 ```
 
 Tivemos um problema para conectar no banco. Tente executar:
 
-```
+```console
 java -jar build/libs/sample-app-0.0.4-SNAPSHOT.jar
 ```
 
-Ocorreu erro dessa vez? Por que não?
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Ocorreu erro dessa vez? Por que não?
 
 Queremos rodar a aplicação via container, como podemos executar a imagem **sample-app:4** para que ela consiga se conectar no banco de dados MySQL? (existem ao menos 2 formas, sem precisar alterar nada da imagem).
 
 Depois de subir, acesse http://172.0.2.32:8080/swagger-ui.html e inclua alguns usuários, a aplicação vai criar automaticamente as tabelas necessárias (em uma aplicação real, **nunca** de para aplicação um usuário com permissão de DDL, isso é **muito** perigoso, estamos usando aqui só para facilitar), verifique no seu client SQL os usuários inseridos:
 
-```
+```sql
 select * from user
 ```
 
 Ou
 
-```
+```console
 docker exec -it mysql mysql -u db_user -p sample-db -e "select * from user";
 ```
