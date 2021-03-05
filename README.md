@@ -144,7 +144,7 @@ Tivemos um problema para conectar no banco. Tente executar:
 java -jar build/libs/sample-app-0.0.4-SNAPSHOT.jar
 ```
 
-> Ocorreu erro dessa vez? Por que não? 
+<span style="color:blue">Ocorreu erro dessa vez? Por que não?</span>
 
 Queremos rodar a aplicação via container, como podemos executar a imagem **sample-app:4** para que ela consiga se conectar no banco de dados MySQL? (existem ao menos 2 formas, sem precisar alterar nada da imagem).
 
