@@ -15,20 +15,20 @@ public class PostalCodeService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(PostalCodeService.class);
 
-	@Value("${correios.host}")
-	private String correiosHost;
+	@Value("${postalcode.host}")
+	private String postalcodeHost;
 
 	@Autowired
 	public RestTemplate restTemplate;
 
 	@PostConstruct
 	public void logPostConstruct() {
-		LOGGER.info("correiosHost={}", correiosHost);
+		LOGGER.info("correiosHost={}", postalcodeHost);
 	}
 
 	public Address getPostalCode(String postalCode) {
 		final ResponseEntity<Address> response = restTemplate
-				.getForEntity(String.format("http://%s/postalcodes?%s", correiosHost, postalCode), Address.class);
+				.getForEntity(String.format("http://%s/postalcodes?%s", postalcodeHost, postalCode), Address.class);
 		return response.getBody();
 	}
 
