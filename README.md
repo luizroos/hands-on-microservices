@@ -4,5 +4,5 @@
 ! teste
 ```
 
-`#00ff00` xyz
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) asasaasasasas
 
