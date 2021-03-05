@@ -9,10 +9,7 @@
     },
     {
       "name": "userName",
-      "type": [
-        "null",
-        "string"
-      ]
+      "type": "string"
     } 
   ]
 }
