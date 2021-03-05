@@ -5,6 +5,10 @@ Remova todas os containers que vocês tem, vamos começar do zero (banco e aplic
 Desde o inicio:
 
 ```console
+cd ~/hands-on-microservices/sample-app
+
+git checkout e6
+
 docker network create my-net
 
 docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
@@ -65,6 +69,8 @@ Notem no docker stats, perceberam algo diferente nos containers?
 Na classe [UserEntity](sample-app/src/main/java/web/core/user/UserEntity.java), vamos alterar o tipo da chave primária para um valor númerico:
 
 ```console
+cd ~/hands-on-microservices/sample-app
+
 vim src/main/java/web/core/user/UserEntity.java
 ```
 
@@ -117,6 +123,6 @@ docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=ro
 docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-net sample-app:6
 ```
 
-Execute novamente o teste de carga (aquele com os valores que você encontrou). 
+Execute novamente o teste de carga (aquele com os valores que você encontrou e que não dão erro na aplicação). 
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Os resultados foram os mesmos? o que aconteceu? Ache o limite de escalabilidade dessa aplicação com essa alteração.
