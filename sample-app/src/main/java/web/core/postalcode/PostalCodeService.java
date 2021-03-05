@@ -12,15 +12,15 @@ import org.springframework.web.client.RestTemplate;
 @Transactional(propagation = Propagation.NEVER)
 public class PostalCodeService {
 
-	@Value("${correios.host}")
-	private String correiosHost;
+	@Value("${postalcode.host}")
+	private String postalCodeHost;
 
 	@Autowired
 	public RestTemplate restTemplate;
 
 	public Address getPostalCode(String postalCode) {
 		final ResponseEntity<Address> response = restTemplate
-				.getForEntity(String.format("http://%s/postalcodes?%s", correiosHost, postalCode), Address.class);
+				.getForEntity(String.format("http://%s/postalcodes?%s", postalCodeHost, postalCode), Address.class);
 		return response.getBody();
 	}
 
