@@ -1,6 +1,6 @@
 # Exercício 2 - explorando outras possibilidades
 
-Você não precisa só executar aplicações standalones. As vezes você já tem uma aplicação legada, rodando dentro de algum servidor de aplicação, no caso do java, servidores como jboss, websphere, weblogic, etc.
+Você não precisa só executar aplicações standalone. As vezes você já tem uma aplicação legada, rodando dentro de algum servidor de aplicação, no caso do java, servidores como jboss, websphere, weblogic, etc.
 
 É possível gerar imagens e criar containers de aplicações que não são standalone. Vamos ver como podemos rodar a aplicação do execício 1 dentro de um [Wildfly](https://www.wildfly.org/).
 
@@ -11,28 +11,30 @@ Fizemos algumas alterações na aplicação, removemos sua dependência com [tom
 Entre no diretório do repositório (dentro da vm) e troque o branch para esse:
 
 ```console
+cd ~/hands-on-microservices
+
 git checkout e2
 ```
 
 Agora compile novamente a aplicação, dessa vez gerando o arquivo war ao invés de jar (o arquivo war pode ser lido por servidores web java, como Wildfly).
 
 ```console
+cd ~/hands-on-microservices/sample-app
+
 ./gradlew clean bootWar
 
 ls build/libs/
 ```
 
+Veja que agora tempos um arquivo **war**, esse formato é reconhecido por servidores web java (como tomcat).
+
 #### Nova imagem
 
-Alteramos nossa imagem, agora ela não herda apenas de uma imagem com java mas sim de uma imagem criada com [Wildfly instalado](https://hub.docker.com/r/jboss/wildfly). Veja as alterações em [Dockerfile](sample-app/Dockerfile) e vamos gerar a nova imagem:
+Alteramos nossa imagem, agora ela não herda apenas de uma imagem com java mas sim de uma imagem criada com [Wildfly instalado](https://hub.docker.com/r/jboss/wildfly). Veja as alterações em [Dockerfile](sample-app/Dockerfile) e vamos gerar a nova imagem e rodar um container dela:
 
 ```console
 docker build --build-arg WAR_FILE=build/libs/\*.war -t sample-app:2 .
-```
 
-Vamos executar o container:
-
-```console
 docker run --rm sample-app:2
 ```
 
@@ -52,7 +54,7 @@ docker rm sample-app
 
 Ou então simplesmente mude o nome do container que está rodando.
 
-Veja que agora a porta que você informou, está mapeada para a porta exposta do container (o windfly esta subindo na porta 8080):
+Veja que agora a porta exposta pelo container é a porta que você informou com paramêtro p (o windfly esta subindo na porta 8080):
 
 ```console
 docker ps 
