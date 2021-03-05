@@ -14,9 +14,9 @@ docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_US
 
 Subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **sample-db** e mapeando a porta default do mysql: **3306**.
 
-Configure algum client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da vm, que tem ip 172.0.2.32, então como o client vai rodar fora da vm, [o host da conexão](dbeaver/conn_conf.png) é o ip da vm (já que mapeamos também uma porta do container para a vm).
+Depois, você pode instalar um client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da vm, que tem ip 172.0.2.32, então como o client vai rodar fora da vm, [o host da conexão](dbeaver/conn_conf.png) é o ip da vm (já que mapeamos também uma porta do container para a vm).
 
-Mas agora como faremos a aplicação conectar no banco? Se tivessemos uma aplicação rodando no nosso computador, usaríamos o ip da vm (da mesma forma que o client SQL), se a aplicação tivesse rodando dentro da vm (sem docker), usaríamos localhost (já que mapeamos uma porta do container para uma porta da vm) ou o ip do do container (pego via docker inspect). Mas queremos que o container da nossa aplicação conecte no container do MySQL, e para isso vamos usar as funcionalidades do docker network.
+Mas agora como faremos para a aplicação conectar no banco? Se tivessemos uma aplicação rodando no nosso computador, usaríamos o ip da vm (da mesma forma que o client SQL rodando na sua máquina), se a aplicação tivesse rodando dentro da vm (sem docker), usaríamos localhost (já que mapeamos uma porta do container para uma porta da vm) ou o ip do do container (pego via docker inspect). Mas queremos que o container da nossa aplicação conecte no container do MySQL, e para isso vamos usar as funcionalidades do docker network.
 
 ### Docker network
 
@@ -46,7 +46,7 @@ docker inspect c2
 docker exec c1 ping {c2_ip_address}
 ```
 
-Quando criamos containers, a rede default que o container é inserido se chamada bridge, que faz bridge com a interface docker0 do docker host, é uma rede de escopo local (apenas os containers rodando no mesmo docker daemon conseguem ver). 
+Quando criamos containers, a rede default que o container é inserido se chamada bridge, essa rede faz bridge com a interface docker0 do docker host, é uma rede de escopo local (apenas os containers rodando no mesmo docker daemon conseguem ver). 
 
 Verifique detalhes das redes
 
@@ -122,19 +122,17 @@ Deixe apenas o container do MySQL rodando
 
 Alteramos a aplicação para se conectar em um banco de dados MySQL. Veja no arquivo [application.properties](sample-app/src/main/resources/application.properties) que a conexão já está configurada para os parâmetros que criamos nosso banco MySQL. O host que a aplicação conecta, por default está localhost, mas pode ser sobrescrito via uma variável de ambiente chamada **MYSQL_HOST**. 
 
-Vamos compilar e gerar a imagem da aplicação:
+Vamos compilar, gerar a imagem da aplicação e rodar um container dessa versão da aplicação:
 
 ```console
+cd ~/hands-on-microservices/sample-app/
+
 git checkout e4
 
 ./gradlew clean build
 
 docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:4 .
-```
 
-Agora vamos testar executar a aplicação:
-
-```console
 docker run --rm -p 8080:30001 --name sample-app sample-app:4
 ```
 
@@ -149,12 +147,6 @@ java -jar build/libs/sample-app-0.0.4-SNAPSHOT.jar
 Queremos rodar a aplicação via container, como podemos executar a imagem **sample-app:4** para que ela consiga se conectar no banco de dados MySQL? (existem ao menos 2 formas, sem precisar alterar nada da imagem).
 
 Depois de subir, acesse http://172.0.2.32:8080/swagger-ui.html e inclua alguns usuários, a aplicação vai criar automaticamente as tabelas necessárias (em uma aplicação real, **nunca** de para aplicação um usuário com permissão de DDL, isso é **muito** perigoso, estamos usando aqui só para facilitar), verifique no seu client SQL os usuários inseridos:
-
-```sql
-select * from user
-```
-
-Ou
 
 ```console
 docker exec -it mysql mysql -u db_user -p sample-db -e "select * from user";
