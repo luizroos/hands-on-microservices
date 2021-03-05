@@ -10,13 +10,13 @@ Fizemos algumas alterações na aplicação, removemos sua dependência com [tom
 
 Entre no diretório do repositório (dentro da vm) e troque o branch para esse:
 
-```
+```console
 git checkout e2
 ```
 
 Agora compile novamente a aplicação, dessa vez gerando o arquivo war ao invés de jar (o arquivo war pode ser lido por servidores web java, como Wildfly).
 
-```
+```console
 ./gradlew clean bootWar
 
 ls build/libs/
@@ -26,13 +26,13 @@ ls build/libs/
 
 Alteramos nossa imagem, agora ela não herda apenas de uma imagem com java mas sim de uma imagem criada com [Wildfly instalado](https://hub.docker.com/r/jboss/wildfly). Veja as alterações em [Dockerfile](sample-app/Dockerfile) e vamos gerar a nova imagem:
 
-```
+```console
 docker build --build-arg WAR_FILE=build/libs/\*.war -t sample-app:2 .
 ```
 
 Vamos executar o container:
 
-```
+```console
 docker run --rm sample-app:2
 ```
 
@@ -40,13 +40,13 @@ Veja que o log já mudou completamente se comparado ao exercício 1, pois agora 
 
 Pare a aplicação e vamos executar em segundo plano, mas dessa vez, ao invés de expor uma porta aleatória para o host, vamos mapear uma porta específica usando a opção -p :
 
-```
+```console
 docker run --rm -d -p 8080:8080 --name sample-app sample-app:2
 ```
 
 Caso tenha conflito no nome com outros containers previamente iniciados, você pode remove-los usando:
 
-```
+```console
 docker rm sample-app
 ```
 
@@ -54,7 +54,7 @@ Ou então simplesmente mude o nome do container que está rodando.
 
 Veja que agora a porta que você informou, está mapeada para a porta exposta do container (o windfly esta subindo na porta 8080):
 
-```
+```console
 docker ps 
 ```
 
