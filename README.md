@@ -225,7 +225,7 @@ Inicie o banco de dados (aqui vamos adicionar na rede do minikube, assim a aplic
 docker run --rm -p 3306:3306 --name mysql --net=minikube -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
 ```
 
-E então crie os arquivos de deployment e service para a sample-app (não esqueça das configurações de banco de dados e do host de postal app)
+E então crie os arquivos de **deployment** e **service** para a sample-app (não esqueça das configurações de banco de dados e do host de postal app)
 
 Ao final, veja se funcionou acessando http://172.0.2.32:8001/api/v1/namespaces/sample-ns/services/sample-app-service:25123/proxy/users/random, ou então faça forward de uma porta da vm para o serviço criado:
 
