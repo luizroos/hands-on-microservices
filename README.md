@@ -26,7 +26,11 @@ create table if not exists user  (
 Tente então executar a aplicação e inserir um usuário (podemos rodar direto na vm):
 
 ```console
-./gradlew build
+cd ~/hands-on-microservices/sample-app/
+
+git checkout e11
+
+./gradlew clean build
 
 java -jar build/libs/sample-app-0.0.11-SNAPSHOT.jar
 ```
@@ -37,7 +41,13 @@ Qual erro que deu na inclusão? Como resolver esse problema?
 
 Conecte no banco e crie uma materialized view, onde a chave de partição será o email.
 
+```console
+ccm node1 cqlsh
+```
+
 ```cql
+use sample
+
 create materialized view user_by_email 
 as select email, id, name, age, addressPostalCode
 from user 
