@@ -50,4 +50,9 @@ docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=mockserver:
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Execute novamente o teste de carga com os parâmetros encontrados do exercício 6.
 
+```console
+ab -n 1000 -c {concorrência} http://localhost:8080/users/random
+```
+
+
 O que aconteceu? Por que a aplicação perdeu tanta escalabilidade?
