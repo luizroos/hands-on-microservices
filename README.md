@@ -55,4 +55,15 @@ where email is not null
 primary key (email, id);
 ```
 
+Altere a query para buscar na materialized view ao invés de na tabela, então compile a aplicação e teste novamente:
+
+```console
+vim src/main/java/web/core/user/CassandraUserRepository.java
+
+./gradlew clean build
+
+java -jar build/libs/sample-app-0.0.11-SNAPSHOT.jar
+```
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Para debater, a materialized view é uma tabela normal, vai estar particionada então cuidado com hot spots e existe um [custo](https://www.datastax.com/blog/materialized-view-performance-cassandra-3x) de escrita. Vale sempre uma avaliação entre materialized views e desnormalização manual.
+
+
