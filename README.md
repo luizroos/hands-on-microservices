@@ -2,6 +2,8 @@
 
 Usando [ccm](https://www.datastax.com/blog/ccm-development-tool-creating-local-cassandra-clusters), vamos criar um cluster com 5 nós usando a versão 3.11.10 do [cassandra](https://cassandra.apache.org/):
 
+Obs: Aqui aconselho criar a vm de novo (vagrant destroy, vagrant up), porque com 5 nós, vai usar muita memória, a vm subindo com 4Gb zerada da conta. Mas qualquer coisa, crie com 3 nós
+
 ```console
 ccm create --version 3.11.10 --nodes 5 --start sample-cassandra-cluster
 ```
