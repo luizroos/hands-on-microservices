@@ -71,7 +71,7 @@ ccm node2 stop
 ccm status
 ```
 
-Mude a consistência da sessão para QUORUM e tente incluir novos usuários (ao menos mais 5 usuários):
+Mude a consistência da sessão para QUORUM e tente incluir novos usuários (ao menos mais 5 usuários, não esqueça de mudar o id na query):
 
 ```console
 consistency QUORUM
