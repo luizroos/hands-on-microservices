@@ -31,7 +31,7 @@ use sample;
 Vamos criar agora nossa tabela de pessoas da copa:
 
 ```cql
-create table if not exists pessoa2 ( 
+create table if not exists pessoa ( 
 ano_nascimento int, 
 nome text, 
 telefone int,
