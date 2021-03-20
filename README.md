@@ -28,24 +28,27 @@ create keyspace sample WITH durable_writes = true and replication = { 'class' : 
 use sample;
 ```
 
-Vamos criar agora nossa tabela de usuários:
+Vamos criar agora nossa tabela de pessoas da copa:
 
 ```cql
-create table if not exists user  (
- id varchar primary key,
- name varchar,
- email varchar,
- age int,
- addressPostalCode varchar);
+create table if not exists pessoa2 ( 
+ano_nascimento int, 
+nome text, 
+telefone int,
+nacionalidade text,
+primary key (ano_nascimento, nacionalidade, nome)) 
 ```
 
 Verifique a tabela criada:
 
 ```cql
-select * from user;
+select * from pessoa;
 ```
 
-Temos agora 5 nós de cassandra rodando com uma tabela **user** criada na namespace **sample**. O Cassandra permite que a [consistência](https://docs.datastax.com/en/cassandra-oss/3.0/cassandra/dml/dmlConfigConsistency.html) seja alterada, verifique a consistencia da sessão:
+### Consistência
+---- 
+
+Temos agora 5 nós de cassandra rodando com uma tabela **pessoa** criada na namespace **sample**. O Cassandra permite que a [consistência](https://docs.datastax.com/en/cassandra-oss/3.0/cassandra/dml/dmlConfigConsistency.html) seja alterada, verifique a consistencia da sessão:
 
 ```cql
 consistency
@@ -57,10 +60,12 @@ Se a consistência não for ONE, altere para ONE:
 consistency ONE
 ```
 
-Vamos inserir agora um usuário na nossa tabela:
+Vamos inserir agora umas pessoas na nossa tabela (tente variar o ano de nascimento entre elas):
 
 ```cql
-insert into user (addresspostalcode, age, email, name, id) values ('01122080', 30, 'Joao', 'joao@teste.com', '1');
+insert into pessoa (nome, nacionalidade, telefone, ano_nascimento) values ('joao', 'br', 1111, 1998);
+insert into pessoa (nome, nacionalidade, telefone, ano_nascimento) values ('john', 'eua', 2222, 1993);
+...
 ```
 
 Usando ccm, pare um outro nó do cluster (abra uma nova sessão ssh da vm para facilitar):
@@ -71,39 +76,60 @@ ccm node2 stop
 ccm status
 ```
 
-Mude a consistência da sessão para QUORUM e tente incluir novos usuários (ao menos mais 5 usuários, não esqueça de mudar o id na query):
+Mude a consistência da sessão para QUORUM e tente incluir novas pessoas (variando o ano de nascimento, ao menos mais 5):
 
 ```console
 consistency QUORUM
 
-insert into user (addresspostalcode, age, email, name, id) values ('01122080', 30, 'Joao', 'joao@teste.com', '2');
+insert into pessoa (nome, nacionalidade, telefone, ano_nascimento) values ('giovanni', 'it', 3333, 1994);
+...
 ...
 ```
 
 Algum insert deu erro? 
 
-Execute novamente outros inserts, parando outro nó:
+Pare mais um nó do cluster:
 
 ```console
 ccm node3 stop
 ```
+
+E execute novamente outros inserts
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) E agora, algum insert deu erro? Por que?
 
 Tente executar novamente um select: 
 
 ```cql
-select * from user
+select * from pessoa
 ```
 
 Também deu erro, por que?
 
 Altere a consistência de volta para ONE e tente fazer a inserção e a leitura novamente.
 
+
+### Filtros
+---
+
 Apesar de [CQL](https://cassandra.apache.org/doc/latest/cql/) ter sintaxe parecida com SQL, eles não é a mesma coisa, tente fazer executar essa query:
 
 ```cql
-select * from user where name = 'joao';
+select * from pessoa where telefone = 1111;
 ```
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Por que não deixou?
+
+Tente essas:
+
+```cql
+select * from pessoa where ano_nascimento = 1998; 
+select * from pessoa where ano_nascimento = 1998 and nome = 'joao';
+select * from pessoa where ano_nascimento = 1998 and nacionalidade = 'br';
+select * from pessoa where ano_nascimento = 1998 and nacionalidade = 'br' and nome = 'joao';
+select * from pessoa where ano_nascimento = 1998 and nacionalidade = 'br' and nome = 'joao' and telefone = 1111;
+```
+
+Quais deram sucesso e quais falharam? por que?
+
+
