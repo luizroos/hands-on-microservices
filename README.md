@@ -10,6 +10,8 @@ ccm create --version 3.11.10 --nodes 3 --start sample-cassandra-cluster
 ccm node1 cqlsh
 ```
 
+Vamos criar a nossa tabela de usuários da aplicação:
+
 ```cql
 create keyspace sample WITH durable_writes = true and replication = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
 
@@ -64,6 +66,4 @@ vim src/main/java/web/core/user/CassandraUserRepository.java
 
 java -jar build/libs/sample-app-0.0.11-SNAPSHOT.jar
 ```
-![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Para debater, a materialized view é uma tabela normal, vai estar particionada então cuidado com hot spots e existe um [custo](https://www.datastax.com/blog/materialized-view-performance-cassandra-3x) de escrita. Vale sempre uma avaliação entre materialized views e desnormalização manual.
-
-
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) A materialized view é uma tabela normal, vai estar particionada então cuidado com hot spots e existe um [custo](https://www.datastax.com/blog/materialized-view-performance-cassandra-3x) de escrita.
