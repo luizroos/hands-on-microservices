@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'com.example'
-version = '0.0.14-SNAPSHOT'
+version = '0.0.15-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {

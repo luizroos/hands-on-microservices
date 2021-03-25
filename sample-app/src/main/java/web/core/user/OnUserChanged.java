@@ -17,7 +17,7 @@ public class OnUserChanged {
 
 	@KafkaListener(topics = OnUserChanged.TOPIC_NAME, groupId = "sampleApp.onUserChanged")
 	public void onUserChanged(UserChangedMessage message, Acknowledgment ack) {
-		LOGGER.info("user created, id={}, name={}, novoField3={}", message.getUserId());
+		LOGGER.info("user created, id={}, name={}", message.getUserId(), message.getUserName());
 		ack.acknowledge();
 	}
 }

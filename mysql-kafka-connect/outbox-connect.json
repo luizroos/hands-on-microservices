@@ -8,7 +8,7 @@
     "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
     "mode": "timestamp",
     "timestamp.column.name": "created_at",
-    "query": "select message_key, message_payload, message_topic, created_at from outbox_table",
+    "query": "select message_key, message_payload, message_topic, created_at from event",
     "poll.interval.ms": "1000",
     "batch.max.rows": "5000",
 
