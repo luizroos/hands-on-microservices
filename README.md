@@ -104,16 +104,26 @@ Veja os [parâmetros](mysql-kafka-connect/outbox-connect.json) desse post, basic
 
 Veja no control center o connector criado, acesse http://172.0.2.32:8083/connectors/outbox-connect/status para ver o status.   
 
-Crie novos usuários e perceba que agora as mensagens vão chegar, tente criar o usuário com nome **create_name_err** (aquele que deu erro no exercicio 14) e perceba que dessa vez a mensagem não foi notificada.
+Crie novos usuários e perceba que agora as mensagens vão chegar, veja isso nos logs da aplicação:
 
-### Notificando sua base
+```
+web.core.user.OnUserChanged : user created
+```
+
+Tente criar o usuário com nome **create_name_err** (aquele que deu erro no [exercicio 14](https://github.com/luizroos/hands-on-microservices/tree/e14)) e perceba que dessa vez a mensagem não foi notificada.
+ 
+### Notificando sua base de dados
 ----
 
-Com kafka connect você pode conectar em várias fonte de dados (source connector) e escrite também para outras variedades de ferramentas (sink connector). Você pode inclusive notificar no kafka todas as tabelas da sua aplicação, por exemplo, execute:
+Com kafka connect você pode conectar em várias fonte de dados (source connector) e escreve também para outras variedades de locais (sink connector). 
+
+É muito comum situações onde usa kafka connect para notificar todas as tabelas do seu banco de dados, por exemplo, execute:
 
 ```console
+cd ~/hands-on-microservices
+
 curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @mysql-kafka-connect/user-cdc-connect.json
 ```
 
-Veja nas configurações, estamos notificando em um tópico chamado **user-table** tudo que ocorre nessa tabela (sem ter que na aplicação gerar o evento, apenas que isso gera um acoplamento grande do modelo da aplicação com os eventos, o que pode ser um problema grande a médio prazo).
+Veja nas configurações, estamos notificando em um tópico chamado **user-table** tudo que ocorre nessa tabela, sem ter que na aplicação gerar o evento. Apesar que isso gera um acoplamento grande do modelo da aplicação com os eventos, o que pode ser um problema grande a médio prazo, mas é muito comum isso ser usado para replicação de dados, se quiser usar, veja os melhores conectores para cada fonte (alguns são mais performaticos, se plugando nos logs do banco de dados).
 
