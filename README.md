@@ -23,6 +23,8 @@ Além disso, para poder fazer outbox com JDBCConnector de um jeito que é mais d
 Com nossa imagem do kafka connect gerada, via docker compose, vamos subir todas necessárias (exceto o connect): kafka, control center, schema registry, MySQL:
 
 ```console
+cd ~/hands-on-microservices
+
 docker-compose up -d 
 ```
 
@@ -93,7 +95,9 @@ Espere subir, e veja então no control center que agora temos um connect vincula
 Até agora só temos o connect executando, porém não temos nada criado para conectar na nossa base e enviar nossos eventos. Para isso vamos criar um connector que consulta nossa tabela de eventos (a outbox table) e envia para nosso tópico no kafka, execute esse post (lembre-se, o kafka connect está rodando via docker, e mapeamos a porta 8083 para o host):
 
 ```console
-curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://locahost:8083/connectors/ -d @mysql-kafka-connect/outbox-connect.json
+cd ~/hands-on-microservices
+
+curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json" http://localhost:8083/connectors/ -d @mysql-kafka-connect/outbox-connect.json
 ```
 
 Veja os [parâmetros](mysql-kafka-connect/outbox-connect.json) desse post, basicamente especificamos os dados do nosso banco, a query da nossa tabela de eventos e configuramos aquele nosso transform customizado para ler as colunas corretas da tabela e enviar para o tópico que queremos.
