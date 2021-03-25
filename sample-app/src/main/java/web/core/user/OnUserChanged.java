@@ -11,13 +11,13 @@ import web.core.user.pub.UserChangedMessage;
 @Service
 public class OnUserChanged {
 
-	public static final String TOPIC_NAME = "user.changed_v6";
+	public static final String TOPIC_NAME = "user.changed";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OnUserChanged.class);
 
 	@KafkaListener(topics = OnUserChanged.TOPIC_NAME, groupId = "sampleApp.onUserChanged")
 	public void onUserChanged(UserChangedMessage message, Acknowledgment ack) {
-		LOGGER.info("user created, id={}, name={}", message.getUserId(), message.getUserName());
+		LOGGER.info("user created, id={}, name={}, novoField3={}", message.getUserId());
 		ack.acknowledge();
 	}
 }

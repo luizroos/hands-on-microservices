@@ -1,0 +1,37 @@
+{
+  "name": "outbox-connect",
+  "config": {
+    "name": "outbox-connect",
+
+    "tasks.max": "1",
+
+    "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "mode": "timestamp",
+    "timestamp.column.name": "created_at",
+    "query": "select message_key, message_payload, message_topic, created_at from outbox_table",
+    "poll.interval.ms": "1000",
+    "batch.max.rows": "5000",
+
+    "connection.url": "jdbc:mysql://mysql:3306/sample-db",
+    "connection.user": "db_user",
+    "connection.password": "db_pass",
+    "connection.attempts": "5",
+    "connection.backoff.ms": "1000",
+    "schema.pattern": "sample-db",
+
+    "value.converter": "io.confluent.connect.avro.AvroConverter",
+    "value.converter.use.latest.version": "true",
+    "value.converter.enhanced.avro.schema.support": "true",
+    "value.converter.schema.registry.url": "http://schema-registry:8081",
+    "value.converter.auto.register.schemas": "true",
+    "value.converter.schemas.enable": "true",
+    "value.converter.connect.meta.data": "false",
+
+    "transforms": "outbox",
+    "transforms.outbox.type": "transform.outbox.AvroJdbcOutbox",
+    "transforms.outbox.schema.registry.url": "http://schema-registry:8081",
+    "transforms.outbox.table.column.payload": "message_payload",
+    "transforms.outbox.table.column.key": "message_key",
+    "transforms.outbox.table.column.topic": "message_topic"
+  }
+}

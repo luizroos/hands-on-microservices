@@ -5,11 +5,11 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import web.core.event.EventRepository;
 import web.core.exc.EntityAlreadyExistsException;
 import web.core.exc.UnknownPostalCodeException;
 import web.core.user.pub.UserChangedMessage;
@@ -24,11 +24,7 @@ public class UserCreateService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private KafkaTemplate<String, Object> KafkaTemplate;
-
-	@Transactional(readOnly = true)
-	public void _validate(String email) throws EntityAlreadyExistsException {
-	}
+	private EventRepository eventRepository;
 
 	public UserEntity createUser(String email, String name, int age, String addressPostalCode)
 			throws EntityAlreadyExistsException, UnknownPostalCodeException {
@@ -42,14 +38,17 @@ public class UserCreateService {
 		LOGGER.info("Persistindo usuario {}", email);
 		final UserEntity user = userRepository.createUser(email, name, age, addressPostalCode);
 
-		final UserChangedMessage userChangeMessage = UserChangedMessage.newBuilder()//
-				.setUserName(user.getName()) //
-				.setUserId(user.getId().toString()).build();
-		KafkaTemplate.send(OnUserChanged.TOPIC_NAME, user.getId().toString(), userChangeMessage);
+		LOGGER.info("Criando evento de criação de usuario");
+		final UserChangedMessage message = UserChangedMessage.newBuilder()//
+				.setUserId(user.getId().toString())//
+				.setUserName(user.getName())//
+				.build();
+		eventRepository.createEvent(OnUserChanged.TOPIC_NAME, user.getId().toString(), message);
 
 		if (user.getName().equalsIgnoreCase("create_name_err")) {
 			throw new RuntimeException();
 		}
+
 		return user;
 	}
 

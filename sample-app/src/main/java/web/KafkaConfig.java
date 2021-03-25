@@ -42,6 +42,15 @@ public class KafkaConfig {
 	private String kafkaConsumerGroupId;
 
 	@Bean
+	public KafkaAvroSerializer kafkaAvroSerializer() {
+		final KafkaAvroSerializer kafkaAvroSerializer = new KafkaAvroSerializer();
+		final Map<String, String> serCfg = new HashMap<String, String>();
+		serCfg.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistryURL);
+		kafkaAvroSerializer.configure(serCfg, false);
+		return kafkaAvroSerializer;
+	}
+
+	@Bean
 	public ProducerFactory<String, Object> producerFactory() {
 		final Map<String, Object> props = new HashMap<>();
 		props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapAddress);

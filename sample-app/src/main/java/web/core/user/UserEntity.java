@@ -1,5 +1,6 @@
 package web.core.user;
 
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -29,6 +30,7 @@ public class UserEntity {
 	@Type(type = "uuid-binary")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@GenericGenerator(name = "UserId", strategy = "uuid2")
+	@Column(columnDefinition = "BINARY(16)")
 	private UUID id;
 
 	@Column(updatable = false, nullable = false)
@@ -40,8 +42,14 @@ public class UserEntity {
 	@Column(nullable = false)
 	private Integer age;
 
-	@Column(nullable = false)
+//	@Column(nullable = false)
 	private String addressPostalCode;
+
+	@Column(nullable = false)
+	private ZonedDateTime updatedAt;
+
+	@Column(nullable = false, updatable = false)
+	private ZonedDateTime createdAt;
 
 	public UserEntity() {
 	}
@@ -54,6 +62,8 @@ public class UserEntity {
 		this.email = Objects.requireNonNull(email);
 		this.age = Objects.requireNonNull(age);
 		this.addressPostalCode = Objects.requireNonNull(addressPostalCode);
+		this.createdAt = ZonedDateTime.now();
+		this.updatedAt = createdAt;
 	}
 
 	public UUID getId() {
