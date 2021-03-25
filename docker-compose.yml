@@ -75,13 +75,13 @@ services:
 
   rest-proxy:
     image: confluentinc/cp-kafka-rest:6.1.0
+    hostname: rest-proxy
+    container_name: rest-proxy
     depends_on:
       - broker
       - schema-registry
     ports:
       - 8082:8082
-    hostname: rest-proxy
-    container_name: rest-proxy
     environment:
       KAFKA_REST_HOST_NAME: rest-proxy
       KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
@@ -90,12 +90,13 @@ services:
 
   mysql:
     image: mysql:5.6.51
-    ports:
-      - 3306:3306
     hostname: mysql    
     container_name: mysql
+    ports:
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_USER: 'db_user'
       MYSQL_PASSWORD: "db_pass"
       MYSQL_DATABASE: 'sample-db'
+      
