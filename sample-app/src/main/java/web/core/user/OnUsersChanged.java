@@ -16,14 +16,13 @@ public class OnUsersChanged {
 
 	@RabbitListener(queues = OnUsersChanged.GMAIL_USER_CHANGED, concurrency = "5")
 	public void gmailUserChanged(UserChangedMessage message) {
-		LOGGER.info("usuario com email do gmail alterado, id={}, name={}", message.getUserId(),
-				message.getUserName());
+		LOGGER.info("usuario com email do gmail alterado, id={}, name={}", message.getUserId(), message.getUserName());
 	}
 
 	@RabbitListener(queues = OnUsersChanged.LOG_USER_CHANGED, concurrency = "5")
 	public void logUserChanged(UserChangedMessage message) {
 		LOGGER.info("usuario alterado, id={}, name={}", message.getUserId(), message.getUserName());
-		if (message.getUserName().equals("consumer_name_err")) {
+		if (message.getUserEmail().indexOf("hotmail") > 0) {
 			LOGGER.error("erro ao consumir mensagem do usuario {}", message.getUserId());
 			throw new RuntimeException();
 		}
