@@ -14,7 +14,7 @@ public class OnUserChanged {
 	@KafkaListener(topics = UserChangedMessage.TOPIC_NAME, groupId = "sampleApp.onUserChanged")
 	public void onUserChanged(UserChangedMessage message, Acknowledgment ack) {
 		LOGGER.info("user created, id={}, name={}", message.getUserId(), message.getUserName());
-		if (message.getUserName().equalsIgnoreCase("consumer_name_err")) {
+		if (message.getUserEmail().indexOf("hotmail") > 0) {
 			LOGGER.info("Não foi possivel processar a alteração no usuario {}", message.getUserId());
 			throw new RuntimeException("Não é possivel tratar esse nome");
 		}
