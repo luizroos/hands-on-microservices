@@ -32,6 +32,10 @@ log.user.changed** cuja routing key é *.
 Vamos subir a aplicação na própria vm:
 
 ```console
+cd ~/hands-on-microservices/sample-app/
+
+git checkout e12
+
 ./gradlew clean build
 
 java -jar build/libs/sample-app-0.0.12-SNAPSHOT.jar
