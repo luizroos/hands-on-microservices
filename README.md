@@ -87,7 +87,7 @@ Clique nos [detalhes](amazon/p8.png) da instância, veja o **DNS IPv4 público**
 
 Ainda nos detalhes, clique em **segurança** (segunda aba do menu abaixo do resumo), e então **grupos de segurança**. Você deve ver uma [tela com os detalhes das regras](amazon/p10.png) de entrada da sua instância. Provavelmente vai estar habilitada apenas a porta 22 (ssh). Nós vamos executar vários serviços que rodam em portas distintas, para não precisar ficar abrindo uma a uma, clique em **editar regras de entrada** , em sequida **adicionar regra**, escolha tipo **TCP personalizado**, com intervalo de portas **1000-65000** e origem **qualquer lugar**, [dessa forma](amazon/p11.png) (nunca faça isso em um ambiente produtivo, acabamos de deixar aberto praticamente todas as portas da instância). Clique em salvar regras e então volte aos detalhes da instância.
 
-De bolta aos detalhes da instância, agora clique em conectar (no menu lá no alto a direita), será apresentado [formas de conectar](amazon/p9.png) a sua instância, tente conectar (use putty ou outro client ssh). 
+De volta aos detalhes da instância, agora clique em conectar (no menu lá no alto a direita), será apresentado [formas de conectar](amazon/p9.png) a sua instância, tente conectar (use putty ou outro client ssh). 
 
 Uma vez conectado via ssh na instância, execute os comandos a seguir na home do usuário:
 
