@@ -1,5 +1,7 @@
 package web.restapi;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -8,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import web.GlobalExceptionHandler.BadRequestException;
@@ -23,13 +26,15 @@ public class UserResource {
 	private UserCreateService userCreateService;
 
 	@GetMapping(path = "/users/random", produces = MediaType.APPLICATION_JSON_VALUE)
-	public UserCreateResponse createRandomUser() throws BadRequestException {
+	public UserCreateResponse createRandomUser(@RequestParam(name = "emailDomain", required = false) String emailDomain)
+			throws BadRequestException {
 		String name = RandomStringUtils.randomAlphabetic(8);
 		final UserCreateForm userCreateForm = new UserCreateForm();
 		userCreateForm.setAge((int) (18 + (Math.random() * 30)));
 		userCreateForm.setAddressPostalCode(RandomStringUtils.randomNumeric(8));
 		userCreateForm.setName(name);
-		userCreateForm.setEmail(String.format("%s@%s.com", name, RandomStringUtils.randomAlphabetic(5)));
+		userCreateForm.setEmail(String.format("%s@%s.com", name,
+				Optional.ofNullable(emailDomain).orElse(RandomStringUtils.randomAlphabetic(5))));
 		return createUser(userCreateForm);
 	}
 

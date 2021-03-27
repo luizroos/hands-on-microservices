@@ -8,11 +8,12 @@
       "type": "string"
     },
     {
+      "name": "userEmail",
+      "type": "string"
+    },
+    {
       "name": "userName",
-      "type": [
-        "null",
-        "string"
-      ]
+      "type": "string"
     } 
   ]
 }

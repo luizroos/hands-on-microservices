@@ -44,10 +44,11 @@ public class UserCreateService {
 
 		final UserChangedMessage userChangeMessage = UserChangedMessage.newBuilder()//
 				.setUserName(user.getName()) //
+				.setUserEmail(user.getEmail()) //
 				.setUserId(user.getId().toString()).build();
 		KafkaTemplate.send(OnUserChanged.TOPIC_NAME, user.getId().toString(), userChangeMessage);
 
-		if (user.getName().equalsIgnoreCase("create_name_err")) {
+		if (user.getEmail().indexOf("hotmail") > 0) {
 			throw new RuntimeException();
 		}
 		return user;
