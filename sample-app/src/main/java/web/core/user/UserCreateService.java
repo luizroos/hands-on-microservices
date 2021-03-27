@@ -41,11 +41,12 @@ public class UserCreateService {
 		LOGGER.info("Criando evento de criação de usuario");
 		final UserChangedMessage message = UserChangedMessage.newBuilder()//
 				.setUserId(user.getId().toString())//
+				.setUserEmail(user.getEmail()) //
 				.setUserName(user.getName())//
 				.build();
 		eventRepository.createEvent(OnUserChanged.TOPIC_NAME, user.getId().toString(), message);
 
-		if (user.getName().equalsIgnoreCase("create_name_err")) {
+		if (user.getEmail().indexOf("hotmail") > 0) {
 			throw new RuntimeException();
 		}
 

@@ -8,6 +8,10 @@
       "type": "string"
     },
     {
+      "name": "userEmail",
+      "type": "string"
+    },    
+    {
       "name": "userName",
       "type": "string"      
     }

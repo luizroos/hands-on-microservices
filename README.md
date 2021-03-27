@@ -106,11 +106,16 @@ Veja no control center o connector criado, acesse http://172.0.2.32:8083/connect
 
 Crie novos usuários e perceba que agora as mensagens vão chegar, veja isso nos logs da aplicação:
 
-```
+```console
 web.core.user.OnUserChanged : user created
 ```
 
-Tente criar o usuário com nome **create_name_err** (aquele que deu erro no [exercicio 14](https://github.com/luizroos/hands-on-microservices/tree/e14)) e perceba que dessa vez a mensagem não foi notificada.
+Tente criar o usuário com email do **hotmail** (aquele que deu erro no [exercicio 14](https://github.com/luizroos/hands-on-microservices/tree/e14)) e perceba que dessa vez a mensagem não foi notificada.
+
+```console
+curl localhost:30001/users/random?emailDomain=hotmail
+```
+ 
  
 ### Notificando sua base de dados
 ----
