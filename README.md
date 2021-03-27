@@ -108,28 +108,28 @@ Agora crie um usuário com dominio de email **hotmail** (na classe [OnUserChange
 ```console
 curl localhost:30001/users/random?emailDomain=hotmail
 ```
-Crie novos usuários e veja que paramos de consumir mensagens, mesmo desses novos usuários, por que?
+Crie novos usuários e veja que paramos de consumir mensagens, mesmo desses novos, por que?
 
 Vamos criar mais partições para nosso tópico. Usando a [kafka-topics](https://docs.cloudera.com/documentation/kafka/latest/topics/kafka_command_line.html) execute o seguinte comando (fique de olho no log da aplicação enquanto executa isso):
 
-```
+```console
 docker exec broker kafka-topics --bootstrap-server localhost:29092 --alter --topic user.changed --partitions 6
 ```
 
-Perceba que a aplicação comeceu a consumir de outras partições. Se tivermos mais de uma aplicação conectada, cada partição é consumida por apenas uma aplicação (não adianta ter 10 aplicações consumindo um tópico de 6 partições), pois lembre-se que o consumo do kafka é ordenado. Uma mesma aplicação pode consumir mais de uma partição (é o caso aqui). 
+A aplicação comeceu a consumir de outras partições. Se tivermos mais de uma aplicação conectada, cada partição é consumida por apenas uma aplicação (não adianta ter 10 aplicações consumindo um tópico de 6 partições), pois lembre-se que o consumo do kafka é ordenado. Mas uma mesma aplicação pode consumir mais de uma partição (é o caso aqui). 
 
 Veja no control center como ficou o tópico e o consumidor.
 
-Crie novos usuários, perceba que o consumo "voltou", mas olhe no control center, somente nas partições que não estão com erro de consumo. Como resolver isso? 
+Crie novos usuários, o consumo "voltou", mas olhe no control center, somente nas partições que não estão com erro de consumo. Como resolver isso? 
 
 Em últimos casos:
 
-```
+```console
 docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group sampleApp.onUserChanged --describe
 
 docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group sampleApp.onUserChanged --topic user.changed:0 --reset-offsets --shift-by 1
 ```
 
-Por que não alterou? Pare a aplicação, execute novamente e suba a aplicação.
+Por que não alterou? Pare a aplicação, execute novamente o comando e suba a aplicação.
 
 Por que esse deve ser a última coisa que você deve fazer para resolver um problema desse tipo?
