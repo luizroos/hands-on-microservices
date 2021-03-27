@@ -89,7 +89,7 @@ docker run --rm -d -p 8083:8083 --name connect --net handsonmicroservices_defaul
 
 Espere subir, e veja então no control center que agora temos um connect vinculado: http://172.168.0.32:9021/clusters (quando subimos o control center, dizemos que um connect rodaria no host connect, por isso que o control center enxerga).
 
-### Criando um connector
+### Criando o connector
 ----
 
 Até agora só temos o connect executando, porém não temos nada criado para conectar na nossa base e enviar nossos eventos. Para isso vamos criar um connector que consulta nossa tabela de eventos (a outbox table) e envia para nosso tópico no kafka, execute esse post (lembre-se, o kafka connect está rodando via docker, e mapeamos a porta 8083 para o host):
@@ -117,7 +117,7 @@ curl localhost:30001/users/random?emailDomain=hotmail
 ```
  
  
-### Notificando sua base de dados
+### Notificando tabelas do base de dados
 ----
 
 Com kafka connect você pode conectar em várias fonte de dados (source connector) e escreve também para outras variedades de locais (sink connector). 
