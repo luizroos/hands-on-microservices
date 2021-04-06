@@ -25,7 +25,7 @@ Para parar todos serviços e remover todos containers, execute:
 docker-compose down
 ```
 
-Após todos os serviços subir, acesse o control center a partir de http://172.0.2.32:9021/.
+Após todos os serviços subirem, acesse o control center a partir de http://172.0.2.32:9021/.
 
 ### Gerando e consumindo algumas mensagens
 
