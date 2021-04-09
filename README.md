@@ -54,8 +54,10 @@ Porque ocorreu o erro? Como podemos corrigir?
 
 Altere a compatibilidade do schema no control center para NONE, tente gerar um novo usuário agora. Agora funcionou certo? mas por que essa deve ser a última opção para resolver esse problema?
 
-Agora crie um usuário com email do **hotmail**, veja no log da aplicação o que ocorreu. Esse é um problema de consistência, como resolver?
+Agora crie um usuário com email do **hotmail**, veja no log da aplicação o que ocorreu. 
 
 ```console
 curl localhost:30001/users/random?emailDomain=hotmail
 ```
+
+Esse é um problema de consistência, como resolver?
