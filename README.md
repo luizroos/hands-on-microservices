@@ -50,14 +50,16 @@ org.apache.kafka.common.errors.SerializationException: Error registering Avro sc
 Caused by: io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException: Schema being registered is incompatible with an earlier schema for subject
 ```
 
-Porque ocorreu o erro? Como podemos corrigir? 
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Porque ocorreu o erro? Como podemos corrigir? 
 
-Altere a compatibilidade do schema no control center para NONE, tente gerar um novo usuário agora. Agora funcionou certo? mas por que essa deve ser a última opção para resolver esse problema?
+Altere a compatibilidade do schema no control center para NONE/BACKWARD, tente gerar um novo usuário agora. Agora funcionou certo? mas por que essa deve ser a última opção para resolver esse problema?
 
-Agora crie um usuário com email do **hotmail**, veja no log da aplicação o que ocorreu. 
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Em quais estratégias a gente usaria BACKWARD e FORWARD?
+
+Por fim, crie um usuário com email do **hotmail**, veja no log da aplicação o que ocorreu. 
 
 ```console
 curl localhost:30001/users/random?emailDomain=hotmail
 ```
 
-Esse é um problema de consistência, como resolver?
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Esse é um problema de consistência, como resolver?
