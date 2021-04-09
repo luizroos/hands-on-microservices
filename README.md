@@ -20,7 +20,7 @@ Crie alguns usuários via http://172.0.2.32:30001/swagger-ui.html, ou via curl:
 curl localhost:30001/users/random
 ```
 
-Verifique a aba schema do tópico no control center, veja que temos um schema registrado para esse tópico. Mude a compatibilidade para FORWARD (ou seja, o antigo schema deve poder ler o que for escrito no novo schema).
+Verifique a aba schema do tópico **user.changed.avro** no control center, veja que temos um schema registrado para esse tópico. Mude a compatibilidade para FORWARD (ou seja, o antigo schema deve poder ler o que for escrito no novo schema).
 
 Altere então o schema [UserChangedMessage.avsc](/sample-app/src/main/avro/UserChangedMessage.avsc) do avro da aplicação, deixando o nome opcional: 
 
