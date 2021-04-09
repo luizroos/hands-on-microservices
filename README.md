@@ -43,7 +43,7 @@ Altere o atributo userName para isso:
 } 
 ```
 
-Recompile, reinicie a aplicação e crie um novo usuário. Você devera ver o seguine erro no log e o usuário não vai ser criado (a API vai retornar erro 500).
+Recompile, reinicie a aplicação e crie um novo usuário. Você deverá ver o seguine erro no log e o usuário não vai ser criado (a API vai retornar erro 500).
 
 ```console
 org.apache.kafka.common.errors.SerializationException: Error registering Avro schema: {"type":"record","name":"UserChangedMessage","namespace":"web.core.user.pub","fields":[{"name":"userId","type":{"type":"string","avro.java.string":"String"}},{"name":"userName","type":["null",{"type":"string","avro.java.string":"String"}]}]}
