@@ -11,7 +11,7 @@ import web.core.user.pub.UserChangedMessage;
 @Service
 public class OnUserChanged {
 
-	public static final String TOPIC_NAME = "user.changed";
+	public static final String TOPIC_NAME = "user.changed.kconnect";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OnUserChanged.class);
 

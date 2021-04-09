@@ -73,21 +73,6 @@ services:
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
 
-  rest-proxy:
-    image: confluentinc/cp-kafka-rest:6.1.0
-    hostname: rest-proxy
-    container_name: rest-proxy
-    depends_on:
-      - broker
-      - schema-registry
-    ports:
-      - 8082:8082
-    environment:
-      KAFKA_REST_HOST_NAME: rest-proxy
-      KAFKA_REST_BOOTSTRAP_SERVERS: 'broker:29092'
-      KAFKA_REST_LISTENERS: "http://0.0.0.0:8082"
-      KAFKA_REST_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
-
   mysql:
     image: mysql:5.6.51
     hostname: mysql    
