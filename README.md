@@ -59,7 +59,7 @@ Podemos usar a ferramenta [kafka-consumer-groups](https://docs.cloudera.com/docu
 docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group consumer --describe
 ```
 
-Execute novamente o consumer, algo foi exibido? Por que não?
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Execute novamente o consumer, algo foi exibido? Por que não?
 
 Vamos reprocessar as mensagens alterando o current offset do consumer:
 
@@ -136,6 +136,6 @@ docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --gr
 docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group sampleApp.onUserChanged --topic user.changed:0 --reset-offsets --shift-by 1
 ```
 
-Por que não alterou? Pare a aplicação, execute novamente o comando e suba a aplicação.
+![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Por que não alterou? Pare a aplicação, execute novamente o comando e suba a aplicação.
 
 Por que esse deve ser a última coisa que você deve fazer para resolver um problema desse tipo?
