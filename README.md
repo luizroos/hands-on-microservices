@@ -1,5 +1,7 @@
 # Exercício 14 - Kafka compatibilidade de mensagens
 
+Imagina agora que temos vários consumidores para nosso tópico, consumidores de outras aplicações até. Esses consumidores confiam na mensagem que enviamos, caso mudamos a mensagem deixando de enviar um valor que antes enviavamos, podemos quebrar consumidores (é como mudar a assinatura de uma API). Então temos que ter bastante cuidado com as alterações nas nossas mensagens. 
+
 Alteramos a aplicação para ao invés de enviar um objeto json, enviar um objeto serializado com [avro](https://avro.apache.org/), integramos também com o schema registry. Veja as alterações no código, principalmente o arquivo [UserChangedMessage.avsc](/sample-app/src/main/avro/UserChangedMessage.avsc) (descreve o schema da mensagem).
 
 Suba a aplicação novamente:
