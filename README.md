@@ -1,6 +1,6 @@
 # Exercício 14 - Kafka compatibilidade de mensagens
 
-Alteramos a aplicação para ao invés de enviar um objeto json, vamos enviar um objeto serializado com [avro](https://avro.apache.org/), integramos também com o schema registry. Veja as alterações no código, principalmente o arquivo [UserChangedMessage.avsc](/sample-app/src/main/avro/UserChangedMessage.avsc) (descreve o schema da mensagem).
+Alteramos a aplicação para ao invés de enviar um objeto json, enviar um objeto serializado com [avro](https://avro.apache.org/), integramos também com o schema registry. Veja as alterações no código, principalmente o arquivo [UserChangedMessage.avsc](/sample-app/src/main/avro/UserChangedMessage.avsc) (descreve o schema da mensagem).
 
 Suba a aplicação novamente:
 
