@@ -1,6 +1,6 @@
 # Exercício 15 - Outbox com kafka connect
 
-Para que a mensagem kafka seja transacional com as operações que fazemos no nosso banco de dados, vamos usar um pattern chamado [transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html). Imagine que ao invés de enviar para o kafka, a gente grave nosso evento em uma tabela do nosso banco de dados, de forma transacional com as demais operações e depois crie um processo que busque de tempos em tempos os novos registros dessa tabela e envie para o kafka.
+Para que a mensagem kafka seja transacional com as operações que fazemos no nosso banco de dados, vamos usar um pattern chamado [transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html). Imagine que ao invés de enviar para o kafka, a gente grave nosso evento em uma tabela do nosso banco de dados, de forma transacional com as demais operações, e depois crie um processo que busque de tempos em tempos os novos registros dessa tabela e envie para o kafka.
 
 Para implementar esse processo de envio, podemos fazer na mão, mas podemos usar também uma ferramenta chamada [kafka connect](https://docs.confluent.io/platform/current/connect/index.html) (ele não serve só para isso, veja mais na documentação dele).
 
@@ -20,7 +20,7 @@ Veja no [Dockerfile](mysql-kafka-connect-image/Dockerfile) que [herdamos](https:
 
 Além disso, para poder fazer outbox com JDBCConnector de um jeito que é mais desacoplado com o banco de dados, vamos usar um [transform customizado](https://docs.confluent.io/platform/current/connect/transforms/custom.html), por isso que usamos um script para fazer o build da imagem, esse script vai baixar o código desse transform, compilar e instalar na imagem. Veja mais desse transform em https://github.com/luizroos/kconnect-jdbc-outbox-smt, lá tem uma explicação sobre a motivação de se usar.
 
-Com nossa imagem do kafka connect gerada, via docker compose, vamos subir todas necessárias (exceto o connect): kafka, control center, schema registry, MySQL:
+Com nossa imagem do kafka connect gerada, via docker compose, vamos subir todos serviços necessários (exceto o connect): kafka, control center, schema registry, MySQL:
 
 ```console
 cd ~/hands-on-microservices
@@ -62,7 +62,7 @@ Porém perceba que nossa aplicação não está consumindo esses eventos (veja n
 Aquela imagem que criamos a pouco, vamos subir ela, é bastante parâmetro mesmo, poderiamos colocar ela para subir junto no docker-compose mas como o foco aqui é o kafka connect, vamos subir ela separado. Perceba que são muitos parâmetros, execute então o connect:
 
 ```console
-docker run --rm -d -p 8083:8083 --name connect --net handsonmicroservices_default \
+docker run --rm -d -p 8083:8083 --name connect --net hands-on-microservices_default \
  -e CONNECT_BOOTSTRAP_SERVERS=broker:29092 \
  -e CONNECT_REST_ADVERTISED_HOST_NAME=connect \
  -e CONNECT_REST_PORT=8083 \
@@ -102,9 +102,9 @@ curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json"
 
 Veja os [parâmetros](mysql-kafka-connect/outbox-connect.json) desse post, basicamente especificamos os dados do nosso banco, a query da nossa tabela de eventos e configuramos aquele nosso transform customizado para ler as colunas corretas da tabela e enviar para o tópico que queremos.
 
-Veja no control center o connector criado, acesse http://172.0.2.32:8083/connectors/outbox-connect/status para ver o status.   
+No control center o connector foi criado, acesse http://172.0.2.32:8083/connectors/outbox-connect/status para ver o status.   
 
-Crie novos usuários e perceba que agora as mensagens vão chegar, veja isso nos logs da aplicação:
+Crie novos usuários e perceba que agora as mensagens vão chegar, nos logs da aplicação:
 
 ```console
 web.core.user.OnUserChanged : user created
