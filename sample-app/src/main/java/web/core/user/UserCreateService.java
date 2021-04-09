@@ -15,7 +15,7 @@ import web.core.exc.UnknownPostalCodeException;
 import web.core.user.pub.UserChangedMessage;
 
 @Service
-@Transactional(propagation = Propagation.NEVER)
+@Transactional(propagation = Propagation.NEVER, rollbackFor = Exception.class)
 public class UserCreateService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserCreateService.class);
