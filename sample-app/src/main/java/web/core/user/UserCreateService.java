@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import web.core.exc.EntityAlreadyExistsException;
@@ -15,7 +14,7 @@ import web.core.exc.UnknownPostalCodeException;
 import web.core.user.pub.UserChangedMessage;
 
 @Service
-@Transactional(propagation = Propagation.NEVER, rollbackFor = Exception.class)
+@Transactional(rollbackFor = Exception.class)
 public class UserCreateService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserCreateService.class);
