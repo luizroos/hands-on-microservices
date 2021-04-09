@@ -11,7 +11,7 @@ import web.core.user.pub.UserChangedMessage;
 @Service
 public class OnUserChanged {
 
-	public static final String TOPIC_NAME = "user.changed_v6";
+	public static final String TOPIC_NAME = "user.changed.avro";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OnUserChanged.class);
 
