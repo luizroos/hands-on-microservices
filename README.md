@@ -12,7 +12,7 @@ Por conta disso, ao invés de subir cada container separado, vamos usar o [docke
 Veja o arquivo [docker-compose.yam](docker-compose.yml), a estrutura é simples, e uma nova forma para vocês subirem containers. Vamos subir nosso Kafka então:
 
 ```console
-cd ~/hands-on-microservices/sample-app/
+cd ~/hands-on-microservices/
 
 git checkout e13
 
