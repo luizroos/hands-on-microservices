@@ -2,6 +2,8 @@
 protocol User {
 
   record EmailDomainChangesCountMessage {
+
+	string windowId;
   
     string emailDomain;
     

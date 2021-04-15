@@ -1,0 +1,12 @@
+@namespace("web.core.user.pub")
+protocol User {
+
+  import idl "EmailDomainChangesCountMessage.avdl"; 
+
+  record MultiWindowEmailDomainChangesCountMessage {
+  
+    array<EmailDomainChangesCountMessage> windows;
+  
+  }
+
+}

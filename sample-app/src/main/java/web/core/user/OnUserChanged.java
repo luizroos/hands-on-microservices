@@ -6,7 +6,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
-import web.core.user.pub.EmailDomainChangesCountMessage;
+import web.core.user.pub.MultiWindowEmailDomainChangesCountMessage;
 import web.core.user.pub.UserChangedMessage;
 
 @Service
@@ -21,7 +21,7 @@ public class OnUserChanged {
 	}
 
 	@KafkaListener(topics = "${topic.email-domain-count}", groupId = "sampleApp.onUserChanged")
-	public void onEmailDomainCount(EmailDomainChangesCountMessage message, Acknowledgment ack) {
+	public void onEmailDomainCount(MultiWindowEmailDomainChangesCountMessage message, Acknowledgment ack) {
 		LOGGER.info("window count, message={}", message);
 		ack.acknowledge();
 	}
