@@ -32,6 +32,8 @@ Os exercícios estão cada um em um branch separado e que devem ser feitos na **
 
 [exercício 15](https://github.com/luizroos/hands-on-microservices/tree/e15)
 
+[exercício 16](https://github.com/luizroos/hands-on-microservices/tree/e16)
+
 ## Instalando o ambiente
 -----
 
