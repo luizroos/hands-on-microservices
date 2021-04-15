@@ -24,10 +24,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka-streams:3.1.2'
+	
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'com.h2database:h2'
 	implementation 'org.apache.avro:avro:1.10.1'
 	implementation 'io.confluent:kafka-avro-serializer:5.3.0'
+	implementation 'io.confluent:kafka-streams-avro-serde:5.5.0'
+
 	
 	implementation 'org.springdoc:springdoc-openapi-ui:1.4.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

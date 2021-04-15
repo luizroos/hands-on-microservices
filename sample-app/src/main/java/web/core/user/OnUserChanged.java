@@ -6,18 +6,23 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 
+import web.core.user.pub.EmailDomainChangesCountMessage;
 import web.core.user.pub.UserChangedMessage;
 
 @Service
 public class OnUserChanged {
 
-	public static final String TOPIC_NAME = "user.changed.avro";
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(OnUserChanged.class);
 
-	@KafkaListener(topics = OnUserChanged.TOPIC_NAME, groupId = "sampleApp.onUserChanged")
+	@KafkaListener(topics = "${topic.user-changed}", groupId = "sampleApp.onUserChanged")
 	public void onUserChanged(UserChangedMessage message, Acknowledgment ack) {
 		LOGGER.info("user created, id={}, name={}", message.getUserId(), message.getUserName());
+		ack.acknowledge();
+	}
+
+	@KafkaListener(topics = "${topic.email-domain-count}", groupId = "sampleApp.onUserChanged")
+	public void onEmailDomainCount(EmailDomainChangesCountMessage message, Acknowledgment ack) {
+		LOGGER.info("window count, message={}", message);
 		ack.acknowledge();
 	}
 }

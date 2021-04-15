@@ -1,0 +1,16 @@
+@namespace("web.core.user.pub")
+protocol User {
+
+  record EmailDomainChangesCountMessage {
+  
+    string emailDomain;
+    
+    timestamp_ms startTime;
+    
+    timestamp_ms endTime;
+  
+    long count;
+  
+  }
+
+}

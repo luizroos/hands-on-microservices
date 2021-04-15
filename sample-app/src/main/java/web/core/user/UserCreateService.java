@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,9 @@ public class UserCreateService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Value("${topic.user-changed}")
+	private String userTopic;
+
 	@Autowired
 	private KafkaTemplate<String, Object> KafkaTemplate;
 
@@ -32,6 +36,10 @@ public class UserCreateService {
 	public UserEntity createUser(String email, String name, int age, String addressPostalCode)
 			throws EntityAlreadyExistsException, UnknownPostalCodeException {
 		LOGGER.info("Criando usuario {}", email);
+
+		if (email.indexOf("@") < 0) {
+			email += "@corp.com";
+		}
 
 		final Optional<UserEntity> exist = userRepository.findUserByEmail(email);
 		if (exist.isPresent()) {
@@ -45,7 +53,7 @@ public class UserCreateService {
 				.setUserName(user.getName()) //
 				.setUserEmail(user.getEmail()) //
 				.setUserId(user.getId().toString()).build();
-		KafkaTemplate.send(OnUserChanged.TOPIC_NAME, user.getId().toString(), userChangeMessage);
+		KafkaTemplate.send(userTopic, user.getId().toString(), userChangeMessage);
 
 		if (user.getEmail().indexOf("hotmail") > 0) {
 			throw new RuntimeException();
