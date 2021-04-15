@@ -30,7 +30,7 @@ git checkout e12
 
 ./gradlew clean build
 
-java -jar build/libs/sample-app-0.0.12-SNAPSHOT.jar
+java -jar build/libs/sample-app-0.0.16-SNAPSHOT.jar
 ```
 
 Agora gere novos usuários, repitindo o domínio deles:
