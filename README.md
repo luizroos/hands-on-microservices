@@ -7,6 +7,8 @@ Para implementar esse processo de envio, podemos fazer na mão, mas podemos usar
 Nosso objetivo será criar configurar kafka connect que conecte no nosso MySQL, leia o evento da nossa tabela de outbox e envie para o tópico que usamos do kafka. Para isso, vamos criar uma imagem com um kafka connect com connectors para conectar a um banco MySQL (você pode pesquisar diferentes tipos connectors em https://www.confluent.io/hub/):
 
 ```console
+cd ~/hands-on-microservices
+
 git checkout e15
 
 cd ~/hands-on-microservices/mysql-kafka-connect-image
