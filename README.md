@@ -112,7 +112,7 @@ Crie novos usuários e perceba que agora as mensagens vão chegar, nos logs da a
 web.core.user.OnUserChanged : user created
 ```
 
-Tente criar o usuário com email do **hotmail** (aquele que deu erro no [exercicio 14](https://github.com/luizroos/hands-on-microservices/tree/e14)) e perceba que dessa vez a mensagem não foi notificada.
+Tente criar o usuário com email do **hotmail** (aquele que deu erro no [exercicio 14](https://github.com/luizroos/hands-on-microservices/tree/e14)) e perceba que dessa vez a mensagem não será notificada.
 
 ```console
 curl localhost:30001/users/random?emailDomain=hotmail
