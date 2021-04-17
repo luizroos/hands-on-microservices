@@ -2,7 +2,7 @@
 
 Para que a mensagem kafka seja transacional com as operações que fazemos no nosso banco de dados, vamos usar um pattern chamado [transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html). Imagine que ao invés de enviar para o kafka, a gente grave nosso evento em uma tabela do nosso banco de dados, de forma transacional com as demais operações, e depois crie um processo que busque de tempos em tempos os novos registros dessa tabela e envie para o kafka.
 
-Para implementar esse processo de envio, podemos fazer na mão, mas podemos usar também uma ferramenta chamada [kafka connect](https://docs.confluent.io/platform/current/connect/index.html) (ele não serve só para isso, veja mais na documentação dele).
+Para implementar esse processo de envio, podemos fazer na mão (implementando um schedule que de tempos em tempos busca os eventos e envia), mas podemos usar também uma ferramenta chamada [kafka connect](https://docs.confluent.io/platform/current/connect/index.html) (ele não serve só para isso, veja mais na documentação dele).
 
 Nosso objetivo será criar configurar kafka connect que conecte no nosso MySQL, leia o evento da nossa tabela de outbox e envie para o tópico que usamos do kafka. Para isso, vamos criar uma imagem com um kafka connect com connectors para conectar a um banco MySQL (você pode pesquisar diferentes tipos connectors em https://www.confluent.io/hub/):
 
