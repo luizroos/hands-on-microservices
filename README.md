@@ -1,4 +1,7 @@
 # Exercício 4 - comunicação entre containers
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 A maioria das aplicações tem dependências externas, podemos criar o container da aplicação aproveitando para subir todas suas dependências junto no mesmo container, ou podemos subir containers separados para cada dependência (o que é mais comum).
 
