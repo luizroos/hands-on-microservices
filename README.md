@@ -3,6 +3,14 @@
 
 ---
 
+Entre no diretório do repositório (dentro da vm) e troque o branch para esse e1:
+
+```console
+cd ~/hands-on-microservices
+
+git checkout e1
+```
+
 ### Aplicação sample-app
 
 Veja o código da aplicação (se quiser, configure alguma IDE, as mais comuns para java são [eclipse](https://www.eclipse.org/) ou [intellj](https://www.jetbrains.com/pt-br/idea/)). 
