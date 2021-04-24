@@ -1,4 +1,7 @@
 # Exercício 2 - explorando outras possibilidades
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Você não precisa só executar aplicações standalone. As vezes você já tem uma aplicação legada, rodando dentro de algum servidor de aplicação, no caso do java, servidores como jboss, websphere, weblogic, etc.
 
