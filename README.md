@@ -1,5 +1,5 @@
 # Exercício 15 - Outbox com kafka connect
-[setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
 
 ---
 
