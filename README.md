@@ -1,4 +1,7 @@
 # Exercício 13 - Kafka
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Voltamos ao banco H2, para simplificar subir a aplicação. 
 
