@@ -1,4 +1,7 @@
 # Exercício 9 - orquestrando containers
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 
 Iniciando o minikube:
