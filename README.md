@@ -1,4 +1,7 @@
 # Exercício 1 - criando uma imagem + comandos básicos
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 ### Clonando o repositório
 
