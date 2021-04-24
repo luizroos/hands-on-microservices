@@ -1,4 +1,7 @@
 # Exercício 11 - desnormalização de dados
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Ainda sobre a aplicação com cassandra, remova o cluster criado no exercicio 10 e crie um novo, com a mesma keyspace e tabela, mas agora só com 3 nós:
 
