@@ -23,6 +23,8 @@ Caso se interesse e queira criar suas próprias aplicações com java e spring, 
 Para compilar a aplicação, dentro do diretório sample-app execute o comando:
 
 ```console
+cd ~/hands-on-microservices/sample-app
+
 ./gradlew clean build
 ```
 
