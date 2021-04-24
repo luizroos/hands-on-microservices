@@ -1,4 +1,7 @@
 # Exercício 8 - impacto das dependências externas
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Compile e execute a aplicação (não se esqueça do mockserver e do banco de dados):
 
