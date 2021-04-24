@@ -1,4 +1,7 @@
 # Exercício 15 - Outbox com kafka connect
+[setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Para que a mensagem kafka seja transacional com as operações que fazemos no nosso banco de dados, vamos usar um pattern chamado [transactional outbox](https://microservices.io/patterns/data/transactional-outbox.html). Imagine que ao invés de enviar para o kafka, a gente grave nosso evento em uma tabela do nosso banco de dados, de forma transacional com as demais operações, e depois crie um processo que busque de tempos em tempos os novos registros dessa tabela e envie para o kafka.
 
