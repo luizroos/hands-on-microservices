@@ -1,4 +1,7 @@
 # Exercício 6 - teste de carga
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Remova todas os containers que vocês tem, vamos começar do zero (banco e aplicação)
 
