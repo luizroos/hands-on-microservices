@@ -1,4 +1,7 @@
 # Exercício 12 - Rabbit
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Inicie um container do [rabbitmq](https://www.rabbitmq.com/):
 
