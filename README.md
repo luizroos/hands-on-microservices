@@ -1,4 +1,7 @@
 # Exercício 3 - aplicação mais realista
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Voltamos ao modelo standalone e aumentamos um pouco a aplicação, incluimos uma api simples de cadastro de usuário usando um [banco de dados](https://www.h2database.com/html/main.html) em memória, muito utilizado em ambientes de teste. 
 
