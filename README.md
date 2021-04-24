@@ -1,4 +1,7 @@
 # Exercício 16 - Kafka streams
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Para simplificar, não vamos usar [kafka connect](https://github.com/luizroos/hands-on-microservices/tree/e15) para enviar as mensagens, já que o foco aqui são streams.
 
