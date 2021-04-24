@@ -1,4 +1,7 @@
 # Exercício 14 - Kafka compatibilidade de mensagens
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Imagina agora que temos vários consumidores para nosso tópico, consumidores de outras aplicações até. Esses consumidores confiam na mensagem que enviamos, caso mudamos a mensagem deixando de enviar um valor que antes enviavamos, podemos quebrar consumidores (é como mudar a assinatura de uma API). Então temos que ter bastante cuidado com as alterações nas nossas mensagens. 
 
