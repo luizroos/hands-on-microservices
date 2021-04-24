@@ -1,4 +1,7 @@
 # Exercício 7 - impacto das dependências externas
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Vamos subir um [mockserver](https://www.mock-server.com/where/docker.html) para simular uma dependência com outro sistema
 
