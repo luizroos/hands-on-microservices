@@ -1,4 +1,7 @@
 # Exercício 10 - Usando cassandra
+[Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+---
 
 Usando [ccm](https://www.datastax.com/blog/ccm-development-tool-creating-local-cassandra-clusters), vamos criar um cluster com 5 nós usando a versão 3.11.10 do [cassandra](https://cassandra.apache.org/):
 
