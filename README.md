@@ -169,10 +169,6 @@ Dentro da máquina virtual, faça clone do repositório e checkout desse branch:
 
 ```console
 git clone https://github.com/luizroos/hands-on-microservices.git
-
-cd hands-on-microservices
-
-git checkout e1
 ```
 
 Caso esteja rodando dentro de uma instância na aws, você já deve ter feito o git clone antes.
