@@ -35,12 +35,12 @@ Os exercícios estão cada um em um branch separado e que devem ser feitos na **
 [exercício 16](https://github.com/luizroos/hands-on-microservices/tree/e16)
 
 ## Instalando o ambiente
------
+---
 
 Nos exercícios, vamos usar [java](https://www.java.com/pt-BR/), [docker](https://www.docker.com/), [git](https://git-scm.com/), [apache bench](https://httpd.apache.org/docs/2.4/programs/ab.html), [ccm](https://www.datastax.com/blog/ccm-development-tool-creating-local-cassandra-clusters), [kubernetes](https://kubernetes.io/pt/), etc. Para isso vamos subir um [ubuntu](https://ubuntu.com) e realizar nossos testes nele.
 
 ### Local com vagrant e virtual box 
------
+---
 
 Sugiro usar esse modelo, é um modelo que você pode usar até para seu ambiente local de desenvolvimento.
 
@@ -73,7 +73,7 @@ vagrant destroy
 Se não for instalar o vagrant e quiser subir um ubuntu direto no virtualbox, veja o aqruivo [bootstrap.sh](vm/bootstrap.sh) com os comandos que você precisa executar para instalar todas dependências.
 
 ### Através de uma instância EC2 na Amazon
------
+---
 
 Acesse o [console da aws](https://console.aws.amazon.com/ec2), se não tiver um usuário na aws, crie um novo (usuários novos tem 12 meses com 750h de alguns tipos de instância EC2 grátis). 
 
@@ -137,7 +137,7 @@ chmod +x hands-on-microservices/gcloud/bootstrap.sh
 **IMPORTANTE**: Depois de usar, **não esqueça** de dar um stop na sua instância, selecione **interromper** no menu '...' da tabela de instâncias.
 
 ## Rodando o primeiro container
------
+---
 
 Dentro da vm, execute:
 
@@ -163,7 +163,8 @@ Esse comando criou um container a partir da imagem alpine, e executou o comando 
 docker run -it alpine /bin/sh
 ```
 
-### Clonando o repositório da aplicação
+## Clonando o repositório da aplicação
+---
 
 Dentro da máquina virtual, faça clone do repositório e checkout desse branch:
 
