@@ -75,6 +75,8 @@ Se não for instalar o vagrant e quiser subir um ubuntu direto no virtualbox, ve
 ### Através de uma instância EC2 na Amazon
 ---
 
+[Video com esse passo a passo](https://drive.google.com/file/d/1xfY44b-NkrIOEjRuzgP4T5Pc7j28YtQe/view?usp=sharing)
+
 Acesse o [console da aws](https://console.aws.amazon.com/ec2), se não tiver um usuário na aws, crie um novo (usuários novos tem 12 meses com 750h de alguns tipos de instância EC2 grátis). 
 
 Ao abrir o console, mude o idioma para português se preferir (lá embaixo na esqueda). Você deve estar vendo [o painel EC2](amazon/p1.png), no meio dessa tela, clique em **executar instância**. 
