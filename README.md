@@ -85,7 +85,7 @@ Depois de selecionar a imagem, você deve escolher o [tipo da instância]((amazo
 
 Vai aparecer uma [janela](amazon/p5.png) para gerar chaves de acesso à sua instância. Selecione **criar novo par de chaves** e digite um nome, clique **fazer download do par de chaves**, salve esse arquivo, então será habilitado o botão **executar instâncias**, clique nele (se você for criar novas instâncias depois, pode usar a mesma chave criada agora).
 
-Pronto, sua instância já está [subindo](amazon/p6.png), clique em **exibir instâncias**, você verá as [instâncias](amazon/p7.png) que tem rodando.
+Pronto, já está [subindo](amazon/p6.png), clique em **exibir instâncias**, você verá as [instâncias](amazon/p7.png) que tem rodando.
 
 Clique nos [detalhes](amazon/p8.png) da instância, veja o **DNS IPv4 público**, por ele que você vai acessar os serviços que os exercícios pedem para acessar pelo browser (use **http**, esse endereço substitui o 172.0.2.32 que usamos quando usamos vagrant). 
 
