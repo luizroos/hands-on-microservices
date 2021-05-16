@@ -50,4 +50,9 @@ sudo apt-get install -y python-pip; sudo pip install cql PyYAML
 git clone https://github.com/pcmanus/ccm.git
 cd ccm; sudo ./setup.py install; cd ..
 
+sudo echo "ClientAliveInterval 600" >> /etc/ssh/sshd_config
+sudo echo "ClientAliveCountMax 3" >> /etc/ssh/sshd_config
+
 source ~/.bashrc
+
+
