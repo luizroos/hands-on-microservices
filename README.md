@@ -31,9 +31,9 @@ docker run --rm -d --name c1 busybox sleep infinity
 docker run --rm -d --name c2 busybox sleep infinity
 ```
 
-Subimos dois containers da imagem do [busybox](https://hub.docker.com/_/busybox/), é uma pequena imagem de um linux, com algumas comandos já instalados.
+Subimos dois containers da imagem do [busybox](https://hub.docker.com/_/busybox/), é uma pequena imagem de um linux, com alguns comandos já instalados.
 
-O que estamos interessados é que os dois containers (c1 e c2) possam se comunicar entre si, portanto teste o seguinte comando:
+O que estamos interessados é que os dois containers (c1 e c2) possam se comunicar entre si, então teste o seguinte comando:
 
 ```console
 docker exec c1 ping c2
@@ -68,7 +68,7 @@ Vamos criar uma rede chamada **my-net**:
 docker network create my-net
 ```
 
-Veja a sua rede (não tem nenhum container conectado):
+Veja a sua rede (não deve ter nenhum container conectado a ela):
 
 ```console
 docker network inspect my-net
@@ -79,7 +79,7 @@ Agora vamos conectar nossos dois containers na nossa rede:
 ```console
 docker network connect my-net c1
 
-docker network connect my-net c2 
+docker network connect my-net c2
 
 docker network inspect my-net
 ```
