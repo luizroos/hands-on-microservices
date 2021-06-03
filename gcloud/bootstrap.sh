@@ -46,7 +46,9 @@ sudo echo "JAVA8_HOME=/usr/local/java-se-8u41-ri" >> ~/.bashrc
 sudo echo "export JAVA8_HOME" >> ~/.bashrc
 
 ## instalação ccm
-
-sudo apt-get install -y python-pip; sudo pip install cql PyYAML
+export LC_ALL=C
+sudo apt-get install -y python-pip; sudo pip install cql PyYAML psutil
 git clone https://github.com/pcmanus/ccm.git
 cd ccm; sudo ./setup.py install; cd ..
+
+source ~/.bashrc
