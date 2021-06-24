@@ -64,7 +64,7 @@ Porém perceba que nossa aplicação não está consumindo esses eventos (veja n
 ### Subindo o Kafka Connect
 ----
 
-Aquela imagem que criamos a pouco, vamos subir ela, é bastante parâmetro mesmo, poderiamos colocar ela para subir junto no docker-compose mas como o foco aqui é o kafka connect, vamos subir ela separado. Perceba que são muitos parâmetros, execute então o connect:
+Aquela imagem que criamos a pouco, vamos subir ela, são bastante parâmetros mesmo, poderiamos colocar ela para subir junto no docker-compose mas como o foco aqui é o kafka connect, vamos subir ela separado. Execute então o container da imagem do connect:
 
 ```console
 docker run --rm -d -p 8083:8083 --name connect --net hands-on-microservices_default \
