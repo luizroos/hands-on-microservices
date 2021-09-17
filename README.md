@@ -72,6 +72,12 @@ vagrant destroy
 
 Se não for instalar o vagrant e quiser subir um ubuntu direto no virtualbox, veja o aqruivo [bootstrap.sh](vm/bootstrap.sh) com os comandos que você precisa executar para instalar todas dependências.
 
+### Local importando a imagem direto na máquina virtual
+
+Essa opção não precisa instalar o vagrant, já vai importar para virtual box a imagem pronta para uso.
+
+Instale a [virtualbox](https://www.virtualbox.org/), acesse o diretório https://drive.google.com/drive/u/0/folders/1DCq3_ufUVXUHXYSd3MZhCqnZi2NmTCYT e siga as instruções de https://docs.google.com/document/d/1gVOlSwZKuPcMl5v2zVbvsRZ5dfyi4sv0C970EfW6VKQ/edit?usp=sharing
+
 ### Através de uma instância EC2 na Amazon
 ---
 
