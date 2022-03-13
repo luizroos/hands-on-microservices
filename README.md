@@ -26,7 +26,7 @@ docker run --rm -d -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-
 Caso você reusou o container do banco anterior, vamos apagar todos os dados da tabela:
 
 ```console
-docker exec -it mysql mysql -u db_user -p sample-db -e "delete from user";
+docker exec -it mysql mysql -u db_user -pdb_pass sample-db -e "delete from user";
 ```
 
 Execute um teste de carga usando [apache bench](https://httpd.apache.org/docs/2.4/programs/ab.html) (n = numero de requests, c = paralelismo, db --help), já instalado na vm:
@@ -40,7 +40,7 @@ Criamos um endpoint na aplicação (users/random), só para podermos criar usuá
 Verifique a quantidade de usuários inseridos:
 
 ```console
-docker exec -it mysql mysql -u db_user -p sample-db -e "select count(1) from user";
+docker exec -it mysql mysql -u db_user -pdb_pass sample-db -e "select count(1) from user";
 ```
 
 Deixe exibindo, em uma sessão separada, os logs da aplicação 
