@@ -4,7 +4,8 @@ sudo sh get-docker.sh
 sudo usermod -aG docker vagrant
 
 # instalação docker compose
-sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+#sudo curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
 # instala apache bench
@@ -19,8 +20,8 @@ sudo echo "PATH=\$PATH:\$JAVA_HOME/bin" >> /etc/profile.d/jdk.sh
 sudo echo "export JAVA_HOME" >> /etc/profile.d/jdk.sh
 rm openjdk-11.0.2_linux-x64_bin.tar.gz
 
-# modifica .bashrc
-cat /home/vagrant/vm_conf_files/bashrc >> /home/vagrant/.bashrc
+# # modifica .bashrc
+# #cat /home/vagrant/vm_conf_files/bashrc >> /home/vagrant/.bashrc
 
 # instala minikube
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
@@ -38,14 +39,15 @@ echo 'source <(kubectl completion bash)' >>~/.bashrc
 kubectl completion bash >/etc/bash_completion.d/kubectl
 
 ## instalação do java 8 (necessário para cassandra)
-curl -O https://download.java.net/openjdk/jdk8u41/ri/openjdk-8u41-b04-linux-x64-14_jan_2020.tar.gz
-tar zxvf openjdk-8u41-b04-linux-x64-14_jan_2020.tar.gz
-sudo mv java-se-8* /usr/local/
-sudo echo "JAVA8_HOME=/usr/local/java-se-8u41-ri" >> /etc/profile.d/jdk.sh
-sudo echo "export JAVA8_HOME" >> /etc/profile.d/jdk.sh
+# curl -O https://download.java.net/openjdk/jdk8u41/ri/openjdk-8u41-b04-linux-x64-14_jan_2020.tar.gz
+# tar zxvf openjdk-8u41-b04-linux-x64-14_jan_2020.tar.gz
+# sudo mv java-se-8* /usr/local/
+# sudo echo "JAVA8_HOME=/usr/local/java-se-8u41-ri" >> /etc/profile.d/jdk.sh
+# sudo echo "export JAVA8_HOME" >> /etc/profile.d/jdk.sh
 
 ## instalação ccm
 export LC_ALL=C
-sudo apt-get install -y python-pip; sudo pip install cql PyYAML psutil
-git clone https://github.com/pcmanus/ccm.git
-cd ccm; sudo ./setup.py install; cd ..
+sudo apt install -y python2-minimal; 
+curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py; 
+python2 get-pip.py; 
+sudo pip install cql PyYAML psutil ccm
