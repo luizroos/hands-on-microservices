@@ -88,6 +88,9 @@ vim ~/.ccm/sample-cassandra-cluster/node1/conf/cassandra.yaml
 vim ~/.ccm/sample-cassandra-cluster/node2/conf/cassandra.yaml
 vim ~/.ccm/sample-cassandra-cluster/node3/conf/cassandra.yaml
 ```
+
+E então inicialize todos os nós novamente.
+
 Altere a query para buscar na materialized view ao invés de na tabela, então compile a aplicação e teste novamente:
 
 ```console
