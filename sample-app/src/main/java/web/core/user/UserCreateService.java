@@ -26,10 +26,6 @@ public class UserCreateService {
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 
-	@Transactional(readOnly = true)
-	public void _validate(String email) throws EntityAlreadyExistsException {
-	}
-
 	public UserEntity createUser(String email, String name, int age, String addressPostalCode)
 			throws EntityAlreadyExistsException, UnknownPostalCodeException {
 		LOGGER.info("Criando usuario {}", email);
