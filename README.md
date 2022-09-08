@@ -1,5 +1,8 @@
 # Exercício 7 - impacto das dependências externas
+
 [Setup do ambiente](https://github.com/luizroos/hands-on-microservices)
+
+[Vídeo](https://drive.google.com/file/d/1rhJAGqxzeOrioVmZYoFxJyUWQ4dlwaGq/view?usp=sharing)
 
 ---
 
