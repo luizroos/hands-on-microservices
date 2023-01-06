@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
    config.vm.box = "bento/ubuntu-20.04"
-   config.vm.network "private_network", ip: "172.0.2.32"
+   config.vm.network "private_network", ip: "192.168.56.32"
    config.vm.network "forwarded_port", guest: 8001, host: 8001, autocorrect: true
    config.vm.network "forwarded_port", guest: 30001, host: 30001, autocorrect: true
    config.vm.network "forwarded_port", guest: 9021, host: 9021, autocorrect: true
