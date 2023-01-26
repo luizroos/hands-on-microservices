@@ -46,7 +46,7 @@ Veja que o log já mudou completamente se comparado ao exercício 1, pois agora 
 Pare a aplicação e vamos executar em segundo plano, mas dessa vez, ao invés de expor uma porta aleatória para o host, vamos mapear uma porta específica usando a opção -p :
 
 ```console
-docker run --rm -d -p 8080:8080 --name sample-app sample-app:2
+docker run --rm -d -p 8001:8080 --name sample-app sample-app:2
 ```
 
 Caso tenha conflito no nome com outros containers previamente iniciados, você pode remove-los usando:
@@ -63,4 +63,6 @@ Veja que agora a porta exposta pelo container é a porta que você informou com 
 docker ps 
 ```
 
-Como já mapeamos uma porta para o host, podemos acessar através do ip da nossa vm http://172.0.2.32:8080/sample-app/hello
+Porém, mapeamos para a porta 8001 da máquina virtual, então se acessarmos localhost:8001 de dentro da máquina virtual, a requisição será encaminhada para a nossa aplicação que está rodando dentro de um container na porta 8080.
+
+Quando subimos nossa máquina virtual, fizemos um mapeamento de portas entre nosso computador e a máquina virtual, e uma das portas mapeadas foi justamente a porta 8001, então se acessarmos localhost:8001 no nosso computador, a requisição será encaminhada para dentro da máquina virtual na porta 8001, que por sua vez encaminhara para o container. Por isso tente acessar a partir de um browser: http://localhost:8001/sample-app/hello
