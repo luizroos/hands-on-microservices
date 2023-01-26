@@ -21,7 +21,7 @@ sudo echo "export JAVA_HOME" >> /etc/profile.d/jdk.sh
 rm openjdk-11.0.2_linux-x64_bin.tar.gz
 
 # # modifica .bashrc
-# #cat /home/vagrant/vm_conf_files/bashrc >> /home/vagrant/.bashrc
+cat /home/vagrant/vm_conf_files/bashrc >> /home/vagrant/.bashrc
 
 # instala minikube
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
