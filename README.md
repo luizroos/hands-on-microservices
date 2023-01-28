@@ -6,7 +6,7 @@
 
 ---
 
-Remova todas os containers que vocês tem, vamos começar do zero (banco e aplicação)
+Remova todos os containers que vocês tem, vamos começar do zero (banco e aplicação)
 
 Desde o inicio:
 
