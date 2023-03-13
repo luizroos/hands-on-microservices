@@ -34,7 +34,7 @@ Se quiser ver o log de todo containers que estão subindo:
 docker-compose logs -f
 ```
 
-Após todos os serviços subirem, acesse o control center a partir de http://172.0.2.32:9021/.
+Após todos os serviços subirem, acesse o control center a partir de http://localhost:9021/.
 
 ### Gerando e consumindo algumas mensagens
 
@@ -96,7 +96,7 @@ java -jar build/libs/sample-app-0.0.13-SNAPSHOT.jar
 
 A aplicação vai conectar no kafka via localhost (quando subimos o kafka, fizemos mapeamento da porta do container para uma porta da vm).
 
-Acesse http://172.0.2.32:30001/swagger-ui.html e crie uns usuários (pode usar o mesmo endpoint que usamos para o teste de carga), fique vendo o log da aplicação enquanto cria usuários. Pode criar usando curl também:
+Acesse http://localhost:30001/swagger-ui.html e crie uns usuários (pode usar o mesmo endpoint que usamos para o teste de carga), fique vendo o log da aplicação enquanto cria usuários. Pode criar usando curl também:
 
 ```console
 curl localhost:30001/users/random
