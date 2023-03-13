@@ -107,7 +107,7 @@ curl -i -X POST -H "Accept:application/json" -H  "Content-Type:application/json"
 
 Veja os [parâmetros](mysql-kafka-connect/outbox-connect.json) desse post, basicamente especificamos os dados do nosso banco, a query da nossa tabela de eventos e configuramos aquele nosso transform customizado para ler as colunas corretas da tabela e enviar para o tópico que queremos.
 
-No control center o connector foi criado, acesse http://172.0.2.32:8083/connectors/outbox-connect/status para ver o status.   
+No control center o connector foi criado, acesse http://localhost:8083/connectors/outbox-connect/status para ver o status.   
 
 Crie novos usuários e perceba que agora as mensagens vão chegar, nos logs da aplicação:
 
