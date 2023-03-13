@@ -19,7 +19,7 @@ git checkout e14
 java -jar build/libs/sample-app-0.0.14-SNAPSHOT.jar
 ```
 
-Crie alguns usuários via http://172.0.2.32:30001/swagger-ui.html, ou via curl:
+Crie alguns usuários via http://localhost:30001/swagger-ui.html, ou via curl de dentro da máquina virtual:
 
 ```console
 curl localhost:30001/users/random
