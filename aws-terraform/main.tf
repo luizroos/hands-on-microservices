@@ -1,5 +1,5 @@
 variable "aws_keypair" {
-  description = "aws key pair name"
+  description = "Informe o nome da sua chave key-pair que você deseja usar para conectar nessa instância"
 }
 
 variable "aws_access_key" {
@@ -145,5 +145,5 @@ output "ssh_user" {
 }
 
 output "ssh_command" {
-  value = "ssh -i aws_aulas.pem ubuntu@${aws_instance.ec_aula.public_dns}"
+  value = "ssh -i <arquivo_da_sua_chave> ubuntu@${aws_instance.ec_aula.public_dns}"
 }
