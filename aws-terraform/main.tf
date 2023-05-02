@@ -1,3 +1,7 @@
+variable "aws_keypair" {
+  description = "aws key pair name"
+}
+
 variable "aws_access_key" {
   description = "aws access key"
 }
@@ -82,7 +86,7 @@ resource "aws_security_group" "sg_aula" {
 resource "aws_instance" "ec_aula" {
   ami           = "ami-007855ac798b5175e" # ubuntu 22
   instance_type = "t2.medium"
-  key_name      = "aws_aulas"
+  key_name      = var.aws_keypair
   vpc_security_group_ids = [aws_security_group.sg_aula.id]
   
   # Tags
