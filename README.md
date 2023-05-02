@@ -35,7 +35,6 @@ Os exercícios estão cada um em um branch separado e que devem ser feitos na **
 [exercício 16](https://github.com/luizroos/hands-on-microservices/tree/e16)
 
 ## Instalando o ambiente
----
 
 Nos exercícios, vamos usar [java](https://www.java.com/pt-BR/), [docker](https://www.docker.com/), [git](https://git-scm.com/), [apache bench](https://httpd.apache.org/docs/2.4/programs/ab.html), [ccm](https://www.datastax.com/blog/ccm-development-tool-creating-local-cassandra-clusters), [kubernetes](https://kubernetes.io/pt/), etc. Para isso vamos subir um [ubuntu](https://ubuntu.com) e realizar nossos testes nele.
 
@@ -80,12 +79,9 @@ docker run -it alpine /bin/sh
 ```
 
 ## Clonando o repositório da aplicação
----
 
 Dentro da máquina virtual, faça clone do repositório e checkout desse branch:
 
-```console
+```
 git clone https://github.com/luizroos/hands-on-microservices.git
 ```
-
-Caso esteja rodando dentro de uma instância na aws, você já deve ter feito o git clone antes.
