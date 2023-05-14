@@ -134,7 +134,7 @@ git checkout e4
 
 ./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:4 .
+docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t sample-app:4 .
 
 docker run --rm -p 8080:30001 --name sample-app sample-app:4
 ```
@@ -149,7 +149,7 @@ java -jar build/libs/sample-app-0.0.4-SNAPSHOT.jar
 
 Queremos rodar a aplicação via container, como podemos executar a imagem **sample-app:4** para que ela consiga se conectar no banco de dados MySQL? (existem ao menos 3 formas, sem precisar alterar nada da imagem).
 
-Depois de subir, acesse http://172.0.2.32:8080/swagger-ui.html e inclua alguns usuários, a aplicação vai criar automaticamente as tabelas necessárias (em uma aplicação real, **nunca** de para aplicação um usuário com permissão de DDL, isso é **muito** perigoso, estamos usando aqui só para facilitar), verifique no seu client SQL os usuários inseridos:
+Depois de subir, acesse  http://192.168.56.32:8080/swagger-ui.html (ou o host público da sua máquina virtual, a depender do provider) e inclua alguns usuários, a aplicação vai criar automaticamente as tabelas necessárias (em uma aplicação real, **nunca** de para aplicação um usuário com permissão de DDL, isso é **muito** perigoso, estamos usando aqui só para facilitar), verifique no seu client SQL os usuários inseridos:
 
 ```console
 docker exec -it mysql mysql -u db_user -p sample-db -e "select * from user";
