@@ -134,5 +134,3 @@ Execute novamente o teste de carga (aquele com os valores que você encontrou e 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Os resultados foram os mesmos? o que aconteceu? 
 
 Claro que a forma como o hibernate implementou sequence é muito ruim, acaba ficando com a aplicação a responsabilidade de achar o próximo valor. Usando uma sequence no banco (insert into tabela values (seq.nextval) ao invés de insert into tabela values (1)), a responsabilidade do cálculo do next value fica com o banco junto com o procesamento do comando de insert, e então o banco pode processar de forma bem mais performatica (a aplicação precisa garantir unicidade usando uma conexão do pool separada da conexão do request, já isso sendo feito no banco de dados, pode gerenciar isso de forma mais performatica).
-
-
