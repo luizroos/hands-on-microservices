@@ -47,7 +47,7 @@ Vamos rodar um servidor [HTTP Apache](https://hub.docker.com/_/httpd) (antigo e 
 docker run --rm -d --name apache -p 80:80 httpd
 ```
 
-Acesse no seu browser http://172.0.2.32/
+Acesse no seu browser http://192.168.56.32/ (ou o host público da sua máquina virtual).
 
 Como mudarmos o html que é exibido? 
 
@@ -74,7 +74,7 @@ docker build --tag meu-site .
 docker run -p 80:80 --rm --name meu-site meu-site
 ```
 
-Acesse novamente http://172.0.2.32/
+Acesse novamente http://192.168.56.32/
 
 E agora se quisermos alterar o conteúdo do nosso html? Como faríamos? (imagine que podem existir centenas desses containers rodando e um load balance na frente).
 
@@ -88,9 +88,9 @@ Podemos compartilhar diretórios entre o host e o container, execute novamente o
 docker run -p 80:80 --rm --name apache -d -v ~/meu-site:/usr/local/apache2/htdocs/  httpd
 ```
 
-Acesse novamente http://172.0.2.32/
+Acesse novamente http://192.168.56.32/
 
-Faça algumas modificações no html, e, sem parar o container, de um reload em http://172.0.2.32/
+Faça algumas modificações no html, e, sem parar o container, de um reload em http://192.168.56.32/
 
 #### Mantendo os dados salvos do banco
 
@@ -114,7 +114,7 @@ Se tiver removido o container da aplicação:
 docker run -d -p 8080:30001 -e MYSQL_HOST=mysql --net my-net --name sample-app sample-app:4
 ```
 
-Adicione alguns usuários em http://172.0.2.32:8080/swagger-ui.html, verique no banco que eles estão incluidos
+Adicione alguns usuários em http://192.168.56.32:8080/swagger-ui.html, verique no banco que eles estão incluidos
 
 ```console
 docker exec -it mysql mysql -u db_user -p sample-db -e "select * from user";
