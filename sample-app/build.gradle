@@ -1,14 +1,14 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.2'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
-	id 'war'
-	id 'eclipse'
+	id 'org.springframework.boot' version '2.7.11'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+ 	id 'java'
+    id 'eclipse'
+	id 'war'    
 }
 
 group = 'com.example'
 version = '0.0.2-SNAPSHOT'
-sourceCompatibility = '11'
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
 	mavenCentral()
@@ -20,7 +20,7 @@ dependencies {
 		exclude module: "tomcat-embed-websocket"
 		exclude module: "logback-classic"
 	}
-	compileOnly 'org.springframework.boot:spring-boot-starter-undertow'
+	compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
