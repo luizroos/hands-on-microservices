@@ -49,7 +49,7 @@ docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=ro
 
 ./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:7 .
+docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t sample-app:7 .
 
 docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=mockserver:1080 --name sample-app --net=my-net sample-app:7
 ```
