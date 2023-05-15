@@ -40,9 +40,8 @@ Agora que temos a aplicação compilada, poemos podemos executar a aplicação d
 java -jar build/libs/sample-app-0.0.1-SNAPSHOT.jar
 ```
 
-Acesse http://172.0.2.32:30001/hello no seu browser
 
-Quando subimos a vm, demos o ip 172.0.2.32, a aplicação está subindo na porta 30001. 
+Acesse http://192.168.56.32:30001/hello no seu browser, já que quando criamos a máquina virtual, demos o ip 192.168.56.32 e a aplicação está subindo na porta 30001 (se você não montou o ambiente com a opção do local-vagrant, então procure o DNS público da sua máquina virtual e acesse com esse host ao invés do IP).
 
 Para interromper a aplicação, precione CTRL + C
 
@@ -104,7 +103,7 @@ docker rm $(docker ps -q --filter "status=exited")
 
 #### Acessando a aplicação
 
-Tente acessar no seu browser http://172.0.2.32:30001/hello, por que não funciona como antes?
+Tente acessar no seu browser http://192.168.56.32:30001/hello (ou pelo DNS público do ambiente onde você criou a máquina virtual), por que não funciona como antes?
 
 Verifique detalhes do container que está executando:
 
@@ -133,7 +132,7 @@ docker ps
 
 E agora sim, acesse no seu browser:
 
-Veja a porta que foi exposta e acesse http://172.0.2.32:{PORTA_EXPOSTA}/hello
+Veja a porta que foi exposta e acesse http://192.168.56.32:{PORTA_EXPOSTA}/hello (dependendo da porta, caso você não tenha criado a máquina virtual pela opção do local-vagrant, talvez a porta não esteja com permissão de acesso).
 
 #### Customizado o container
 
@@ -143,7 +142,7 @@ Muitas imagens ou aplicações podem ter um comportamento customizado a partir d
 docker run -P -d -e HELLO_MESSAGE=ola sample-app:1
 ```
 
-Veja a porta exposta desse novo container e acesse novamente http://172.0.2.32:{PORTA_EXPOSTA}/hello
+Veja a porta exposta desse novo container e acesse novamente http://192.168.56.32:{PORTA_EXPOSTA}/hello
 
 #### Parando e reexecutando um container
 
