@@ -21,7 +21,7 @@ docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=ro
 
 ./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:6 .
+docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t sample-app:6 .
 
 docker run --rm -d -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-net sample-app:6
 ```
@@ -118,7 +118,7 @@ Compile a aplicação e gere a nova imagem:
 ```console
 ./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:6 .
+docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t sample-app:6 .
 ```
 
 Como a chave primária da tabela mudou, caso você esteja rodando o mesmo MySQL, execute um drop table user para que a aplicação possa recriar a tabela com novo tipo da PK. Ou então remova o container do MySQL e inicie um novo junto com a aplicação:
