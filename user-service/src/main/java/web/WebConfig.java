@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Bean
 	public OpenAPI apiDoc() {
-		return new OpenAPI().info(new Info().title("Sample APP").description("Sample APP"));
+		return new OpenAPI().info(new Info().title("User Service").description("User Service"));
 	}
 
 }
