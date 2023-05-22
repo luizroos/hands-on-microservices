@@ -14,13 +14,13 @@ public class OnUserChanged {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OnUserChanged.class);
 
-	@KafkaListener(topics = "${topic.user-changed}", groupId = "sampleApp.onUserChanged")
+	@KafkaListener(topics = "${topic.user-changed}", groupId = "userSrv.onUserChanged")
 	public void onUserChanged(UserChangedMessage message, Acknowledgment ack) {
 		LOGGER.info("user created, id={}, name={}", message.getUserId(), message.getUserName());
 		ack.acknowledge();
 	}
 
-	@KafkaListener(topics = "${topic.email-domain-count}", groupId = "sampleApp.onUserChanged")
+	@KafkaListener(topics = "${topic.email-domain-count}", groupId = "userSrv.onUserChanged")
 	public void onEmailDomainCount(EmailDomainChangesCountMessage message, Acknowledgment ack) {
 		LOGGER.info("window count, message={}", message);
 		ack.acknowledge();
