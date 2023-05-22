@@ -11,25 +11,25 @@ Remova todos os containers que vocês tem, vamos começar do zero (banco e aplic
 Desde o inicio:
 
 ```console
-cd ~/hands-on-microservices/sample-app
+cd ~/hands-on-microservices/user-service
 
 git checkout e6
 
 docker network create my-net
 
-docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
+docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db -d mysql:5.6.51
 
 ./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t sample-app:6 .
+docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t user-service:6 .
 
-docker run --rm -d -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-net sample-app:6
+docker run --rm -d -p 8080:30001 -e MYSQL_HOST=mysql --name user-service --net=my-net user-service:6
 ```
 
 Caso você reusou o container do banco anterior, vamos apagar todos os dados da tabela:
 
 ```console
-docker exec -it mysql mysql -u db_user -pdb_pass sample-db -e "delete from user";
+docker exec -it mysql mysql -u db_user -pdb_pass user-db -e "delete from user";
 ```
 
 Execute um teste de carga usando [apache bench](https://httpd.apache.org/docs/2.4/programs/ab.html) (n = numero de requests, c = paralelismo, db --help), já instalado na vm:
@@ -43,13 +43,13 @@ Criamos um endpoint na aplicação (users/random), só para podermos criar usuá
 Verifique a quantidade de usuários inseridos:
 
 ```console
-docker exec -it mysql mysql -u db_user -pdb_pass sample-db -e "select count(1) from user";
+docker exec -it mysql mysql -u db_user -pdb_pass user-db -e "select count(1) from user";
 ```
 
 Deixe exibindo, em uma sessão separada, os logs da aplicação 
 
 ```console
-docker logs -f sample-app
+docker logs -f user-service
 ```
 
 E em outra sessão deixe exibindo as estatisticas do docker (a coluna PIDS indica a quantidade de threads que a aplicação está usando):
@@ -72,10 +72,10 @@ Notem no docker stats, perceberam algo diferente nos containers?
 
 #### O problema de sequences
 
-Na classe [UserEntity](sample-app/src/main/java/web/core/user/UserEntity.java), vamos alterar o tipo da chave primária para um valor númerico:
+Na classe [UserEntity](user-service/src/main/java/web/core/user/UserEntity.java), vamos alterar o tipo da chave primária para um valor númerico:
 
 ```console
-cd ~/hands-on-microservices/sample-app
+cd ~/hands-on-microservices/user-service
 
 vim src/main/java/web/core/user/UserEntity.java
 ```
@@ -118,15 +118,15 @@ Compile a aplicação e gere a nova imagem:
 ```console
 ./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t sample-app:6 .
+docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t user-service:6 .
 ```
 
 Como a chave primária da tabela mudou, caso você esteja rodando o mesmo MySQL, execute um drop table user para que a aplicação possa recriar a tabela com novo tipo da PK. Ou então remova o container do MySQL e inicie um novo junto com a aplicação:
 
 ```console
-docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
+docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db -d mysql:5.6.51
 
-docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql --name sample-app --net=my-net sample-app:6
+docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql --name user-service --net=my-net user-service:6
 ```
 
 Execute novamente o teste de carga (aquele com os valores que você encontrou e que não dão erro na aplicação). 
