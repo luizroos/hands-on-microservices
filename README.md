@@ -17,7 +17,7 @@ docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_US
 
 Subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **user-db** e mapeando a porta default do mysql: **3306**.
 
-Depois, você pode instalar um client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da vm, que tem ip 172.0.2.32, então como o client vai rodar fora da vm, [o host da conexão](dbeaver/conn_conf.png) é o ip da vm (já que mapeamos também uma porta do container para a vm).
+Depois, você pode instalar um client SQL para conectar no banco de dados. Se não tiver nenhum, pode usar https://dbeaver.io/. Veja que subimos o banco em um container docker dentro da máquina virtual, que tem ip 192.168.56.32, então como o client vai rodar fora da vm, o host da conexão é o ip dela.
 
 Mas agora como faremos para a aplicação conectar no banco? Se tivessemos uma aplicação rodando no nosso computador, usaríamos o ip da vm (da mesma forma que o client SQL rodando na sua máquina), se a aplicação tivesse rodando dentro da vm (sem docker), usaríamos localhost (já que mapeamos uma porta do container para uma porta da vm) ou o ip do do container (pego via docker inspect). Mas queremos que o container da nossa aplicação conecte no container do MySQL, e para isso vamos usar as funcionalidades do docker network.
 
