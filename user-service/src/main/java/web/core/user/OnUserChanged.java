@@ -11,7 +11,7 @@ public class OnUserChanged {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(OnUserChanged.class);
 
-	@KafkaListener(topics = UserChangedMessage.TOPIC_NAME, groupId = "sampleApp.onUserChanged")
+	@KafkaListener(topics = UserChangedMessage.TOPIC_NAME, groupId = "userSrv.onUserChanged")
 	public void onUserChanged(UserChangedMessage message, Acknowledgment ack) {
 		LOGGER.info("user created, id={}, name={}", message.getUserId(), message.getUserName());
 		if (message.getUserEmail().indexOf("hotmail") > 0) {
