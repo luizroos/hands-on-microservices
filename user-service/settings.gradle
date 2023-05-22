@@ -5,5 +5,5 @@ pluginManagement {
 	}
 }
 
-rootProject.name = 'sample-app'
+rootProject.name = 'user-service'
 

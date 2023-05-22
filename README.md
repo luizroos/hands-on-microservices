@@ -5,18 +5,18 @@
 
 Imagina agora que temos vários consumidores para nosso tópico, consumidores de outras aplicações até. Esses consumidores confiam na mensagem que enviamos, caso mudamos a mensagem deixando de enviar um valor que antes enviavamos, podemos quebrar consumidores (é como mudar a assinatura de uma API). Então temos que ter bastante cuidado com as alterações nas nossas mensagens. 
 
-Alteramos a aplicação para ao invés de enviar um objeto json, enviar um objeto serializado com [avro](https://avro.apache.org/), integramos também com o schema registry. Veja as alterações no código, principalmente o arquivo [UserChangedMessage.avsc](/sample-app/src/main/avro/UserChangedMessage.avsc) (descreve o schema da mensagem).
+Alteramos a aplicação para ao invés de enviar um objeto json, enviar um objeto serializado com [avro](https://avro.apache.org/), integramos também com o schema registry. Veja as alterações no código, principalmente o arquivo [UserChangedMessage.avsc](/user-service/src/main/avro/UserChangedMessage.avsc) (descreve o schema da mensagem).
 
 Suba a aplicação novamente:
 
 ```console
-cd ~/hands-on-microservices/sample-app/
+cd ~/hands-on-microservices/user-service/
 
 git checkout e14
 
 ./gradlew clean build
 
-java -jar build/libs/sample-app-0.0.14-SNAPSHOT.jar
+java -jar build/libs/user-service-0.0.14-SNAPSHOT.jar
 ```
 
 Crie alguns usuários via http://172.0.2.32:30001/swagger-ui.html, ou via curl:
@@ -27,10 +27,10 @@ curl localhost:30001/users/random
 
 Verifique o menu schema do tópico **user.changed.avro** no control center, temos agora um schema registrado para esse tópico. Mude a compatibilidade para FORWARD (ou seja, o antigo schema deve poder ler o que for escrito no novo schema).
 
-Altere então o schema [UserChangedMessage.avsc](/sample-app/src/main/avro/UserChangedMessage.avsc) do avro da aplicação, deixando o nome opcional: 
+Altere então o schema [UserChangedMessage.avsc](/user-service/src/main/avro/UserChangedMessage.avsc) do avro da aplicação, deixando o nome opcional: 
 
 ```console
-vim ~/hands-on-microservices/sample-app/src/main/avro/UserChangedMessage.avsc
+vim ~/hands-on-microservices/user-service/src/main/avro/UserChangedMessage.avsc
 ```
 
 Altere o atributo userName para isso:
