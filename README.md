@@ -38,18 +38,18 @@ Após todos os serviços subirem, acesse o control center a partir de http://loc
 
 ### Gerando e consumindo algumas mensagens
 
-Vamos criar um novo tópico chamado **user.topic**, para isso acesse o menu **Topics** e em seguida selecione **Add a topic**. Pode deixar o número de partições como **1**, selecione **Customize settings**, veja que o control center já nos da algumas configurações pré definidas (faz mais sentido em um ambiente com mais nós no cluster). Selecione **Custom availability settings** e deixe **replication_factor** e **min_insync_replicas** com valor 1. Em **Storage** você configura como será a retenção das mensagens, o Kafka permite rentação por tempo e/ou tamanho. Pode deixar retention time como 1 hora e retention size como 1 Mb. Por fim, pode mandar crir o tópico.
+Vamos criar um novo tópico chamado **sample.topic**, para isso acesse o menu **Topics** e em seguida selecione **Add a topic**. Pode deixar o número de partições como **1**, selecione **Customize settings**, veja que o control center já nos da algumas configurações pré definidas (faz mais sentido em um ambiente com mais nós no cluster). Selecione **Custom availability settings** e deixe **replication_factor** e **min_insync_replicas** com valor 1. Em **Storage** você configura como será a retenção das mensagens, o Kafka permite rentação por tempo e/ou tamanho. Pode deixar retention time como 1 hora e retention size como 1 Mb. Por fim, pode mandar crir o tópico.
 
 Vamos gerar agora algumas mensagens nesse tópico, para isso vamos usar a ferramenta [kafka-console-producer](https://docs.cloudera.com/documentation/kafka/latest/topics/kafka_command_line.html) do próprio Kafka que permite gerar mensagens texto em um tópico: 
 
 ```console
-docker exec broker bash -c "seq 5 | kafka-console-producer --request-required-acks 1 --broker-list localhost:29092 --topic user.topic"
+docker exec broker bash -c "seq 5 | kafka-console-producer --request-required-acks 1 --broker-list localhost:29092 --topic sample.topic"
 ```
 
 Enviamos 5 mensagens para o tópico que criamos. Vamos usar outra ferramenta chamada [kafka-console-consumer](https://docs.cloudera.com/documentation/kafka/latest/topics/kafka_command_line.html) para consumir essas mensagens:
 
 ```console
-docker exec broker kafka-console-consumer --bootstrap-server localhost:29092 --topic user.topic --from-beginning --group consumer --timeout-ms 5000
+docker exec broker kafka-console-consumer --bootstrap-server localhost:29092 --topic sample.topic --from-beginning --group consumer --timeout-ms 5000
 ```
 
 Marcamos para consumir desde o inicio do tópico, nomeamos o consumidor de "consumer" e setamos um timeout de 5 segundos (significa que se não chegar mensagens em 5 segundos, o consumidor para de consumir, isso é útil para os demais testes). 
@@ -67,7 +67,7 @@ docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --gr
 Vamos reprocessar as mensagens alterando o current offset do consumer:
 
 ```console
-docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group consumer --topic user.topic --reset-offsets --to-earliest --execute
+docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --group consumer --topic sample.topic --reset-offsets --to-earliest --execute
 ```
 
 Agora sim, execute novamente o consumer.
@@ -75,7 +75,7 @@ Agora sim, execute novamente o consumer.
 Via linha de comando, podemos visutalizar também os detalhes do tópico: 
 
 ```console
-docker exec broker kafka-topics --bootstrap-server localhost:29092 --topic user.topic --describe
+docker exec broker kafka-topics --bootstrap-server localhost:29092 --topic sample.topic --describe
 ```
 
 ### Integrando com a aplicação
