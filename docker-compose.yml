@@ -83,5 +83,5 @@ services:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_USER: 'db_user'
       MYSQL_PASSWORD: "db_pass"
-      MYSQL_DATABASE: 'sample-db'
+      MYSQL_DATABASE: 'user-db'
       

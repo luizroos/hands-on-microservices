@@ -33,16 +33,16 @@ cd ~/hands-on-microservices
 docker-compose up -d 
 ```
 
-Agora veja as alterações que fizemos na aplicação. Temos uma tabela de [Evento](sample-app/src/main/java/web/core/event/EventEntity.java), e ao invés de enviar para o kafka via kafka template, no nosso serviço [UserCreateService](sample-app/src/main/java/web/core/user/UserCreateService.java) nós vamos persistir a mensagem na nossa tabela de eventos. É uma tabela como outra qualquer, porém com uma coluna onde vamos gravar os bytes do evento em base 64, outra coluna que vamos gravar o que seria a chave do evento e outra com a coluna.
+Agora veja as alterações que fizemos na aplicação. Temos uma tabela de [Evento](user-service/src/main/java/web/core/event/EventEntity.java), e ao invés de enviar para o kafka via kafka template, no nosso serviço [UserCreateService](user-service/src/main/java/web/core/user/UserCreateService.java) nós vamos persistir a mensagem na nossa tabela de eventos. É uma tabela como outra qualquer, porém com uma coluna onde vamos gravar os bytes do evento em base 64, outra coluna que vamos gravar o que seria a chave do evento e outra com a coluna.
 
 Vamos rodar então a aplicação 
 
 ```console
-cd ~/hands-on-microservices/sample-app/
+cd ~/hands-on-microservices/user-service/
 
 ./gradlew clean build
 
-java -jar build/libs/sample-app-0.0.15-SNAPSHOT.jar
+java -jar build/libs/user-service-0.0.15-SNAPSHOT.jar
 ```
 
 Faça a inclusão de alguns usuários, pode usar aquele endpoint de criação de usuarios randomicos:
@@ -54,12 +54,12 @@ curl http://localhost:30001/users/random
 E então veja os usuários e eventos criados:
 
 ```console
-docker exec -it mysql mysql -u db_user -p sample-db -e "select * from user";
+docker exec -it mysql mysql -u db_user -p user-db -e "select * from user";
 
-docker exec -it mysql mysql -u db_user -p sample-db -e "select * from event";
+docker exec -it mysql mysql -u db_user -p user-db -e "select * from event";
 ```
 
-Porém perceba que nossa aplicação não está consumindo esses eventos (veja no log, gerado pela classe [OnUserChanged](sample-app/src/main/java/web/core/user/OnUserChanged.java), afinal até agora a unica coisa que fizemos foi gravar o evento na tabela.
+Porém perceba que nossa aplicação não está consumindo esses eventos (veja no log, gerado pela classe [OnUserChanged](user-service/src/main/java/web/core/user/OnUserChanged.java), afinal até agora a unica coisa que fizemos foi gravar o evento na tabela.
 
 ### Subindo o Kafka Connect
 ----

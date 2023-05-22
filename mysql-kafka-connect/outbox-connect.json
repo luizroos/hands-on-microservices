@@ -12,12 +12,12 @@
     "poll.interval.ms": "1000",
     "batch.max.rows": "5000",
 
-    "connection.url": "jdbc:mysql://mysql:3306/sample-db",
+    "connection.url": "jdbc:mysql://mysql:3306/user-db",
     "connection.user": "db_user",
     "connection.password": "db_pass",
     "connection.attempts": "5",
     "connection.backoff.ms": "1000",
-    "schema.pattern": "sample-db",
+    "schema.pattern": "user-db",
 
     "value.converter": "io.confluent.connect.avro.AvroConverter",
     "value.converter.use.latest.version": "true",
