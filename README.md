@@ -24,9 +24,9 @@ ccm node1 cqlsh
 Vamos criar a nossa tabela de usuários da aplicação:
 
 ```cql
-create keyspace sample WITH durable_writes = true and replication = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
+create keyspace user-ks WITH durable_writes = true and replication = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
 
-use sample;
+use user-ks;
 
 create table if not exists user  (
  id varchar primary key,
@@ -41,13 +41,13 @@ create table if not exists user  (
 Vamos agora compilar, subir a aplicação e inserir um usuário (podemos rodar direto na máquina virtual):
 
 ```console
-cd ~/hands-on-microservices/sample-app/
+cd ~/hands-on-microservices/user-service/
 
 git checkout e11
 
 ./gradlew clean build
 
-java -jar build/libs/sample-app-0.0.11-SNAPSHOT.jar
+java -jar build/libs/user-service-0.0.11-SNAPSHOT.jar
 ```
 
 Pode usar curl ou acesse http://172.0.2.32:30001/swagger-ui.html.
@@ -63,7 +63,7 @@ ccm node1 cqlsh
 ```
 
 ```cql
-use sample
+use user-ks
 
 create materialized view user_by_email 
 as select email, id, name, age, addressPostalCode
@@ -98,7 +98,7 @@ vim src/main/java/web/core/user/CassandraUserRepository.java
 
 ./gradlew clean build
 
-java -jar build/libs/sample-app-0.0.11-SNAPSHOT.jar
+java -jar build/libs/user-service-0.0.11-SNAPSHOT.jar
 ```
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) A materialized view é uma tabela normal, vai estar particionada então cuidado com hot spots e existe um [custo](https://www.datastax.com/blog/materialized-view-performance-cassandra-3x) de escrita, ainda não é recomendado usa-las em produção. Mas, sem materialized view, vamos discutir como se resolveria esse problema?
