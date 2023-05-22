@@ -39,19 +39,19 @@ curl http://localhost:1080/postalcodes
 Veja agora as alterações em [UserCreateService](src/main/java/web/core/user/UserCreateService.java), incluimos uma regra de negócio que valida se o endereço informado do estado de São Paulo, para isso usamos uma chamada a um serviço de postalcode.
 
 ```console
-cd ~/hands-on-microservices/sample-app/
+cd ~/hands-on-microservices/user-service/
 
 git checkout e7
 
 docker network create my-net
 
-docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
+docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db -d mysql:5.6.51
 
 ./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t sample-app:7 .
+docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t user-service:7 .
 
-docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=mockserver:1080 --name sample-app --net=my-net sample-app:7
+docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=mockserver:1080 --name user-service --net=my-net user-service:7
 ```
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Execute novamente o teste de carga com os parâmetros encontrados do exercício 6.
