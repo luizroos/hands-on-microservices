@@ -28,7 +28,7 @@ Proxy para acesso ao dashboard:
 kubectl proxy --address 0.0.0.0 --accept-hosts '.*'
 ```
 
-Acesse no browser: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/
+Acesse no browser: http://192.168.56.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/
 
 ### Subindo uma imagem simples
 
@@ -40,7 +40,7 @@ kubectl create deployment apache-httpd --image=httpd
 kubectl expose deployment apache-httpd --type=LoadBalancer --port=80
 ```
 
-Acesse: http://172.0.2.32:8001/api/v1/namespaces/default/services/apache-httpd/proxy/
+Acesse: http://192.168.56.32:8001/api/v1/namespaces/default/services/apache-httpd/proxy/
 
 ```console
 kubectl get services
@@ -86,10 +86,10 @@ minikube cache list
 Vamos criar uma [namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/) para nossos serviços:
 
 ```console
-kubectl create namespace sample-ns
+kubectl create namespace user-ns
 ```
 
-Veja que a namespace já aparece no dashboard: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=sample-ns#/overview?namespace=sample-ns
+Veja que a namespace já aparece no dashboard: http://192.168.56.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=user-ns#/overview?namespace=user-ns
 
 A forma mais comum para se criar recursos no k8s é usar arquivos que descrevem os recursos que queremos criar. Visualize o arquivo [postalcode-app-pod.yaml](postalcode-svc/deploy/postalcode-app-pod.yaml), ele cria um [pod](https://kubernetes.io/docs/concepts/workloads/pods/) chamado **postalcode-app-pod**, usando a imagem **postalcode-app:1**.
 
@@ -98,25 +98,25 @@ Aplique a configuração do arquivo, usando a namespace criada anteriormente:
 ```console
 cd ~/hands-on-microservices/postalcode-app/deploy
 
-kubectl apply -n sample-ns -f postalcode-app-pod.yaml
+kubectl apply -n user-ns -f postalcode-app-pod.yaml
 ```
 
-Verifique se o pod foi criado: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=sample-ns#/pod?namespace=sample-ns
+Verifique se o pod foi criado: http://192.168.56.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=user-ns#/pod?namespace=user-ns
 
-Agora, como acessar esse serviço? A API do k8s nos da acesso e podemos usar o mesmo proxy que usamos para acessar o dashboard para acessar um endpoint do nosso pod: http://172.0.2.32:8001/api/v1/namespaces/sample-ns/pods/postalcode-app-pod:1080/proxy/postalcodes
+Agora, como acessar esse serviço? A API do k8s nos da acesso e podemos usar o mesmo proxy que usamos para acessar o dashboard para acessar um endpoint do nosso pod: http://192.168.56.32:8001/api/v1/namespaces/user-ns/pods/postalcode-app-pod:1080/proxy/postalcodes
 
 Podemos acompanhar o log do nosso pod via linha de comando:
 
 ```console
-kubectl logs -f -n sample-ns postalcode-app-pod
+kubectl logs -f -n user-ns postalcode-app-pod
 ```
 
-Ou dashboard: http://172.0.2.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=sample-ns#/log/sample-ns/postalcode-app-pod/pod?namespace=sample-ns&container=postalcode-app
+Ou dashboard: http://192.168.56.32:8001/api/v1/namespaces/kubernetes-dashboard/services/kubernetes-dashboard/proxy/?namespace=user-ns#/log/user-ns/postalcode-app-pod/pod?namespace=user-ns&container=postalcode-app
 
 Mas o que ocorre se nosso serviço parar? Na aba de pods do dashboard, excluia o pod, ou se preferir via linha de comando:
 
 ```console
-kubectl delete -n sample-ns pod postalcode-app-pod
+kubectl delete -n user-ns pod postalcode-app-pod
 ```
 
 Tente acessar novamente o endpoint do serviço. 
@@ -128,7 +128,7 @@ Ao invés de criar um pod, vamos criar um [deployment](https://kubernetes.io/doc
 Nesse arquivo, nós descrevemos o deploy, nesse caso, criamos o deployment de nome **postalcode-app-deployment** indicando que devem subir 3 pods.
 
 ```console
-kubectl apply -n sample-ns -f postalcode-app-deployment.yaml
+kubectl apply -n user-ns -f postalcode-app-deployment.yaml
 ```
 
 Verifique no dashboard os 3 pods executando. Agora, se você tentar excluir um pod, outro ira subir, tente fazer isso
@@ -138,15 +138,15 @@ Mas agora temos 3 pods rodando, criados com nomes aleatórios, como fazemos para
 Vamos criar um [service](https://kubernetes.io/docs/concepts/services-networking/service/) que vai permitir acessar os pods do nosso deployment. Verifique o arquivo [postalcode-app-service.yaml](postalcode-app/deploy/postalcode-app-service.yaml) e aplique as configurações:
 
 ```console
-kubectl apply -n sample-ns -f postalcode-app-service.yaml
+kubectl apply -n user-ns -f postalcode-app-service.yaml
 ```
 
-Verifique no dashboard que o service foi criado e acesse no seu browser: http://172.0.2.32:8001/api/v1/namespaces/sample-ns/services/postalcode-app-service:1099/proxy/postalcodes
+Verifique no dashboard que o service foi criado e acesse no seu browser: http://192.168.56.32:8001/api/v1/namespaces/user-ns/services/postalcode-app-service:1099/proxy/postalcodes
 
 Dentro da VM:
 
 ```console
-kubectl get -n sample-ns service
+kubectl get -n user-ns service
 
 minikube tunnel
 
@@ -156,17 +156,17 @@ curl http://CLUSTER-IP:1099/postalcodes
 Ou, execute:
 
 ```console
-kubectl port-forward -n sample-ns service/postalcode-app-service 40123:1099 --address 0.0.0.0
+kubectl port-forward -n user-ns service/postalcode-app-service 40123:1099 --address 0.0.0.0
 ```
 
-E acesse no browswer: http://172.0.2.32:40123/postalcodes
+E acesse no browswer: http://192.168.56.32:40123/postalcodes
 
 E como outros pods acessam o serviço? O k8s tem um serviço [DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/), é por ele que os pods vão se comunicar. Então vamos executar um novo pod e testar o acesso ao nosso serviço a partir dele: 
 
 ```console
 kubectl run -it --tty pingtest --rm --image=busybox --restart=Never -- /bin/sh
 
-wget -qO- http://postalcode-app-service.sample-ns.svc.cluster.local:1099/postalcodes
+wget -qO- http://postalcode-app-service.user-ns.svc.cluster.local:1099/postalcodes
 ```
 
 ##### escalando a aplicação
@@ -174,25 +174,25 @@ wget -qO- http://postalcode-app-service.sample-ns.svc.cluster.local:1099/postalc
 Em algumas momentos, podemos querer ter mais ou menos pods respondendo pelo nosso serviço, para isso utilize: 
 
 ```console
-kubectl scale -n sample-ns --replicas=1 deployment/postalcode-app-deployment
+kubectl scale -n user-ns --replicas=1 deployment/postalcode-app-deployment
 ```
 
 Podemos também criar regras de [autoscaling](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/):
 
 ```console
-kubectl autoscale -n sample-ns deployment/postalcode-app-deployment --min=1 --max=5 --cpu-percent=5
+kubectl autoscale -n user-ns deployment/postalcode-app-deployment --min=1 --max=5 --cpu-percent=5
 ```
 
 E assim como os demais recursos, podemos criar regras para autoscaling definidas em arquivos, verifique [postalcode-app-hpa.yaml](postalcode-app/deploy/postalcode-app-hpa.yaml) e aplique as configurações:
 
 ```console
-kubectl apply -n sample-ns -f postalcode-app-hpa.yaml
+kubectl apply -n user-ns -f postalcode-app-hpa.yaml
 ```
 
 Veja detalhes do auto scaling:
 
 ```console
-kubectl describe -n sample-ns hpa postalcode-app-hpa
+kubectl describe -n user-ns hpa postalcode-app-hpa
 ```
 
 Ou nos detalhes do deployment no dashboard.
@@ -200,43 +200,43 @@ Ou nos detalhes do deployment no dashboard.
 Agora vamos forçar um autoscaling disparando um teste de carga contra a aplicação:
 
 ```console
-kubectl port-forward -n sample-ns service/postalcode-app-service 40123:1099 --address 0.0.0.0
+kubectl port-forward -n user-ns service/postalcode-app-service 40123:1099 --address 0.0.0.0
 
 ab -n 10000 -c 200 http://localhost:40123/postalcodes
 ```
 
-### Subindo sample app
+### Subindo User Service
 
-O minikube roda num docker na network minikube. Suba a aplicação sample-app no kubernetes, na namespace **sample-ns**, acessando o banco de dados MySQL rodando fora do k8s e o postal code service rodando no k8s. Exponha o aplicação em um serviço **sample-app-service** na porta **25123**.
+O minikube roda num docker na network minikube. Suba a aplicação User Service no kubernetes, na namespace **user-ns**, acessando o banco de dados MySQL rodando fora do k8s e o postal code service rodando no k8s. Exponha o aplicação em um serviço **user-service** na porta **25123**.
 
-Inicie criando o container da aplicação sample-app e adicionando ao minikube
+Inicie criando o container da aplicação user service e adicionando ao minikube
 
 ```console
-cd ~/hands-on-microservices/sample-app
+cd ~/hands-on-microservices/user-service
 
 ./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*.jar -t sample-app:9 .
+docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t user-service:9 .
 
-minikube cache add sample-app:9
+minikube cache add user-service:9
 ```
 
 
 Inicie o banco de dados (aqui vamos adicionar na rede do minikube, assim a aplicação pode acessar ele via host mysql)
 
 ```console
-docker run --rm -p 3306:3306 --name mysql --net=minikube -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
+docker run --rm -p 3306:3306 --name mysql --net=minikube -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db -d mysql:5.6.51
 ```
 
-E então crie os arquivos de **deployment** e **service** para a sample-app (não esqueça das configurações de banco de dados e do host de postal app)
+E então crie os arquivos de **deployment** e **service** para a user-service (não esqueça das configurações de banco de dados e do host de postal app)
 
-Ao final, veja se funcionou acessando http://172.0.2.32:8001/api/v1/namespaces/sample-ns/services/sample-app-service:25123/proxy/users/random, ou então faça forward de uma porta da vm para o serviço criado:
+Ao final, veja se funcionou acessando http://192.168.56.32:8001/api/v1/namespaces/user-ns/services/user-service:25123/proxy/users/random, ou então faça forward de uma porta da vm para o serviço criado:
 
 ```console
-kubectl port-forward -n sample-ns service/sample-app-service 8080:25123 --address 0.0.0.0
+kubectl port-forward -n user-ns service/user-service 8080:25123 --address 0.0.0.0
 ```
 
-E acesse http://172.0.2.32:8080/users/random
+E acesse http://192.168.56.32:8080/users/random
 
 ### Expondo a aplicação para fora
 
@@ -253,15 +253,15 @@ Ingress permite que criamos regras de roteamento para serviços num cluster.
 ```console
 cd ~/hands-on-microservices
 
-kubectl apply -f sample-ingress.yaml
+kubectl apply -f user-service-ingress.yaml
 ```
 
-O ingress cria uma regra de rewrite para tudo que vier pelo host **sample.info**, encaminhando o {endpoint} do path **/postalcode-app/{endpoint}** para o service **postalcode-app-service** e o {endpoint} do path **/sample-app/{endpoint}** para o service sample-app-service.
+O ingress cria uma regra de rewrite para tudo que vier pelo host **sample.info**, encaminhando o {endpoint} do path **/postalcode-app/{endpoint}** para o service **postalcode-app-service** e o {endpoint} do path **/user-service/{endpoint}** para o service user-service.
 
 Veja o IP Address do ingress (pode demorar um pouco):
 
 ```console
-kubectl get -n sample-ns ingress
+kubectl get -n user-ns ingress
 ```
 
 Tente executar:
@@ -280,7 +280,7 @@ Edite incluindo o IP do ingress para o host **sample.info** e tente novamente:
 
 ```console
 curl -i http://sample.info/postalcode-app/postalcodes
-curl -i http://sample.info/sample-app/users/random
+curl -i http://sample.info/user-service/users/random
 ```
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Para discutir, dado que ingress é por namespace, qual seria a estratégia para ter um IP para aplicações de vários namespaces?
