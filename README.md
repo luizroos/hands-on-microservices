@@ -6,13 +6,13 @@
 Faça o seguinte teste com o container MySQL criado no exercicio anterior:
 
 ```console
-docker exec -it mysql mysql -u db_user -p sample-db -e "select count(1) from user";
+docker exec -it mysql mysql -u db_user -p user-db -e "select count(1) from user";
 
 docker stop mysql
 
 docker start mysql
 
-docker exec -it mysql mysql -u db_user -p sample-db -e "select count(1) from user";
+docker exec -it mysql mysql -u db_user -p user-db -e "select count(1) from user";
 ```
 
 O resultado do select mudou? Por que?
@@ -24,9 +24,9 @@ docker stop mysql
 
 docker rm mysql
 
-docker run -d --rm -p 3306:3306 --net my-net --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db mysql:5.6.51 
+docker run -d --rm -p 3306:3306 --net my-net --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db mysql:5.6.51 
 
-docker exec -it mysql mysql -u db_user -p sample-db -e "select count(1) from user";
+docker exec -it mysql mysql -u db_user -p user-db -e "select count(1) from user";
 ```
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) O resultado do select mudou? Por que?
@@ -99,25 +99,25 @@ Para não perdemos os dados do nosso banco, temos que salvar ele fora do contain
 Vamos executar novamente nosso MySQL:
 
 ```console
-docker run -p 3306:3306 --name mysql --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db -d mysql:5.6.51
+docker run -p 3306:3306 --name mysql --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db -d mysql:5.6.51
 ```
 
 Reiniciamos a aplicação (pois ela quem cria as tabelas):
 
 ```console
-docker restart sample-app
+docker restart user-service
 ```
 
 Se tiver removido o container da aplicação:
 
 ```console
-docker run -d -p 8080:30001 -e MYSQL_HOST=mysql --net my-net --name sample-app sample-app:4
+docker run -d -p 8080:30001 -e MYSQL_HOST=mysql --net my-net --name user-service user-service:4
 ```
 
 Adicione alguns usuários em http://192.168.56.32:8080/swagger-ui.html, verique no banco que eles estão incluidos
 
 ```console
-docker exec -it mysql mysql -u db_user -p sample-db -e "select * from user";
+docker exec -it mysql mysql -u db_user -p user-db -e "select * from user";
 ```
 
 Então remova o container do MySQL novamente, recrie-o com o mesmo volume mapeado, veja que os dados agora serão mantidos.
@@ -125,7 +125,7 @@ Então remova o container do MySQL novamente, recrie-o com o mesmo volume mapead
 Como curiosidade, experimente rodar um outro container MySQL apontando para o mesmo dados
 
 ```console
-docker run --rm -p 3307:3306 --name mysql2 --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=sample-db mysql:5.6.51
+docker run --rm -p 3307:3306 --name mysql2 --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db mysql:5.6.51
 ```
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Qual o problema? Isso mostra por que é dificil escalar bancos.
