@@ -11,7 +11,7 @@ docker run -d --rm -p 5672:5672 -p 15672:15672 --name rabbitmq -e RABBITMQ_DEFAU
 
 Usamos a imagem management, que sobe junto uma interface de gerenciamento do rabbit, acesse: http://172.0.2.32:15672/ e logue com usuário **user** e senha **pass** (são parâmetros que passamos ao iniciar o rabbit).
 
-O rabbit é composto por [exchanges](http://172.0.2.32:15672/#/exchanges) e [filas](http://172.0.2.32:15672/#/queues). Normalmente, várias aplicações conectam no mesmo rabbit, então vamos acabar tendo filas e exchanges de várias aplicações. Para prover algum tipo de separação desses recursos, o rabbit tem [virtual hosts](https://www.rabbitmq.com/vhosts.html), você pode criar um virtual host no menu admin, crie um com nome **sample-vh**.
+O rabbit é composto por [exchanges](http://172.0.2.32:15672/#/exchanges) e [filas](http://172.0.2.32:15672/#/queues). Normalmente, várias aplicações conectam no mesmo rabbit, então vamos acabar tendo filas e exchanges de várias aplicações. Para prover algum tipo de separação desses recursos, o rabbit tem [virtual hosts](https://www.rabbitmq.com/vhosts.html), você pode criar um virtual host no menu admin, crie um com nome **user-vh**.
 
 Agora crie uma exchange nesse virtual host, do tipo **fanout**. Clique nos detalhes dessa exchange e publique uma mensagem para nela, você deverá ver uma mensagem "Message published, but not routed.". Isso ocorre porque as mensagens não são armazenadas nas exchanges, você envia mensagem para elas e elas roteiam para filas ligadas a exchange, a mensagem é armazenada na fila.
 
@@ -35,13 +35,13 @@ log.user.changed** cuja routing key é *.
 Vamos subir a aplicação na própria vm:
 
 ```console
-cd ~/hands-on-microservices/sample-app/
+cd ~/hands-on-microservices/user-service/
 
 git checkout e12
 
 ./gradlew clean build
 
-java -jar build/libs/sample-app-0.0.12-SNAPSHOT.jar
+java -jar build/libs/user-service-0.0.12-SNAPSHOT.jar
 ```
 
 A aplicação vai conectar no rabbit via localhost (quando subimos o rabbit, fizemos mapeamento da porta do container para uma porta da vm).
@@ -67,7 +67,7 @@ Veja no log o consumo do evento do usuário gerado (dois consumidores).
 
 Enviamos a mensagem para o rabbit na criação do usuário e consumimos esse evento na mesma aplicação.
 
-Agora crie um usuário com dominio de email **hotmail** (na classe [OnUserChanged](sample-app/src/main/java/web/core/user/OnUsersChanged.java) tem um if para que usuários com esse dominio de email lance uma exceção em um dos consumidores). 
+Agora crie um usuário com dominio de email **hotmail** (na classe [OnUserChanged](user-service/src/main/java/web/core/user/OnUsersChanged.java) tem um if para que usuários com esse dominio de email lance uma exceção em um dos consumidores). 
 
 ```console
 curl localhost:30001/users/random?emailDomain=hotmail
