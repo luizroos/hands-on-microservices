@@ -26,9 +26,9 @@ ccm node1 cqlsh
 Assim como em bancos relacionais nós temos os schemas, no cassandra temos [keyspace](https://docs.datastax.com/en/cql-oss/3.x/cql/cql_reference/cqlCreateKeyspace.html), vamos criar uma keyspace de teste com replication factor de 3 (significa que cada registro vai ser armazenado em 3 nós):
 
 ```cql
-create keyspace user-ks WITH durable_writes = true and replication = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };
+create keyspace user_ks WITH durable_writes = true and replication = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 };
 
-use user-ks;
+use user_ks;
 ```
 
 Vamos criar agora nossa tabela de pessoas da copa:
@@ -51,7 +51,7 @@ select * from pessoa;
 ### Consistência
 ---- 
 
-Temos agora 5 nós de cassandra rodando com uma tabela **pessoa** criada na keyspace **user-ks**. O Cassandra permite que a [consistência](https://docs.datastax.com/en/cassandra-oss/3.0/cassandra/dml/dmlConfigConsistency.html) seja alterada, verifique a consistencia da sessão:
+Temos agora 5 nós de cassandra rodando com uma tabela **pessoa** criada na keyspace **user_ks**. O Cassandra permite que a [consistência](https://docs.datastax.com/en/cassandra-oss/3.0/cassandra/dml/dmlConfigConsistency.html) seja alterada, verifique a consistencia da sessão:
 
 ```cql
 consistency
