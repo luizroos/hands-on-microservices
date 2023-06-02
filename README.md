@@ -24,9 +24,9 @@ ccm node1 cqlsh
 Vamos criar a nossa tabela de usuários da aplicação:
 
 ```cql
-create keyspace user-ks WITH durable_writes = true and replication = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
+create keyspace user_ks WITH durable_writes = true and replication = { 'class' : 'SimpleStrategy', 'replication_factor' : 2 };
 
-use user-ks;
+use user_ks;
 
 create table if not exists user  (
  id varchar primary key,
@@ -63,7 +63,7 @@ ccm node1 cqlsh
 ```
 
 ```cql
-use user-ks
+use user_ks
 
 create materialized view user_by_email 
 as select email, id, name, age, addressPostalCode
