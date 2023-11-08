@@ -22,11 +22,7 @@ public class UserCreateService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private KafkaTemplate<String, Object> KafkaTemplate;
-
-	@Transactional(readOnly = true)
-	public void _validate(String email) throws EntityAlreadyExistsException {
-	}
+	private KafkaTemplate<String, Object> kafkaTemplate;
 
 	public UserEntity createUser(String email, String name, int age, String addressPostalCode)
 			throws EntityAlreadyExistsException, UnknownPostalCodeException {
@@ -40,7 +36,7 @@ public class UserCreateService {
 		LOGGER.info("Persistindo usuario {}", email);
 		final UserEntity user = userRepository.createUser(email, name, age, addressPostalCode);
 
-		KafkaTemplate.send(UserChangedMessage.TOPIC_NAME, user.getId().toString(), new UserChangedMessage(user));
+		kafkaTemplate.send(UserChangedMessage.TOPIC_NAME, user.getId().toString(), new UserChangedMessage(user));
 
 		return user;
 	}
