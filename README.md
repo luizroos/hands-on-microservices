@@ -31,27 +31,27 @@ create keyspace user_ks WITH durable_writes = true and replication = { 'class' :
 use user_ks;
 ```
 
-Vamos criar agora nossa tabela de pessoas da copa:
+Vamos criar agora uma tabela para representar campeonatos realizados, os campeonatos acontecem de forma anual, então não podemos ter dois campeonatos da mesma modalidade no mesmo ano.
 
 ```cql
-create table if not exists pessoa ( 
-ano_nascimento int, 
-nome text, 
-telefone int,
-nacionalidade text,
-primary key (ano_nascimento, nacionalidade, nome)) 
+create table if not exists campeonato ( 
+  ano int, 
+  nome text,
+  campeao text,
+  esporte text,
+primary key (ano, nome, esporte));
 ```
 
 Verifique a tabela criada:
 
 ```cql
-select * from pessoa;
+select * from campeonato;
 ```
 
 ### Consistência
 ---- 
 
-Temos agora 5 nós de cassandra rodando com uma tabela **pessoa** criada na keyspace **user_ks**. O Cassandra permite que a [consistência](https://docs.datastax.com/en/cassandra-oss/3.0/cassandra/dml/dmlConfigConsistency.html) seja alterada, verifique a consistencia da sessão:
+Temos agora 5 nós de cassandra rodando com uma tabela **campeonato** criada na keyspace **user_ks**. O Cassandra permite que a [consistência](https://docs.datastax.com/en/cassandra-oss/3.0/cassandra/dml/dmlConfigConsistency.html) seja alterada, verifique a consistencia da sessão:
 
 ```cql
 consistency
@@ -63,11 +63,21 @@ Se a consistência não for ONE, altere para ONE:
 consistency ONE
 ```
 
-Vamos inserir agora umas pessoas na nossa tabela (tente variar o ano de nascimento entre elas):
+Vamos inserir agora alguns campeonatos na nossa tabela (tente variar campeonatos de varios anos):
 
 ```cql
-insert into pessoa (nome, nacionalidade, telefone, ano_nascimento) values ('joao', 'br', 1111, 1998);
-insert into pessoa (nome, nacionalidade, telefone, ano_nascimento) values ('john', 'eua', 2222, 1993);
+insert into campeonato (nome, campeao, esporte, ano) values ('copa_mundo', 'brasil', 'futebol_masculino', 1994);
+insert into campeonato (nome, campeao, esporte, ano) values ('copa_mundo', 'franca', 'futebol_masculino', 1998);
+insert into campeonato (nome, campeao, esporte, ano) values ('copa_mundo', 'brasil', 'futebol_masculino', 2002);
+insert into campeonato (nome, campeao, esporte, ano) values ('copa_mundo', 'eua', 'basquete_masculino', 2014);
+insert into campeonato (nome, campeao, esporte, ano) values ('copa_mundo', 'espanha', 'basquete_masculino', 2019);
+insert into campeonato (nome, campeao, esporte, ano) values ('copa_mundo', 'alemanha', 'basquete_masculino', 2023);
+insert into campeonato (nome, campeao, esporte, ano) values ('olimpiadas', 'brasil', 'volei_feminino', 2012);
+insert into campeonato (nome, campeao, esporte, ano) values ('olimpiadas', 'china', 'volei_feminino', 2016);
+insert into campeonato (nome, campeao, esporte, ano) values ('olimpiadas', 'eua', 'volei_feminino', 2020);
+insert into campeonato (nome, campeao, esporte, ano) values ('olimpiadas', 'russia', 'volei_masculino', 2012);
+insert into campeonato (nome, campeao, esporte, ano) values ('olimpiadas', 'brasil', 'volei_masculino', 2016);
+insert into campeonato (nome, campeao, esporte, ano) values ('olimpiadas', 'franca', 'volei_masculino', 2020);
 ...
 ```
 
@@ -79,12 +89,12 @@ ccm node2 stop
 ccm status
 ```
 
-Mude a consistência da sessão para QUORUM e tente incluir novas pessoas (variando o ano de nascimento, ao menos mais 5):
+Mude a consistência da sessão para QUORUM e tente incluir novas campeonatos (variando sempre o ano, ao menos mais 5, pode inventar):
 
 ```console
 consistency QUORUM
 
-insert into pessoa (nome, nacionalidade, telefone, ano_nascimento) values ('giovanni', 'it', 3333, 1994);
+insert into campeonato (nome, campeao, esporte, ano) values ('copa_mundo', 'alemanha', 'futebol_masculino', 1990);
 ...
 ...
 ```
@@ -104,7 +114,7 @@ E execute novamente outros inserts
 Tente executar novamente um select: 
 
 ```cql
-select * from pessoa
+select * from campeonato
 ```
 
 Também deu erro, por que?
@@ -118,7 +128,7 @@ Altere a consistência de volta para ONE e tente fazer a inserção e a leitura 
 Apesar de [CQL](https://cassandra.apache.org/doc/latest/cql/) ter sintaxe parecida com SQL, eles não é a mesma coisa, tente fazer executar essa query:
 
 ```cql
-select * from pessoa where telefone = 1111;
+select * from campeonato where campeao = 'brasil';
 ```
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Por que não deixou?
@@ -126,11 +136,11 @@ select * from pessoa where telefone = 1111;
 Tente essas:
 
 ```cql
-select * from pessoa where ano_nascimento = 1998; 
-select * from pessoa where ano_nascimento = 1998 and nome = 'joao';
-select * from pessoa where ano_nascimento = 1998 and nacionalidade = 'br';
-select * from pessoa where ano_nascimento = 1998 and nacionalidade = 'br' and nome = 'joao';
-select * from pessoa where ano_nascimento = 1998 and nacionalidade = 'br' and nome = 'joao' and telefone = 1111;
+select * from campeonato where ano = 1998; 
+select * from campeonato where ano = 1998 and esporte = 'futebol_masculino';
+select * from campeonato where ano = 1998 and nome = 'copa_mundo';
+select * from campeonato where ano = 1998 and nome = 'copa_mundo' and esporte = 'futebol_masculino';
+select * from campeonato where ano = 1998 and nome = 'copa_mundo' and esporte = 'futebol_masculino' and campeao = 'franca';
 ```
 
 Quais deram sucesso e quais falharam? por que?
