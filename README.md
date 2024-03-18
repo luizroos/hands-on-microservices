@@ -32,7 +32,7 @@ Caso você reusou o container do banco anterior, vamos apagar todos os dados da 
 docker exec -it mysql mysql -u db_user -pdb_pass user-db -e "delete from user";
 ```
 
-Execute um teste de carga usando [apache bench](https://httpd.apache.org/docs/2.4/programs/ab.html) (n = numero de requests, c = paralelismo, db --help), já instalado na vm:
+Execute um teste de carga usando [apache bench](https://httpd.apache.org/docs/2.4/programs/ab.html) (n = numero de requests, c = paralelismo, ab --help), já instalado na vm:
 
 ```console
 ab -n 1000 -c 3 http://localhost:8080/users/random
