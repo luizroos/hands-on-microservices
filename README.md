@@ -72,7 +72,7 @@ docker exec broker kafka-consumer-groups --bootstrap-server localhost:29092 --gr
 
 Agora sim, execute novamente o consumer.
  
-Via linha de comando, podemos visutalizar também os detalhes do tópico: 
+Via linha de comando, podemos visualizar também os detalhes do tópico: 
 
 ```console
 docker exec broker kafka-topics --bootstrap-server localhost:29092 --topic sample.topic --describe
