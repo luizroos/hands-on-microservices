@@ -61,7 +61,7 @@ Vamos gerar uma imagem da nossa aplicação, tagueando-a como **sample-app:1**
 docker build --build-arg JAR_FILE=build/libs/\*SNAPSHOT.jar -t sample-app:1 .
 ```
 
-Quando criamos imagens, essas imagens herdam outras imagens, e assim vai se criando uma hierarquia de imagens. Quando executamos o comando acima, o docker baixou várias imagens intermediárias para poder criar a nossa, já que nossa imagem herda de uma imagem chamada **openjdk:11**
+Quando criamos imagens, essas imagens herdam outras imagens, e assim vai se criando uma hierarquia de imagens. Quando executamos o comando acima, o docker baixou várias imagens intermediárias para poder criar a nossa, já que nossa imagem herda de uma imagem chamada **amazoncorretto:11**
 
 Agora que geramos nossa imagem, podemos rodar um container dela:
 
