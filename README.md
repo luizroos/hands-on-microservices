@@ -12,7 +12,7 @@ Vamos configurar a aplicação para se conectar a um banco de dados MySQL (ao in
 Aqui vamos usar para banco de dados um container do MySQL, veja em https://hub.docker.com/_/mysql as opções para subir o container e execute:
 
 ```console
-docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db -d mysql:5.6.51
+docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db -d mysql:8.0
 ```
 
 Subimos um container com nome **mysql**, setando usuário do banco como **db_user** e senha **db_pass**, criando um schema chamado **user-db** e mapeando a porta default do mysql: **3306**.
