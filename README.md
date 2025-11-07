@@ -57,7 +57,7 @@ docker build --build-arg JAR_FILE="build/libs/*SNAPSHOT.jar" -t user-service:7 .
 docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=wiremock:8080 --name user-service --net=my-net user-service:7
 ```
 
-![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Execute novamente o teste de carga com os parâmetros encontrados do exercício 6.
+Execute novamente o teste de carga com os parâmetros encontrados do exercício 6.
 
 ```console
 ab -n 1000 -c {concorrência} http://localhost:8080/users/random
