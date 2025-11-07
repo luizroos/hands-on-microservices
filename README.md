@@ -6,31 +6,34 @@
 
 ---
 
-Vamos subir um [mockserver](https://www.mock-server.com/where/docker.html) para simular uma dependência com outro sistema
+Vamos subir um [wiremock](https://github.com/wiremock/wiremock) para simular uma dependência com outro sistema
 
 ```console
-docker run -d --rm -p 1080:1080 --net=my-net --name mockserver mockserver/mockserver
+docker run -d --rm -p 1080:8080 --net=my-net --name wiremock wiremock/wiremock
 ```
 
-No mockserver, vamos configurar um endpoint **/postalcodes**, para responder um endereço mockado e demorar 200 ms para dar essa resposra:
+No wiremock, vamos configurar um endpoint **/postalcodes**, para responder um endereço mockado e demorar 200 ms para dar essa resposta:
 
 ```console
-curl -v -X PUT "http://localhost:1080/expectation" -d '{
-  "httpRequest" : {
-    "method" : "GET",
-    "path" : "/postalcodes"
-  },
-  "httpResponse" : {
-    "body" : "{\"address\": \"rua mockada\", \"city\": \"Sao Paulo\", \"uf\": \"SP\"}",
-    "statusCode": 200,
-    "headers": [ { "name": "Content-Type", "values": ["application/json; charset=utf-8"] } ],
-    "delay": { "timeUnit": "MILLISECONDS", "value": 200 }
-  }}'
+curl -v -X POST "http://localhost:1080/__admin/mappings" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request": {
+      "method": "GET",
+      "urlPath": "/postalcodes"
+    },
+    "response": {
+      "status": 200,
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      "body": "{\"address\": \"rua mockada\", \"city\": \"Sao Paulo\", \"uf\": \"SP\"}",
+      "fixedDelayMilliseconds": 200
+    }
+  }'
 ```
 
-Veja mais opções: https://5-1.mock-server.com/mock_server/creating_expectations.html
-
-Teste a resposta do mockserver (subimos o mock server fazendo bind na porta 1080, então pode acessar tanto na vm com localhost quando no seu browser via 172.0.2.32):
+Teste a resposta do wiremock (subimos ele fazendo bind na porta 1080, então pode acessar tanto na vm com localhost quando no seu browser via 172.0.2.32):
 
 ```console
 curl http://localhost:1080/postalcodes
@@ -49,9 +52,9 @@ docker run --rm -p 3306:3306 --name mysql --net=my-net -e MYSQL_ROOT_PASSWORD=ro
 
 ./gradlew clean build
 
-docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t user-service:7 .
+docker build --build-arg JAR_FILE="build/libs/*SNAPSHOT.jar" -t user-service:7 .
 
-docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=mockserver:1080 --name user-service --net=my-net user-service:7
+docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=wiremock:8080 --name user-service --net=my-net user-service:7
 ```
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Execute novamente o teste de carga com os parâmetros encontrados do exercício 6.
