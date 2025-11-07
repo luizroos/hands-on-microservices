@@ -17,7 +17,7 @@ git checkout e8
 
 docker build --build-arg JAR_FILE=build/libs/*SNAPSHOT.jar -t user-service:8 .
 
-docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=mockserver:1080 --name user-service --net=my-net user-service:8
+docker run --rm -p 8080:30001 -e MYSQL_HOST=mysql -e POSTALCODE_HOST=wiremock:8080 --name user-service --net=my-net user-service:8
 ```
 
 Execute novamente o teste de carga com os valores do exercício 7 e compare os resultados.
