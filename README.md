@@ -99,7 +99,7 @@ Para não perdemos os dados do nosso banco, temos que salvar ele fora do contain
 Vamos executar novamente nosso MySQL:
 
 ```console
-docker run -p 3306:3306 --name mysql --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db -d mysql:5.6.51
+docker run -p 3306:3306 --name mysql --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db -d mysql:8.0
 ```
 
 Reiniciamos a aplicação (pois ela quem cria as tabelas):
@@ -125,7 +125,7 @@ Então remova o container do MySQL novamente, recrie-o com o mesmo volume mapead
 Como curiosidade, experimente rodar um outro container MySQL apontando para o mesmo dados
 
 ```console
-docker run --rm -p 3307:3306 --name mysql2 --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db mysql:5.6.51
+docker run --rm -p 3307:3306 --name mysql2 --net=my-net -v ~/temp/mysql-data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=rootpass -e MYSQL_USER=db_user -e MYSQL_PASSWORD=db_pass -e MYSQL_DATABASE=user-db mysql:8.0
 ```
 
 ![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Qual o problema? Isso mostra por que é dificil escalar bancos.
