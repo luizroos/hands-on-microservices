@@ -58,11 +58,11 @@ E em outra sessão deixe exibindo as estatisticas do docker (a coluna PIDS indic
 docker stats
 ```
 
-![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Variando **n** e principalmente **c** do apache bench, em determinado momento, a aplicação vai começar a degradar a **performance**, mas vai continuar respondendo ok para todos requests. Porém vai chegar num limite que ela vai falhar a **disponibilidade**, começando a responder com erros. Ache esse limite.
+Variando **n** e principalmente **c** do apache bench, em determinado momento, a aplicação vai começar a degradar a **performance**, mas vai continuar respondendo ok para todos requests. Porém vai chegar num limite que ela vai falhar a **disponibilidade**, começando a responder com erros. Ache esse limite.
 
 Veja no log e descubra o que fez a aplicação começar a falhar, o que poderiamos mudar nos parâmetros da aplicação para aumentar sua escalabilidade?
 
-![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Sem compilar, rode de novo a aplicação para que ela consiga executar 1000 requests com 200 de concorrência e que tenha um resultado sem falhas:
+Sem compilar, rode de novo a aplicação para que ela consiga executar 1000 requests com 200 de concorrência e que tenha um resultado sem falhas:
 
 ```console
 ab -n 1000 -c 200 http://localhost:8080/users/random
