@@ -131,7 +131,7 @@ Apesar de [CQL](https://cassandra.apache.org/doc/latest/cql/) ter sintaxe pareci
 select * from campeonato where campeao = 'brasil';
 ```
 
-![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Por que não deixou?
+Por que não deixou?
 
 Tente essas:
 
