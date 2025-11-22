@@ -23,7 +23,7 @@ Uma fila pode fazer bind com várias exchanges e uma exchange pode ter bind de d
 
 Crie outras exchanges (direct, topic, headers) e outras filas, crie bind e teste o roteamento.
 
-![#686bd4](https://via.placeholder.com/10/686bd4?text=+) Desafio: temos uma fila e um requisito que, se em 30 segundos a mensagem não for consumida, temos que enviar essa mensagem para outra fila para posterior tratamento. Somente com o rabbit, como implementar esse isso? (dica, verifique os parâmetros para criação da fila).
+Desafio: temos uma fila e um requisito que, se em 30 segundos a mensagem não for consumida, temos que enviar essa mensagem para outra fila para posterior tratamento. Somente com o rabbit, como implementar esse isso? (dica, verifique os parâmetros para criação da fila).
 
 ### Rabbit na aplicação
 
