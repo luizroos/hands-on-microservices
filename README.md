@@ -101,4 +101,4 @@ vim src/main/java/web/core/user/CassandraUserRepository.java
 java -jar build/libs/user-service-0.0.11-SNAPSHOT.jar
 ```
 
-![#686bd4](https://via.placeholder.com/10/686bd4?text=+) A materialized view é uma tabela normal, vai estar particionada então cuidado com hot spots e existe um [custo](https://www.datastax.com/blog/materialized-view-performance-cassandra-3x) de escrita, ainda não é recomendado usa-las em produção. Mas, sem materialized view, vamos discutir como se resolveria esse problema?
+A materialized view é uma tabela normal, vai estar particionada então cuidado com hot spots e existe um [custo](https://www.datastax.com/blog/materialized-view-performance-cassandra-3x) de escrita, ainda não é recomendado usa-las em produção. Mas, sem materialized view, vamos discutir como se resolveria esse problema?
